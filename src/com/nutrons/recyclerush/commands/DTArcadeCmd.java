@@ -1,18 +1,20 @@
-
 package com.nutrons.recyclerush.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import com.nutrons.recyclerush.Robot;
+import com.nutrons.recyclerush.subsystems.DriveTrain;
+
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ExampleCommand extends Command {
+public class DTArcadeCmd extends Command {
 
-    public ExampleCommand() {
+    public DTArcadeCmd() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.exampleSubsystem);
+        // eg. requires(chassis);
+    	requires(Robot.dt);
     }
 
     // Called just before this Command runs the first time
@@ -21,6 +23,7 @@ public class ExampleCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.dt.DriveTW(Robot.oi.throttle.getRawAxis(0), Robot.oi.wheel.getRawAxis(0));
     }
 
     // Make this return true when this Command no longer needs to run execute()

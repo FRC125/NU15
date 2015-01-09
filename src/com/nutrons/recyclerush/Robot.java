@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import com.nutrons.recyclerush.subsystems.DriveTrain;
+import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,7 +17,6 @@ import com.nutrons.recyclerush.subsystems.DriveTrain;
  */
 public class Robot extends IterativeRobot {
 
-	public static final DriveTrain dt = new DriveTrain();
 	public static OI oi;
 
     Command autonomousCommand;

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import com.nutrons.recyclerush.subsystems.TestSubsystem;
 import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
 
 /**
@@ -18,6 +19,7 @@ import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
+	public static TestSubsystem testSubsystem;
 
     Command autonomousCommand;
 
@@ -27,6 +29,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		testSubsystem = new TestSubsystem();
         // instantiate the command used for the autonomous period
     }
 	

@@ -36,8 +36,11 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	public final Joystick throttle = new Joystick(0);
-	public final Joystick wheel = new Joystick(0);
+	public final Joystick operatorPad = new Joystick(1);
+	
+	public double getJoystick() {
+		return operatorPad.getRawAxis(2);
+	}
 	
 }
 

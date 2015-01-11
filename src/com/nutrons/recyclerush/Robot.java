@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
 import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
@@ -19,7 +20,7 @@ import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static TestDriveTrain dt=new TestDriveTrain();
+	public static TestDriveTrain dt = new TestDriveTrain();
     Command autonomousCommand;
 
     /**
@@ -68,6 +69,12 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("Constant", Robot.dt.kp);
+        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.gyroConstant);
+        double kp = SmartDashboard.getNumber("Constant");
+        double Gyro_Constant = SmartDashboard.getNumber("Gyro_Constant");
+        Robot.dt.setConstant(kp);
+        Robot.dt.setGyroConstant(Gyro_Constant);
     }
     
     /**

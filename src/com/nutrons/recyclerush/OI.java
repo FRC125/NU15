@@ -14,6 +14,7 @@ public class OI {
 	public final Joystick operatorPad = new Joystick(0);
 	private final int DRIVE_LEFT_AXIS= 1;
 	private final int DRIVE_RIGHT_AXIS= 5;
+	private final int DRIVE_WHEEL_AXIS = 4;
 	
 	public double getJoystick() {
 		return operatorPad.getRawAxis(2);
@@ -26,6 +27,10 @@ public class OI {
 	public double getDriveRight() {
 		return -driverPad.getRawAxis(DRIVE_RIGHT_AXIS);
 
+	}
+	
+	public double getDriveWheel() {
+		return -driverPad.getRawAxis(DRIVE_WHEEL_AXIS);
 	}
 	
 }

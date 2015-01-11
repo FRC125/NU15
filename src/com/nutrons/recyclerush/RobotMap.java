@@ -13,6 +13,9 @@ public class RobotMap {
 	public static final int DRIVE_LEFT_2 = 2;
 	public static final int DRIVE_RIGHT_2 = 3;
 	
+	// Analog Input
+	public static final int GYROSCOPE = 0;
+	
 	// User Input
 	public static final int DRIVE_PAD = 0;
 }

@@ -11,7 +11,7 @@ public abstract class AbstractDriveTrain extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	public abstract void DriveTW(double throttle, double wheel);
+	public abstract void driveTW(double throttle, double wheel);
 
     
 }

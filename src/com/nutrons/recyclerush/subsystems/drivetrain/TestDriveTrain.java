@@ -10,31 +10,28 @@ import edu.wpi.first.wpilibj.Talon;
  *
  */
 public class TestDriveTrain extends AbstractDriveTrain {
-	Talon left1= new Talon(RobotMap.DRIVELEFT1);
-	Talon left2= new Talon(RobotMap.DRIVELEFT2);
-	Talon right1= new Talon(RobotMap.DRIVERIGHT1);
-	Talon right2= new Talon(RobotMap.DRIVERIGHT2);
-	@Override
-	public void DriveTW(double throttle, double wheel) {
-		// TODO Auto-generated method stub
-		DriveLR(throttle-wheel, throttle+wheel);
-		
-	}
-	/***
-	 * drive based on left and right command
-	 * @param left speed of left side
-	 * @param right speed of right side
-	 */
-	public void DriveLR (double left, double right)
-	{
-		left1.set(left);
-		left2.set(left);
-		right1.set(right);
-		right2.set(right);
-		
-	}
+	
+	Talon leftMotor1= new Talon(RobotMap.DRIVE_LEFT_1);
+	Talon leftMotor2= new Talon(RobotMap.DRIVE_LEFT_2);
+	Talon rightMotor1= new Talon(RobotMap.DRIVE_RIGHT_1);
+	Talon rightMotor2= new Talon(RobotMap.DRIVE_RIGHT_2);
+	
 	public void initDefaultCommand() {
     	setDefaultCommand(new TestDriveCmd());
     }
+	
+	@Override
+	public void driveTW(double throttle, double wheel) {
+		driveLR(throttle-wheel, throttle+wheel);
+		
+	}
+	
+	public void driveLR (double left, double right) {
+		leftMotor1.set(left);
+		leftMotor2.set(left);
+		rightMotor1.set(right);
+		rightMotor2.set(right);
+		
+	}
 
 }

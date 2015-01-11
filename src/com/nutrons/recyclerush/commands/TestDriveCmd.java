@@ -6,7 +6,11 @@ import com.nutrons.recyclerush.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TestDriveCmd extends Command{
-
+	
+	public TestDriveCmd() {
+		requires(Robot.dt);
+	}
+	
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
@@ -17,7 +21,7 @@ public class TestDriveCmd extends Command{
 	protected void execute() 
 	{
 		// TODO Auto-generated method stub
-        Robot.dt.DriveLR(Robot.oi.getDriveLeft()*0.8, Robot.oi.getDriveRight()*0.8);
+        Robot.dt.driveLR(Robot.oi.getDriveLeft()*0.8, Robot.oi.getDriveRight()*0.8);
 	}
 
 	@Override

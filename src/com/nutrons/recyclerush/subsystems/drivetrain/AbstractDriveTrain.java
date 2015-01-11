@@ -13,8 +13,6 @@ public abstract class AbstractDriveTrain extends Subsystem {
     // here. Call these from Commands.
 	public abstract void DriveTW(double throttle, double wheel);
 
-    public void initDefaultCommand() {
-    	
-    }
+    
 }
 

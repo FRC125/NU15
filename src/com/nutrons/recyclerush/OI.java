@@ -35,11 +35,27 @@ public class OI {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
-	
-	public final Joystick operatorPad = new Joystick(1);
-	
+	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
+	public final Joystick operatorPad = new Joystick(0);
+	private final int DRIVE_LEFT_AXIS= 2;
+	private final int DRIVE_RIGHT_AXIS= 4;
 	public double getJoystick() {
 		return operatorPad.getRawAxis(2);
+	}
+	/***
+	 * gets the left axis value
+	 * @return
+	 */
+	public double getDriveLeft() {
+		return driverPad.getRawAxis(DRIVE_LEFT_AXIS);
+	}
+	/***
+	 * gets right axis value
+	 * @return
+	 */
+	public double getDriveRight() {
+		return driverPad.getRawAxis(DRIVE_RIGHT_AXIS);
+
 	}
 	
 }

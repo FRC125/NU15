@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import com.nutrons.recyclerush.subsystems.TestSubsystem;
 import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
+import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,7 +21,7 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static TestSubsystem testSubsystem;
-
+	public static TestDriveTrain dt=new TestDriveTrain();
     Command autonomousCommand;
 
     /**

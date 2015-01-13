@@ -1,8 +1,8 @@
 package com.nutrons.recyclerush.subsystems.drivetrain;
 
+import com.nutrons.lib.MovingAverage;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveStraightCmd;
-import com.nutrons.recyclerush.commands.TestDriveCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Talon;
@@ -21,15 +21,26 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
+	MovingAverage gyroAverage = new MovingAverage(10);
 	
-	public double kp = 0.2;
-	public double gyroConstant = 1;
-	public double[] gyroAverage;
-	public int indexReadings = 0;
-
+	public double kP = 0.2;
+	public double kI = 0.0;
+	public double kD = 0.0;
+	public double GYRO_CONSTANT = 1;
+	
+	public double targetRate = 0.0;
+	public double error = 0.0;
+	public double sumError = 0.0;
+	public double deltaError = 0.0;
+	public double adjust = 0.0;
+	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveStraightCmd());
     }
+	
+	public void stop() {
+		driveLR(0,0);
+	}
 	
 	public void driveTW(double throttle, double wheel) {
 		driveLR(throttle-wheel, -(throttle+wheel));	
@@ -42,50 +53,28 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		rightMotor2.set(right);
 	}
 	
-	public void driveStraightGyro(double throttle, double gyro) {
-		double wheel = gyro * kp;
-		driveTW(throttle, wheel);
-	}
-	
 	public void zeroGyro() {
 		gyro.reset();
 	}
 	
-	public double getGyro() {
-		return gyro.getRate();
+	public double getGyroReading() {
+		return gyroAverage.getAverage(gyro.getRate());
 	}
 	
-	public double getGyroWithCap() {
-		double rate = gyro.getRate();
-		
-		if(rate > -10 && rate < 10) {
-			rate = 0;
-		}
-		
-		return rate;
+	public void setGyroConstant(double constant) {
+		GYRO_CONSTANT = constant;
 	}
 	
-	public double getGyroAverage(int numReadings,double cons) {
-		double gyroSum = 0;
-		gyroAverage = new double[numReadings];
-		
-		gyroAverage[indexReadings] = getGyro();
-		indexReadings++;
-		indexReadings = indexReadings % numReadings;
-		
-		for(int i = 0; i < numReadings; i++) {
-			gyroSum += gyroAverage[i];
-		}
-		return gyroSum / numReadings;
-		
+	public void setConstant(double constant) {
+		kP = constant;
 	}
 	
-	public void setConstant(double val) {
-		kp = val;
-	}
-	
-	public void setGyroConstant(double val) {
-		gyroConstant = val;
+	public void drivePID(double throttle, double wheel) {
+		targetRate = wheel * GYRO_CONSTANT;
+		error = targetRate - getGyroReading();
+		sumError += error;
+		adjust = kP * error + kI * sumError;
+		driveTW(throttle, wheel + adjust);
 	}
 
 }

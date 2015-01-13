@@ -23,7 +23,7 @@ public class DriveStraightCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.dt.driveStraightGyro(oi.getDriveLeft(), oi.getDriveWheel() + Robot.dt.kp * Robot.dt.getGyroAverage(10, Robot.dt.gyroConstant));
+    	Robot.dt.drivePID(oi.getDriveThrottle(), oi.getDriveWheel());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,6 +33,7 @@ public class DriveStraightCmd extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.dt.stop();
     }
 
     // Called when another command which requires one or more of the same

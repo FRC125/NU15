@@ -69,8 +69,8 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("Constant", Robot.dt.kp);
-        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.gyroConstant);
+        SmartDashboard.putNumber("Constant", Robot.dt.kP);
+        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         double kp = SmartDashboard.getNumber("Constant");
         double Gyro_Constant = SmartDashboard.getNumber("Gyro_Constant");
         Robot.dt.setConstant(kp);

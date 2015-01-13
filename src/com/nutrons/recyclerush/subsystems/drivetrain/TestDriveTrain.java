@@ -31,10 +31,8 @@ public class TestDriveTrain extends AbstractDriveTrain {
     	setDefaultCommand(new DriveStraightCmd());
     }
 	
-	@Override
 	public void driveTW(double throttle, double wheel) {
-		driveLR(throttle-wheel, -(throttle+wheel));
-		
+		driveLR(throttle-wheel, -(throttle+wheel));	
 	}
 	
 	public void driveLR(double left, double right) {

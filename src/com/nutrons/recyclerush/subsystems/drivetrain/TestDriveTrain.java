@@ -3,6 +3,7 @@ package com.nutrons.recyclerush.subsystems.drivetrain;
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveStraightCmd;
+import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Preferences;
@@ -80,6 +81,10 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		double error = targetAngle - getGyroAngle() * GYRO_CONSTANT;
 		double adjust = kP * error;
 		driveTW(throttle, 0 - adjust);
+	}
+	
+	public void quickTurn(double targetAngle) {
+		driveStraightPID(0, targetAngle);
 	}
 	
 	public double getMotorLeftSpeed() {

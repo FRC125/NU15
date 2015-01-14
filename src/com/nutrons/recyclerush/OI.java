@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
-	public final Joystick operatorPad = new Joystick(0);
 	private final int DRIVE_THROTTLE_AXIS = 1;
 	private final int DRIVE_WHEEL_AXIS = 4;
 	
@@ -25,5 +24,9 @@ public class OI {
 		return Utils.deadband(-driverPad.getRawAxis(DRIVE_WHEEL_AXIS), 0.1, 0);
 	}
 	
+	
+	public int getPOVDirection() {
+		return Math.max(driverPad.getPOV(), 0);
+	}
 }
 

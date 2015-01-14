@@ -22,19 +22,14 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
-	MovingAverage gyroAverage = new MovingAverage(1);
+	MovingAverage gyroRateAverage = new MovingAverage(1);
+	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	Preferences drivePrefs;
 	public double kP = 0.1;
 	public double kI = 0.0;
 	public double kD = 0.0;
 	public double GYRO_CONSTANT = 1.0/350.0;
-	
-	public double targetRate = 0.0;
-	public double error = 0.0;
-	public double sumError = 0.0;
-	public double deltaError = 0.0;
-	public double adjust = 0.0;
 	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveStraightCmd());
@@ -59,8 +54,12 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		gyro.reset();
 	}
 	
-	public double getGyroReading() {
-		return gyroAverage.getAverage(gyro.getRate());
+	public double getGyroRate() {
+		return gyroRateAverage.getAverage(gyro.getRate());
+	}
+	
+	public double getGyroAngle() {
+		return gyroAngleAverage.getAverage(gyro.getAngle());
 	}
 	
 	public void setGyroConstant(double constant) {
@@ -72,10 +71,15 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void drivePID(double throttle, double wheel) {
-		error = wheel - getGyroReading() * GYRO_CONSTANT;
-		sumError += error;
-		adjust = kP * error;
+		double error = wheel - getGyroRate() * GYRO_CONSTANT;
+		double adjust = kP * error;
 		driveTW(throttle, wheel - adjust);
+	}
+	
+	public void driveStraightPID(double throttle, double targetAngle) {
+		double error = targetAngle - getGyroAngle() * GYRO_CONSTANT;
+		double adjust = kP * error;
+		driveTW(throttle, 0 - adjust);
 	}
 	
 	public double getMotorLeftSpeed() {

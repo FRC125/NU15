@@ -2,6 +2,7 @@
 package com.nutrons.recyclerush;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -29,7 +30,8 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-        // instantiate the command used for the autonomous period
+        SmartDashboard.putNumber("Constant", Robot.dt.kP);
+        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
     }
 	
 	public void disabledPeriodic() {
@@ -69,12 +71,13 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        Robot.dt.setConstant(SmartDashboard.getNumber("Constant"));
+        Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-        double kp = SmartDashboard.getNumber("Constant");
-        double Gyro_Constant = SmartDashboard.getNumber("Gyro_Constant");
-        Robot.dt.setConstant(kp);
-        Robot.dt.setGyroConstant(Gyro_Constant);
+        SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroReading());
+        SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
+        SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
     }
     
     /**

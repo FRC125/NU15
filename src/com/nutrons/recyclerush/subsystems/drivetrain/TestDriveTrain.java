@@ -5,6 +5,7 @@ import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveStraightCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Talon;
 /***
  *  test kit drive train
@@ -21,12 +22,13 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
-	MovingAverage gyroAverage = new MovingAverage(10);
+	MovingAverage gyroAverage = new MovingAverage(1);
 	
-	public double kP = 0.2;
+	Preferences drivePrefs;
+	public double kP = 0.1;
 	public double kI = 0.0;
 	public double kD = 0.0;
-	public double GYRO_CONSTANT = 1;
+	public double GYRO_CONSTANT = 1.0/350.0;
 	
 	public double targetRate = 0.0;
 	public double error = 0.0;
@@ -70,11 +72,18 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void drivePID(double throttle, double wheel) {
-		targetRate = wheel * GYRO_CONSTANT;
-		error = targetRate - getGyroReading();
+		error = wheel - getGyroReading() * GYRO_CONSTANT;
 		sumError += error;
-		adjust = kP * error + kI * sumError;
-		driveTW(throttle, wheel + adjust);
+		adjust = kP * error;
+		driveTW(throttle, wheel - adjust);
+	}
+	
+	public double getMotorLeftSpeed() {
+		return leftMotor1.get();
+	}
+	
+	public double getMotorRightSpeed() {
+		return rightMotor1.get();
 	}
 
 }

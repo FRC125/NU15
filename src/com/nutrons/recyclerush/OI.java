@@ -1,5 +1,7 @@
 package com.nutrons.recyclerush;
 
+import com.nutrons.lib.Utils;
+
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -12,15 +14,15 @@ public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
 	public final Joystick operatorPad = new Joystick(0);
-	private final int DRIVE_LEFT_AXIS= 1;
-	private final int DRIVE_WHEEL_AXIS = 2;
+	private final int DRIVE_THROTTLE_AXIS = 1;
+	private final int DRIVE_WHEEL_AXIS = 4;
 	
 	public double getDriveThrottle() {
-		return driverPad.getRawAxis(DRIVE_LEFT_AXIS);
+		return Utils.deadband(driverPad.getRawAxis(DRIVE_THROTTLE_AXIS), 0.1, 0);
 	}
 	
 	public double getDriveWheel() {
-		return -driverPad.getRawAxis(DRIVE_WHEEL_AXIS);
+		return Utils.deadband(-driverPad.getRawAxis(DRIVE_WHEEL_AXIS), 0.1, 0);
 	}
 	
 }

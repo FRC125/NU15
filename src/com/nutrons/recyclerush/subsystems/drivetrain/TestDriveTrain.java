@@ -8,6 +8,7 @@ import com.nutrons.recyclerush.commands.DriveTurnCmd;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /***
  *  test kit drive train
  * @author Michael
@@ -27,13 +28,13 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	Preferences drivePrefs;
-	public double kP = 0.1;
+	public double kP = 2.5;
 	public double kI = 0.0;
 	public double kD = 0.0;
 	public double GYRO_CONSTANT = 1.0/350.0;
 	
 	public void initDefaultCommand() {
-    	setDefaultCommand(new DriveStraightCmd());
+    	setDefaultCommand(new DriveTurnCmd());
     }
 	
 	public void stop() {
@@ -84,7 +85,10 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void quickTurn(double targetAngle) {
-		driveStraightPID(0, targetAngle);
+		double error = (targetAngle - getGyroAngle()) * GYRO_CONSTANT;
+		double adjust = kP * error;
+		driveTW(0, 0-adjust);
+		SmartDashboard.putNumber("Error", error);
 	}
 	
 	public double getMotorLeftSpeed() {

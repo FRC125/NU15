@@ -26,7 +26,7 @@ public class OI {
 	
 	
 	public int getPOVDirection() {
-		return Math.max(driverPad.getPOV(), 0);
+		return driverPad.getPOV();
 	}
 }
 

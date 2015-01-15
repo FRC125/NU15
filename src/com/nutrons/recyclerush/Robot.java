@@ -32,6 +32,12 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
+		SmartDashboard.putNumber("kP", 0);
+		SmartDashboard.putNumber("kI", 0);
+		SmartDashboard.putNumber("kD", 0);
+		SmartDashboard.putNumber("Error", 0);
+		SmartDashboard.putNumber("Target", 0);
+		SmartDashboard.putNumber("Adjust", 0);
     }
 	
 	public void disabledPeriodic() {
@@ -74,6 +80,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         Robot.dt.setConstant(SmartDashboard.getNumber("Constant"));
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
+        Robot.dt.quickTurnPID.updateValues();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());

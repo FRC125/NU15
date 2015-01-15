@@ -83,9 +83,6 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void quickTurn(double targetAngle) {
-		//double error = (targetAngle - getGyroAngle()) * GYRO_CONSTANT;
-		//double adjust = kP * error;
-		//driveTW(0, 0-adjust);
 		quickTurnPID.setTarget(targetAngle * GYRO_CONSTANT);
 		driveTW(0, -quickTurnPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
 	}

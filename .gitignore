@@ -1,6 +1,6 @@
 /com/
 /org/
-/bin/
-/build/
-/dist/
+bin/*
+build/*
+dist/*
 .settings

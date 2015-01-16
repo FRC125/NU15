@@ -80,7 +80,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         Robot.dt.setConstant(SmartDashboard.getNumber("Constant"));
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        Robot.dt.quickTurnPID.updateValues();
+        Robot.dt.driveStraightPID.updateValues();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());

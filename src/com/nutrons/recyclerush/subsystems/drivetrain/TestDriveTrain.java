@@ -3,6 +3,7 @@ package com.nutrons.recyclerush.subsystems.drivetrain;
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.PIDControl;
 import com.nutrons.recyclerush.RobotMap;
+import com.nutrons.recyclerush.commands.DriveStraightCmd;
 import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
@@ -26,13 +27,14 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	public PIDControl quickTurnPID = new PIDControl(2.5, 0, 0);
+	public PIDControl driveStraightPID = new PIDControl(7.5, 0, 0);
 	public double kP = 2.5;
 	public double kI = 0.0;
 	public double kD = 0.0;
 	public double GYRO_CONSTANT = 1.0/350.0;
 	
 	public void initDefaultCommand() {
-    	setDefaultCommand(new DriveTurnCmd());
+    	setDefaultCommand(new DriveStraightCmd());
     }
 	
 	public void stop() {
@@ -77,9 +79,12 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveStraightPID(double throttle, double targetAngle) {
-		double error = targetAngle - getGyroAngle() * GYRO_CONSTANT;
-		double adjust = kP * error;
-		driveTW(throttle, 0 - adjust);
+		//double error = targetAngle - getGyroAngle() * GYRO_CONSTANT;
+		//double adjust = kP * error;
+		//driveTW(throttle, 0 - adjust);
+		driveStraightPID.setTarget(targetAngle);
+		driveTW(throttle, -driveStraightPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
+		
 	}
 	
 	public void quickTurn(double targetAngle) {

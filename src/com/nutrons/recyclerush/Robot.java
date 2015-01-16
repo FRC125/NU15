@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Error", 0);
 		SmartDashboard.putNumber("Target", 0);
 		SmartDashboard.putNumber("Adjust", 0);
+        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     }
 	
 	public void disabledPeriodic() {
@@ -88,6 +89,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
+        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     }
     
     /**

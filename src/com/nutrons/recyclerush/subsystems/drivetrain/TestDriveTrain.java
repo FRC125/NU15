@@ -5,7 +5,10 @@ import com.nutrons.lib.PIDControl;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveStraightCmd;
 import com.nutrons.recyclerush.commands.DriveTurnCmd;
+import com.nutrons.lib.Ultrasonic;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Talon;
 /***
@@ -23,6 +26,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
+	Ultrasonic ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
 	MovingAverage gyroRateAverage = new MovingAverage(1);
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
@@ -35,6 +39,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveStraightCmd());
+    	//ultrasonic.setAutomaticMode(true);
     }
 	
 	public void stop() {
@@ -79,9 +84,6 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveStraightPID(double throttle, double targetAngle) {
-		//double error = targetAngle - getGyroAngle() * GYRO_CONSTANT;
-		//double adjust = kP * error;
-		//driveTW(throttle, 0 - adjust);
 		driveStraightPID.setTarget(targetAngle);
 		driveTW(throttle, -driveStraightPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
 		
@@ -98,6 +100,10 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	public double getMotorRightSpeed() {
 		return rightMotor1.get();
+	}
+
+	public double getUltrasonicDistance() {
+		return ultrasonic.getDistance();
 	}
 
 }

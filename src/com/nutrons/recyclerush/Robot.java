@@ -1,13 +1,18 @@
 
 package com.nutrons.recyclerush;
 
+import java.util.HashMap;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
 import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
 
@@ -22,6 +27,9 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static TestDriveTrain dt = new TestDriveTrain();
+	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+	public static Timer timer = new Timer();
     Command autonomousCommand;
 
     /**
@@ -30,6 +38,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		HashMap<String, Integer> ports = totalCurrentLogger.getAllPorts();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("kP", 0);
@@ -71,7 +80,6 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
     }
 
     /**
@@ -90,6 +98,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
+    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
     }
     
     /**

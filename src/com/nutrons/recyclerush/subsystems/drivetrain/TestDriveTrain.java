@@ -1,5 +1,8 @@
 package com.nutrons.recyclerush.subsystems.drivetrain;
 
+import java.util.HashMap;
+
+import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.PIDControl;
 import com.nutrons.recyclerush.RobotMap;
@@ -16,7 +19,7 @@ import edu.wpi.first.wpilibj.Talon;
  * @author John, Michael
  *
  */
-public class TestDriveTrain extends AbstractDriveTrain {
+public class TestDriveTrain extends AbstractDriveTrain implements ILoggable {
 	
 	// Motors
 	Talon leftMotor1= new Talon(RobotMap.DRIVE_LEFT_1);
@@ -110,4 +113,14 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		return getUltrasonicDistance() < distance;
 	}
 
+	public HashMap<String, Integer> getLogInfo() {
+		HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
+		
+		hashmap.put("leftMotor1", RobotMap.DRIVE_LEFT_1);
+		hashmap.put("leftMotor2", RobotMap.DRIVE_LEFT_2);
+		hashmap.put("rightMotor1", RobotMap.DRIVE_RIGHT_1);
+		hashmap.put("rightMotor2", RobotMap.DRIVE_RIGHT_2);
+		
+		return hashmap;
+	}
 }

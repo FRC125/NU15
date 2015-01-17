@@ -88,8 +88,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
-        SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
+    	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
     }
     
     /**

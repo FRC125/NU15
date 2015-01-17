@@ -105,5 +105,9 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	public double getUltrasonicDistance() {
 		return ultrasonic.getDistance();
 	}
+	
+	public boolean inDanger(double distance) {
+		return getUltrasonicDistance() < distance;
+	}
 
 }

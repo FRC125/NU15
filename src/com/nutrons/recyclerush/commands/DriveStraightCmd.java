@@ -4,6 +4,7 @@ import com.nutrons.recyclerush.OI;
 import com.nutrons.recyclerush.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -24,6 +25,7 @@ public class DriveStraightCmd extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.dt.driveStraightPID(oi.getDriveThrottle(), 0);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

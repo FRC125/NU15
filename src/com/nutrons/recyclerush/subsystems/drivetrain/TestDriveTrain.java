@@ -91,15 +91,16 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveStraightPID(double throttle, double targetAngle, double hValue) {
-		if(Math.abs(targetAngle) > 0.2) {
+		if(Robot.oi.isHoldHeading()) {
 			
 //			targetAngle = this.getTargetAngle() - (0.08*targetAngle);
 //			System.out.println(targetAngle);
-			driveStraightPID.setTarget((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT);
-			driveTW(throttle, targetAngle);
+			driveStraightPID.setTarget(0);
+			driveTW(throttle, -driveStraightPID.getAdjust((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT));
 		}
 		else{
-			driveTW(throttle, -driveStraightPID.getAdjust((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT));
+			gyro.reset();
+			driveTW(throttle, targetAngle);
 		}
 		motorC.set(hValue);
 		

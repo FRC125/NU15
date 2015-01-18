@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.Joystick;
 
 
 /**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * 
+ * @author Camilo Gonzalez
+ *
  */
 public class OI {
     
@@ -24,9 +25,20 @@ public class OI {
 		return Utils.deadband(-driverPad.getRawAxis(DRIVE_WHEEL_AXIS), 0.1, 0);
 	}
 	
-	
 	public int getPOVDirection() {
 		return driverPad.getPOV();
+	}
+	
+	public double getJoystickX() {
+		return Utils.deadband(driverPad.getRawAxis(0), 0.1, 0);
+	}
+	
+	public double getJoystickY() {
+		return Utils.deadband(driverPad.getRawAxis(1), 0.1, 0);
+	}
+	
+	public double getJoystickSpin() {
+		return Utils.deadband(driverPad.getRawAxis(4), 0.05, 0);
 	}
 }
 

@@ -2,6 +2,7 @@ package com.nutrons.recyclerush.subsystems.drivetrain;
 
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.PIDControl;
+import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveHPIDCmd;
 import com.nutrons.recyclerush.commands.DriveStraightCmd;
@@ -11,6 +12,8 @@ import com.nutrons.lib.Ultrasonic;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 /***
  * 
@@ -18,6 +21,11 @@ import edu.wpi.first.wpilibj.Talon;
  *
  */
 public class TestDriveTrain extends AbstractDriveTrain {
+	
+	public double kP = 7.5;
+	public double kI = 0.0;
+	public double kD = 0.0;
+	public double GYRO_CONSTANT = 1.0/350.0;
 	
 	// Motors
 	Talon leftMotor1= new Talon(RobotMap.DRIVE_LEFT_1); // motorL
@@ -33,10 +41,6 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	
 	public PIDControl quickTurnPID = new PIDControl(2.5, 0, 0);
 	public PIDControl driveStraightPID = new PIDControl(7.5, 0, 0);
-	public double kP = 7.5;
-	public double kI = 0.0;
-	public double kD = 2.5;
-	public double GYRO_CONSTANT = 1.0/350.0;
 	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveHPIDCmd());
@@ -87,10 +91,18 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveStraightPID(double throttle, double targetAngle, double hValue) {
-		
+		if(Math.abs(targetAngle) > 0.2) {
+			
+//			targetAngle = this.getTargetAngle() - (0.08*targetAngle);
+//			System.out.println(targetAngle);
+			driveStraightPID.setTarget((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT);
+			driveTW(throttle, targetAngle);
+		}
+		else{
+			driveTW(throttle, -driveStraightPID.getAdjust((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT));
+		}
 		motorC.set(hValue);
-		driveStraightPID.setTarget(targetAngle);
-		driveTW(throttle, -driveStraightPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
+		
 		
 	}
 	
@@ -148,5 +160,9 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	    	leftMotor1.set(outputSpeeds[0]);
 	    	motorC.set(outputSpeeds[1]);
 	    	rightMotor1.set(outputSpeeds[2]);
+	    }
+	    
+	    public double getTargetAngle() {
+	    	return driveStraightPID.getTarget();
 	    }
 }

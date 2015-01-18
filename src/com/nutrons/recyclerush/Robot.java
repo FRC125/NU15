@@ -32,9 +32,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-		SmartDashboard.putNumber("kP", 0);
-		SmartDashboard.putNumber("kI", 0);
-		SmartDashboard.putNumber("kD", 0);
+		SmartDashboard.putNumber("kP", this.dt.kP);
+		SmartDashboard.putNumber("kI", this.dt.kI);
+		SmartDashboard.putNumber("kD", this.dt.kD);
 		SmartDashboard.putNumber("Error", 0);
 		SmartDashboard.putNumber("Target", 0);
 		SmartDashboard.putNumber("Adjust", 0);
@@ -90,6 +90,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
+    	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
     }
     
     /**

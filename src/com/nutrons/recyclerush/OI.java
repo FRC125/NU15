@@ -1,5 +1,6 @@
 package com.nutrons.recyclerush;
 
+import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Utils;
 
 import edu.wpi.first.wpilibj.buttons.Button;

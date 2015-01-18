@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveHPIDCmd extends Command {
 
-	
+	double throttle = 0;
+	double wheel = 0;
 	
     public DriveHPIDCmd() {
     	requires(Robot.dt);
@@ -23,6 +24,7 @@ public class DriveHPIDCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     	Robot.dt.driveStraightPID(-Robot.oi.getDriveThrottle(), Robot.oi.getDriveWheel(), Robot.oi.getJoystickX());
     }
 

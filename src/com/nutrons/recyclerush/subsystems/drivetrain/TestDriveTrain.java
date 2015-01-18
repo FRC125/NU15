@@ -26,6 +26,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	public double kI = 0.0;
 	public double kD = 0.0;
 	public double GYRO_CONSTANT = 1.0/350.0;
+	public double offset = 0;
 	
 	// Motors
 	Talon leftMotor1= new Talon(RobotMap.DRIVE_LEFT_1); // motorL
@@ -34,7 +35,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	Talon rightMotor2= new Talon(RobotMap.DRIVE_RIGHT_2);
 	
 	// Sensors
-	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
+	public Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
 	Ultrasonic ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
 	MovingAverage gyroRateAverage = new MovingAverage(1);
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
@@ -91,14 +92,27 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveStraightPID(double throttle, double targetAngle, double hValue) {
+		if(Robot.oi.isResetGyroButton()) {
+			gyro.reset();
+			offset = 0;
+		}
+		
+		if(Robot.oi.isFieldCentric()) {
+			double theta = Math.toRadians(Robot.dt.offset);
+			double temp = throttle * Math.cos(theta) + hValue*Math.sin(theta);
+			hValue = -throttle * Math.sin(theta) + hValue * Math.cos(theta);
+			throttle = temp;
+		}
+		
 		if(Robot.oi.isHoldHeading()) {
 			
 //			targetAngle = this.getTargetAngle() - (0.08*targetAngle);
 //			System.out.println(targetAngle);
 			driveStraightPID.setTarget(0);
 			driveTW(throttle, -driveStraightPID.getAdjust((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT));
-		}
-		else{
+		}else{
+			offset += gyro.getAngle();
+			offset = offset % 360.0;
 			gyro.reset();
 			driveTW(throttle, targetAngle);
 		}

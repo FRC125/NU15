@@ -91,6 +91,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
     	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
+    	SmartDashboard.putNumber("Offset Value: ", this.dt.offset);
     }
     
     /**

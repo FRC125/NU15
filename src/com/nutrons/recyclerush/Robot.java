@@ -87,11 +87,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
+        SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
     	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
-    	SmartDashboard.putNumber("Offset Value: ", this.dt.offset);
+    	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
     }
     
     /**

@@ -16,19 +16,9 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
-	private final int DRIVE_THROTTLE_AXIS = 1;
-	private final int DRIVE_WHEEL_AXIS = 4;
 	private Button headingButton = new JoystickButton(driverPad, 5);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 6);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
-	
-	public double getDriveThrottle() {
-		return Utils.deadband(driverPad.getRawAxis(DRIVE_THROTTLE_AXIS), 0.1, 0);
-	}
-	
-	public double getDriveWheel() {
-		return Utils.deadband(-driverPad.getRawAxis(DRIVE_WHEEL_AXIS), 0.1, 0);
-	}
 	
 	public int getPOVDirection() {
 		return driverPad.getPOV();

@@ -2,18 +2,12 @@ package com.nutrons.recyclerush.subsystems.drivetrain;
 
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.PIDControl;
+import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveHPIDCmd;
-import com.nutrons.recyclerush.commands.DriveStraightCmd;
-import com.nutrons.recyclerush.commands.DriveTurnCmd;
-import com.nutrons.lib.Ultrasonic;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 /***
  * 
@@ -22,6 +16,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class TestDriveTrain extends AbstractDriveTrain {
 	
+	// Constants
 	public double kP = 7.5;
 	public double kI = 0.0;
 	public double kD = 0.0;
@@ -29,10 +24,9 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	public double offset = 0;
 	
 	// Motors
-	Talon leftMotor1= new Talon(RobotMap.DRIVE_LEFT_1); // motorL
-	Talon motorC= new Talon(RobotMap.DRIVE_LEFT_2); // motorC
-	Talon rightMotor1= new Talon(RobotMap.DRIVE_RIGHT_1); // motorR
-	Talon rightMotor2= new Talon(RobotMap.DRIVE_RIGHT_2);
+	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
+	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
+	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
 	
 	// Sensors
 	public Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
@@ -40,19 +34,15 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	MovingAverage gyroRateAverage = new MovingAverage(1);
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
+	// PIDs
 	public PIDControl quickTurnPID = new PIDControl(2.5, 0, 0);
 	public PIDControl driveStraightPID = new PIDControl(7.5, 0, 0);
 	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveHPIDCmd());
-    	//ultrasonic.setAutomaticMode(true);
     }
 	
 	public void stop() {
-		driveLR(0,0);
-	}
-	
-	public void stopHDrive() {
     	driveLCR(new double[] {0.0, 0.0, 0.0});
     }
 	
@@ -61,8 +51,8 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public void driveLR(double left, double right) {
-		leftMotor1.set(left);
-		rightMotor1.set(right);
+		motorL.set(left);
+		motorR.set(right);
 	}
 	
 	public void zeroGyro() {
@@ -85,13 +75,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		kP = constant;
 	}
 	
-	public void drivePID(double throttle, double wheel) {
-		double error = wheel - getGyroRate() * GYRO_CONSTANT;
-		double adjust = kP * error;
-		driveTW(throttle, wheel - adjust);
-	}
-	
-	public void driveStraightPID(double throttle, double targetAngle, double hValue) {
+	public void drivePID(double x, double y, double rot) {
 		if(Robot.oi.isResetGyroButton()) {
 			gyro.reset();
 			offset = 0;
@@ -99,26 +83,20 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		
 		if(Robot.oi.isFieldCentric()) {
 			double theta = Math.toRadians(Robot.dt.offset);
-			double temp = throttle * Math.cos(theta) + hValue*Math.sin(theta);
-			hValue = -throttle * Math.sin(theta) + hValue * Math.cos(theta);
-			throttle = temp;
+			double temp = x * Math.cos(theta) + y * Math.sin(theta);
+			y = -x * Math.sin(theta) + y * Math.cos(theta);
+			x = temp;
 		}
 		
 		if(Robot.oi.isHoldHeading()) {
-			
-//			targetAngle = this.getTargetAngle() - (0.08*targetAngle);
-//			System.out.println(targetAngle);
 			driveStraightPID.setTarget(0);
-			driveTW(throttle, -driveStraightPID.getAdjust((getGyroAngle() - getGyroRate()/50.0)*GYRO_CONSTANT));
+			driveLCR(getOutput(0, y, -driveStraightPID.getAdjust(getGyroAngle()*GYRO_CONSTANT)));
 		}else{
 			offset += gyro.getAngle();
 			offset = offset % 360.0;
 			gyro.reset();
-			driveTW(throttle, targetAngle);
+			driveLCR(getOutput(x, y, rot));
 		}
-		motorC.set(hValue);
-		
-		
 	}
 	
 	public void quickTurn(double targetAngle) {
@@ -127,11 +105,15 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	public double getMotorLeftSpeed() {
-		return leftMotor1.get();
+		return motorL.get();
 	}
 	
 	public double getMotorRightSpeed() {
-		return rightMotor1.get();
+		return motorR.get();
+	}
+	
+	public double getMotorCenterSpeed() {
+		return motorC.get();
 	}
 
 	public double getUltrasonicDistance() {
@@ -143,41 +125,41 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	}
 	
 	 public double[] getOutput(double x, double y, double rot) {
-	    	int wheels = 3;
-	    	double spinScale = 0.5;
-	    	double angles[] = {0, 1.507, 3.14};
-	    	double maxOutput = 1.0;
-	    	
-	    	// left, center, right
-	    	double outputs[] = {0, 0, 0};
-	    	
-	    	double maxValue = 0.0;
-	    	// Compute the array of inputs
-	    	for(int i = 0; i < wheels; i++){
-	    		outputs[i] = -(x)*Math.sin(angles[i])+y*Math.cos(angles[i])+(-spinScale*rot);
-	    		if(Math.abs(outputs[i]) > maxValue) {
-	    			maxValue = Math.abs(outputs[i]);
-	    		}
-	    	}
-	    	// If we've given any output a value greater than max
-	    	// then scale it down.
-	    	if(maxValue > maxOutput) {
-	    		double scale = maxOutput/maxValue;
-	    		for(int i = 0; i < wheels; i++) {
-	    			outputs[i] = outputs[i] * scale;
-	    		}
-	    	}
-	    	
-	    	return outputs;
-	    }
+    	int wheels = 3;
+    	double spinScale = 0.5;
+    	double angles[] = {0, 1.507, 3.14};
+    	double maxOutput = 1.0;
+    	
+    	// left, center, right
+    	double outputs[] = {0, 0, 0};
+    	
+    	double maxValue = 0.0;
+    	// Compute the array of inputs
+    	for(int i = 0; i < wheels; i++){
+    		outputs[i] = -(x)*Math.sin(angles[i])+y*Math.cos(angles[i])+(-spinScale*rot);
+    		if(Math.abs(outputs[i]) > maxValue) {
+    			maxValue = Math.abs(outputs[i]);
+    		}
+    	}
+    	// If we've given any output a value greater than max
+    	// then scale it down.
+    	if(maxValue > maxOutput) {
+    		double scale = maxOutput/maxValue;
+    		for(int i = 0; i < wheels; i++) {
+    			outputs[i] = outputs[i] * scale;
+    		}
+    	}
+    	
+    	return outputs;
+    }
 	    
-	    public void driveLCR(double[] outputSpeeds) {
-	    	leftMotor1.set(outputSpeeds[0]);
-	    	motorC.set(outputSpeeds[1]);
-	    	rightMotor1.set(outputSpeeds[2]);
-	    }
-	    
-	    public double getTargetAngle() {
-	    	return driveStraightPID.getTarget();
-	    }
+    public void driveLCR(double[] outputSpeeds) {
+    	motorL.set(outputSpeeds[0]);
+    	motorC.set(outputSpeeds[1]);
+    	motorR.set(outputSpeeds[2]);
+    }
+    
+    public double getTargetAngle() {
+    	return driveStraightPID.getTarget();
+    }
 }

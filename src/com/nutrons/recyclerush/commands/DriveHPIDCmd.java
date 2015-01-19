@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveHPIDCmd extends Command {
-
-	double throttle = 0;
-	double wheel = 0;
 	
     public DriveHPIDCmd() {
     	requires(Robot.dt);
@@ -24,8 +21,7 @@ public class DriveHPIDCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
-    	Robot.dt.driveStraightPID(-Robot.oi.getDriveThrottle(), Robot.oi.getDriveWheel(), Robot.oi.getJoystickX());
+    	Robot.dt.drivePID(-Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -35,10 +31,12 @@ public class DriveHPIDCmd extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.dt.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

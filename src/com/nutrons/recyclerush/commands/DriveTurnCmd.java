@@ -27,7 +27,7 @@ public class DriveTurnCmd extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(Robot.oi.getPOVDirection() != -1) {
-    		targetAngle = (Robot.oi.getPOVDirection()/10.0) + Robot.dt.getGyroAngle();
+    		targetAngle = Robot.oi.getPOVDirection();
     		spin = true;
     	}
     	if(spin) {

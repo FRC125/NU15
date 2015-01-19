@@ -6,6 +6,7 @@ import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveHPIDCmd;
+import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Talon;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class TestDriveTrain extends AbstractDriveTrain {
 	
 	// Constants
-	public double kP = 7.5;
+	public double kP = 0.0;
 	public double kI = 0.0;
 	public double kD = 0.0;
 	public double GYRO_CONSTANT = 1.0/350.0;
@@ -39,7 +40,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 	public PIDControl driveStraightPID = new PIDControl(7.5, 0, 0);
 	
 	public void initDefaultCommand() {
-    	setDefaultCommand(new DriveHPIDCmd());
+    	setDefaultCommand(new DriveTurnCmd());
     }
 	
 	public void stop() {
@@ -91,7 +92,7 @@ public class TestDriveTrain extends AbstractDriveTrain {
 		if(Robot.oi.isHoldHeading()) {
 			driveStraightPID.setTarget(0);
 			driveLCR(getOutput(0, y, -driveStraightPID.getAdjust(getGyroAngle()*GYRO_CONSTANT)));
-		}else{
+		} else {
 			offset += gyro.getAngle();
 			offset = offset % 360.0;
 			gyro.reset();

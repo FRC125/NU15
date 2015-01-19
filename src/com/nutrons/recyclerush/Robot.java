@@ -79,9 +79,8 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        Robot.dt.setConstant(SmartDashboard.getNumber("Constant"));
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        Robot.dt.driveStraightPID.updateValues();
+        Robot.dt.quickTurnPID.updateValues();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
@@ -90,9 +89,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
-    	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
     	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
     	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
+    	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     }
     
     /**

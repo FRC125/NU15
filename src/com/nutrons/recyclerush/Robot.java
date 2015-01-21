@@ -1,15 +1,13 @@
 
 package com.nutrons.recyclerush;
 
+import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.nutrons.recyclerush.subsystems.drivetrain.AbstractDriveTrain;
-import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,7 +19,13 @@ import com.nutrons.recyclerush.subsystems.drivetrain.TestDriveTrain;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static TestDriveTrain dt = new TestDriveTrain();
+	
+	/**
+	 *  Subsystems
+	 */
+	public static DriveTrain dt = new DriveTrain();
+	
+	// commands
     Command autonomousCommand;
 
     /**
@@ -30,21 +34,23 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-        SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-		SmartDashboard.putNumber("kP", this.dt.kP);
-		SmartDashboard.putNumber("kI", this.dt.kI);
-		SmartDashboard.putNumber("kD", this.dt.kD);
 		SmartDashboard.putNumber("Error", 0);
 		SmartDashboard.putNumber("Target", 0);
 		SmartDashboard.putNumber("Adjust", 0);
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     }
 	
+    /**
+     * This method is run when the robot is in disabled mode.
+     */
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	/**
+	 * This method is run when the robot enters autonomous mode.
+	 */
     public void autonomousInit() {
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -57,11 +63,10 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    /**
+     * This method is called when the robot enters teleoperated mode.
+     */
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.dt.zeroGyro();
     }
@@ -81,7 +86,6 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         Robot.dt.quickTurnPID.updateValues();
-        SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());

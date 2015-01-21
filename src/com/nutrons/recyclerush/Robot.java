@@ -41,9 +41,9 @@ public class Robot extends IterativeRobot {
 		HashMap<String, Integer> ports = totalCurrentLogger.getAllPorts();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-		SmartDashboard.putNumber("kP", 0);
-		SmartDashboard.putNumber("kI", 0);
-		SmartDashboard.putNumber("kD", 0);
+		SmartDashboard.putNumber("kP", this.dt.kP);
+		SmartDashboard.putNumber("kI", this.dt.kI);
+		SmartDashboard.putNumber("kD", this.dt.kD);
 		SmartDashboard.putNumber("Error", 0);
 		SmartDashboard.putNumber("Target", 0);
 		SmartDashboard.putNumber("Adjust", 0);
@@ -87,17 +87,20 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        Robot.dt.setConstant(SmartDashboard.getNumber("Constant"));
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        Robot.dt.driveStraightPID.updateValues();
+        Robot.dt.quickTurnPID.updateValues();
         SmartDashboard.putNumber("Constant", Robot.dt.kP);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
+        SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
         SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     	SmartDashboard.putBoolean("", !Robot.dt.inDanger(10));
+    	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
+    	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
+    	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
     }
     

@@ -49,5 +49,8 @@ public class PIDControl {
 		SmartDashboard.putNumber("Target", target);
 		SmartDashboard.putNumber("Adjust", adjust);
 	}
-
+	
+	public double getTarget() {
+		return this.target;
+	}
 }

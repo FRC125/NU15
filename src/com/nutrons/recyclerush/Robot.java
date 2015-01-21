@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static TestDriveTrain dt = new TestDriveTrain();
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
+	public static DataLogger leftMotorCurrentLogger = new DataLogger("Left Motor Current", 100);
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static Timer timer = new Timer();
     Command autonomousCommand;
@@ -102,6 +103,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
     	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
+		leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     }
     
     /**

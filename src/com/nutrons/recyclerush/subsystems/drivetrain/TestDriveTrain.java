@@ -131,8 +131,8 @@ public class TestDriveTrain extends AbstractDriveTrain implements ILoggable {
 	public HashMap<String, Integer> getLogInfo() {
 		HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
 		
-		hashmap.put("motorL", RobotMap.DRIVE_CENTER);
-		hashmap.put("motorC", RobotMap.DRIVE_LEFT);
+		hashmap.put("motorL", RobotMap.DRIVE_LEFT);
+		hashmap.put("motorC", RobotMap.DRIVE_CENTER);
 		hashmap.put("motorR", RobotMap.DRIVE_RIGHT);
 		
 		return hashmap;

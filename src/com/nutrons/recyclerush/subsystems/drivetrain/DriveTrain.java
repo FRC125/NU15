@@ -1,5 +1,8 @@
 package com.nutrons.recyclerush.subsystems.drivetrain;
 
+import java.util.HashMap;
+
+import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.PIDControl;
 import com.nutrons.lib.Ultrasonic;
@@ -16,7 +19,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author John, Michael
  *
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// Constants
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
@@ -227,4 +230,17 @@ public class DriveTrain extends Subsystem {
     public double getTargetAngle(){
     	return holdHeadingPID.getTarget();
     }
+    
+    /**
+     * @return HashMap of all motors and their respective ports
+     */
+    public HashMap<String, Integer> getLogInfo() {
+    	HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
+   		
+   		hashmap.put("motorL", RobotMap.DRIVE_CENTER);
+   		hashmap.put("motorC", RobotMap.DRIVE_LEFT);
+   		hashmap.put("motorR", RobotMap.DRIVE_RIGHT);
+    			
+   		return hashmap;
+   	}
 }

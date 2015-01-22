@@ -1,9 +1,12 @@
 
 package com.nutrons.recyclerush;
 
+import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -24,6 +27,12 @@ public class Robot extends IterativeRobot {
 	 *  Subsystems
 	 */
 	public static DriveTrain dt = new DriveTrain();
+	
+	//logging objects
+	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
+	public static DataLogger leftMotorCurrentLogger = new DataLogger("Left Motor Current", 100);
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+	public static Timer timer = new Timer();
 	
 	// commands
     Command autonomousCommand;
@@ -96,6 +105,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
     	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
     	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
+    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
+    	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     }
     
     /**

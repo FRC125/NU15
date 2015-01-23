@@ -11,6 +11,9 @@ import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -24,11 +27,35 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	// Constants
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
 	public double offset = 0;
+	private double kP = 7.5;
+	private double kI = 0;
+	private double kD = 0;
 	
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
 	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
+	
+	//Inner Classes
+	class HoldHeadingPID implements PIDOutput
+	{
+
+		@Override
+		public void pidWrite(double output) {
+			// TODO Auto-generated method stub
+			driveLR(motorL.get() + output, motorR.get() - output);
+		}
+		
+	}
+	
+	class GyroWrapper implements PIDSource {
+
+		@Override
+		public double pidGet() {
+			// TODO Auto-generated method stub
+			return gyro.getAngle() * GYRO_CONSTANT;
+		}
+	}
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
@@ -40,9 +67,14 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// PIDs
 	public PIDControl quickTurnPID = new PIDControl(2.5, 0, 0);
-	public PIDControl holdHeadingPID = new PIDControl(7.5, 0, 0);
+	
+
+	private HoldHeadingPID headingAdjuster = new HoldHeadingPID();
+	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), headingAdjuster);
+	
 	
 	public void initDefaultCommand() {
+		
     	setDefaultCommand(new DriveTurnCmd());
     }
 	
@@ -140,13 +172,13 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		 * prevents rotation.
 		 * makes the robot turn the other cheek
 		 */
-		if(Robot.oi.isHoldHeading())
-		{
-			holdHeadingPID.setTarget(0);
-			driveLCR(getMotorOutput(x, y, -holdHeadingPID.getAdjust(getGyroAngle()*GYRO_CONSTANT)));// can't translate left or right
+		if(Robot.oi.isHoldHeading()) {	
+			headingHoldPID.enable();
+			headingHoldPID.setSetpoint(0);
+			driveLCR(new double[] {x, y, x});
 		}
-		else
-		{
+		else {
+			headingHoldPID.disable();
 			offset += gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
 			gyro.reset();//sets gyro to 0
@@ -158,8 +190,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * turn robot to specific angle relative to position at start of game
 	 * @param targetAngle
 	 */
-	public void quickTurn(double targetAngle) 
-	{
+	public void quickTurn(double targetAngle) {
 		quickTurnPID.setTarget(targetAngle * GYRO_CONSTANT);
 		driveTW(0, -quickTurnPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
 	}

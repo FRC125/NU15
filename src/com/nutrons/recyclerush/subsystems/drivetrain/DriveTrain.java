@@ -8,6 +8,7 @@ import com.nutrons.lib.PIDControl;
 import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
+import com.nutrons.recyclerush.commands.DriveHPIDCmd;
 import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
@@ -27,7 +28,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	// Constants
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
 	public double offset = 0;
-	private double kP = 7.5;
+	private double kP = 20;
 	private double kI = 0;
 	private double kD = 0;
 	
@@ -43,7 +44,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		@Override
 		public void pidWrite(double output) {
 			// TODO Auto-generated method stub
-			driveLR(motorL.get() + output, motorR.get() - output);
+			driveLR(motorL.get() + output, motorR.get() + output);
 		}
 		
 	}
@@ -74,8 +75,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	
 	public void initDefaultCommand() {
+		headingHoldPID.setContinuous();
 		
-    	setDefaultCommand(new DriveTurnCmd());
+    	setDefaultCommand(new DriveHPIDCmd());
     }
 	
 	/**
@@ -175,7 +177,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		if(Robot.oi.isHoldHeading()) {	
 			headingHoldPID.enable();
 			headingHoldPID.setSetpoint(0);
-			driveLCR(new double[] {x, y, x});
+			driveLCR(getMotorOutput(x, y, 0.0));
 		}
 		else {
 			headingHoldPID.disable();
@@ -259,7 +261,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
      * @return angle you want to hold
      */
     public double getTargetAngle(){
-    	return holdHeadingPID.getTarget();
+    	return headingHoldPID.getSetpoint();
     }
     
     /**

@@ -39,15 +39,15 @@ public class PIDControl {
 	}
 	
 	public void updateValues() {
-		kP = SmartDashboard.getNumber("kP");
-		kI = SmartDashboard.getNumber("kI");
-		kD = SmartDashboard.getNumber("kD");
-		SmartDashboard.putNumber("kP", kP);
-		SmartDashboard.putNumber("kI", kI);
-		SmartDashboard.putNumber("kD", kD);
-		SmartDashboard.putNumber("Error", error);
-		SmartDashboard.putNumber("Target", target);
-		SmartDashboard.putNumber("Adjust", adjust);
+//		kP = SmartDashboard.getNumber("kP");
+//		kI = SmartDashboard.getNumber("kI");
+//		kD = SmartDashboard.getNumber("kD");
+//		SmartDashboard.putNumber("kP", kP);
+//		SmartDashboard.putNumber("kI", kI);
+//		SmartDashboard.putNumber("kD", kD);
+//		SmartDashboard.putNumber("Error", error);
+//		SmartDashboard.putNumber("Target", target);
+//		SmartDashboard.putNumber("Adjust", adjust);
 	}
 	
 	public double getTarget() {

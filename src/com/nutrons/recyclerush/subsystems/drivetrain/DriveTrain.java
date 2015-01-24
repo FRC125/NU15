@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
-import com.nutrons.lib.PIDControl;
 import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
@@ -17,6 +16,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * 
@@ -28,9 +28,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	// Constants
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
 	public double offset = 0;
-	private double kP = 20;
-	private double kI = 0;
-	private double kD = 0;
+	public double kP = 20;
+	public double kI = 0;
+	public double kD = 0;
 	
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
@@ -49,6 +49,15 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		
 	}
 	
+	class QuickTurnOutput implements PIDOutput {
+
+		@Override
+		public void pidWrite(double output) {
+			// TODO Auto-generated method stub
+			driveLR(output, output);
+		}
+		
+	}
 	class GyroWrapper implements PIDSource {
 
 		@Override
@@ -67,16 +76,18 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	// PIDs
-	public PIDControl quickTurnPID = new PIDControl(2.5, 0, 0);
+	
 	
 
 	private HoldHeadingPID headingAdjuster = new HoldHeadingPID();
 	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), headingAdjuster);
-	
+	public PIDController quickTurnPID = new PIDController(kP, kI, kD, this.gyro, new QuickTurnOutput());
 	
 	public void initDefaultCommand() {
 		headingHoldPID.setContinuous();
-		
+		headingHoldPID.setAbsoluteTolerance(1.0/360.0);
+		quickTurnPID.setContinuous();
+		quickTurnPID.disable();
     	setDefaultCommand(new DriveHPIDCmd());
     }
 	
@@ -193,8 +204,8 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @param targetAngle
 	 */
 	public void quickTurn(double targetAngle) {
-		quickTurnPID.setTarget(targetAngle * GYRO_CONSTANT);
-		driveTW(0, -quickTurnPID.getAdjust(getGyroAngle() * GYRO_CONSTANT));
+		quickTurnPID.enable();
+		quickTurnPID.setSetpoint(targetAngle);
 	}
 	
 	public double getMotorLeftSpeed() {

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveTurnCmd extends Command {
 
-	double epsilon = 0.5;
+	double epsilon = 10.0;
 	double targetAngle = Robot.dt.getGyroAngle();
 	boolean spin = false;
 	MovingAverage errors = new MovingAverage(10);
@@ -46,6 +46,7 @@ public class DriveTurnCmd extends Command {
     	Robot.dt.stop();
     	targetAngle = Robot.dt.getGyroAngle();
     	spin = false;
+    	Robot.dt.quickTurnPID.disable();
     }
 
     // Called when another command which requires one or more of the same

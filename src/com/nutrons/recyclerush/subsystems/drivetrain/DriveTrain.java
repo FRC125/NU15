@@ -31,7 +31,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP = 20;
 	public double kI = 0;
 	public double kD = 0;
-	
+	public double kP_quickturn = 0;
+	public double kI_quickturn = 0;
+	public double kD_quickturn = 0;
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
@@ -81,7 +83,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 
 	private HoldHeadingPID headingAdjuster = new HoldHeadingPID();
 	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), headingAdjuster);
-	public PIDController quickTurnPID = new PIDController(kP, kI, kD, this.gyro, new QuickTurnOutput());
+	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, this.gyro, new QuickTurnOutput());
 	
 	public void initDefaultCommand() {
 		headingHoldPID.setContinuous();

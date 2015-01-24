@@ -97,8 +97,10 @@ public class Robot extends IterativeRobot {
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         //Robot.dt.quickTurnPID.updateValues();
         Robot.dt.kP = SmartDashboard.getNumber("dt_kP");
+        Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP");
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
         SmartDashboard.putNumber("dt_kP", Robot.dt.kP);
+        SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());

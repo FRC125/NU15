@@ -3,6 +3,7 @@ package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
+import com.nutrons.recyclerush.subsystems.intake.Intake;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot {
 	 *  Subsystems
 	 */
 	public static DriveTrain dt = new DriveTrain();
+	public static Intake intake = new Intake();
 	
 	//logging objects
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);

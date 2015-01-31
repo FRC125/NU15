@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * 
- * @author John, Michael
+ * @author John Zhang, Michael
  *
  */
 public class DriveTrain extends Subsystem implements ILoggable{
@@ -78,11 +78,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	// PIDs
-	
-	
-
-	private HoldHeadingPID headingAdjuster = new HoldHeadingPID();
-	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), headingAdjuster);
+	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), new HoldHeadingPID());
 	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, this.gyro, new QuickTurnOutput());
 	
 	public void initDefaultCommand() {

@@ -95,7 +95,6 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        //Robot.dt.quickTurnPID.updateValues();
         Robot.dt.kP = SmartDashboard.getNumber("dt_kP");
         Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP");
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());

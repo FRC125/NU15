@@ -29,7 +29,7 @@ public class OI {
 	}
 
 	/**
-	 * Gets value on the x axis joystick (throtle)
+	 * Gets value on the x axis joystick (throttle)
 	 * @return x axis value
 	 */
 	public double getJoystickX() {

@@ -15,6 +15,11 @@ public class RobotMap {
 	public static final int DRIVE_CENTER = 1;
 	public static final int DRIVE_RIGHT = 2;
 	public static final int DRIVE_RIGHT_2 = 3;
+	public static final int ELEVATOR_1 = 4;
+	public static final int ELEVAOTR_2 = 5;
+	
+	// Digital Input
+	public static final int ELEVATOR_MAX_BUTTON = 0;
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;

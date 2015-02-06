@@ -6,6 +6,7 @@ import com.nutrons.recyclerush.commands.VisionCmd;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
+import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.image.RGBImage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
@@ -16,6 +17,7 @@ public class Camera extends Subsystem {
 
     RGBImage frame;
     AxisCamera camera;
+    ParticleAnalysisReport report;
 	
     // Constants.
     private final int camBrightness = 10;
@@ -41,9 +43,11 @@ public class Camera extends Subsystem {
 	public void getFeed() {
 		if(camera.isFreshImage()) {
 			try{
+				frame = new RGBImage();
 				camera.getImage(frame);
 				BinaryImage image = frame.thresholdRGB(0, 40, 25, 255, 0, 40);
-				image.write("/tmp/frame.png");
+				report = image.getParticleAnalysisReport(1);
+				SmartDashboard.putNumber("Area of Pixels: ", report.particleArea);
 			}catch(Exception ex) {
 				ex.printStackTrace(System.out);
 			}

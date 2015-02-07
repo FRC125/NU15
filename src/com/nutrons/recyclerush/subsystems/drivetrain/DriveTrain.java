@@ -181,7 +181,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			
 			double theta = Math.toRadians(Robot.dt.offset); //converts offset to radians
 			double temp = x * Math.cos(theta) + y * Math.sin(theta);// we need to use the initial x value.		
-			y = -x * Math.sin(theta) + y * Math.cos(theta); 
+			y = -(x * Math.sin(theta) - y * Math.cos(theta)); 
 			x = temp;
 		}
 		/*
@@ -196,7 +196,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		}
 		else {
 			headingHoldPID.disable();
-			offset += gyro.getAngle();
+			offset -= gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
 			gyro.reset();//sets gyro to 0
 			driveLCR(getMotorOutput(x, y, rot));

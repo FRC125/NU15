@@ -2,6 +2,7 @@ package com.nutrons.recyclerush.subsystems.elevator;
 
 import com.nutrons.lib.DebouncedBoolean;
 import com.nutrons.recyclerush.RobotMap;
+import com.nutrons.recyclerush.commands.elevator.ManualControlElevatorCmd;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
@@ -22,7 +23,7 @@ public class Elevator extends Subsystem {
 	DigitalInput isMaxHeight = new DigitalInput(RobotMap.ELEVATOR_MAX_BUTTON);
 	
     public void initDefaultCommand() {
-    	
+    	setDefaultCommand(new ManualControlElevatorCmd());
     }
     
     public boolean isAtMaxHeight() {

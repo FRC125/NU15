@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
+	private final Joystick operatorPad = new Joystick(RobotMap.OPERATOR_PAD);
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
@@ -74,6 +75,10 @@ public class OI {
 	 */
 	public boolean isResetGyroButton() {
 		return resetGyroButton.get();
+	}
+	
+	public double getOperatorJoystickY() {
+		return Utils.deadband(operatorPad.getRawAxis(2), 0.1, 0);
 	}
 	
 }

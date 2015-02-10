@@ -28,4 +28,5 @@ public class RobotMap {
 	
 	// User Input
 	public static final int DRIVE_PAD = 0;
+	public static final int OPERATOR_PAD = 1;
 }

@@ -8,7 +8,6 @@ import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.DriveHPIDCmd;
-import com.nutrons.recyclerush.commands.DriveTurnCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
@@ -16,7 +15,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * 
@@ -175,7 +173,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			
 			double theta = Math.toRadians(Robot.dt.offset); //converts offset to radians
 			double temp = x * Math.cos(theta) + y * Math.sin(theta);// we need to use the initial x value.		
-			y = -x * Math.sin(theta) + y * Math.cos(theta); 
+			y = -(x * Math.sin(theta) - y * Math.cos(theta)); 
 			x = temp;
 		}
 		/*
@@ -190,7 +188,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		}
 		else {
 			headingHoldPID.disable();
-			offset += gyro.getAngle();
+			offset -= gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
 			gyro.reset();//sets gyro to 0
 			driveLCR(getMotorOutput(x, y, rot));

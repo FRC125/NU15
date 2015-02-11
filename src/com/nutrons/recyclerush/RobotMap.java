@@ -1,4 +1,6 @@
 package com.nutrons.recyclerush;
+
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -6,12 +8,25 @@ package com.nutrons.recyclerush;
  * floating around.
  */
 public class RobotMap {
-    
-	// PWMS
-	public static final int ELEVATOR_1 = 0;
-	public static final int ELEVATOR_2 = 1;
+
+	// Motors
+	public static final int DRIVE_LEFT = 0;
+	public static final int DRIVE_CENTER = 1;
+	public static final int DRIVE_RIGHT = 2;
+	public static final int DRIVE_RIGHT_2 = 3;
+	public static final int ELEVATOR_MOTOR = 5;
 	
-	// DIGITAL INPUTS
-	public static final int ELEVATOR_DOWN = 0;
-	public static final int ELEVATOR_UP = 1;
+	// Digital Input
+	public static final int ELEVATOR_MAX_BUTTON = 2;
+	public static final int ELEVATOR_MIN_BUTTON = 1;
+	
+	// Analog Input
+	public static final int GYROSCOPE = 0;
+	public static final int ULTRASONIC_AN = 1;
+	public static final int ULTRASONIC_RX = 0;
+	
+	// User Input
+	public static final int DRIVE_PAD = 0;
+	public static final int OPERATOR_PAD = 1;
+	
 }

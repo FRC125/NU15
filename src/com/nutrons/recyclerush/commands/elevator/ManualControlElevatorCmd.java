@@ -1,18 +1,16 @@
-
-package com.nutrons.recyclerush.commands;
-
-import edu.wpi.first.wpilibj.command.Command;
+package com.nutrons.recyclerush.commands.elevator;
 
 import com.nutrons.recyclerush.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ExampleCommand extends Command {
+public class ManualControlElevatorCmd extends Command {
 
-    public ExampleCommand() {
-        // Use requires() here to declare subsystem dependencies
-        requires(Robot.exampleSubsystem);
+    public ManualControlElevatorCmd() {
+        requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time
@@ -21,6 +19,8 @@ public class ExampleCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.elevator.setElevatorPower(Robot.oi.getOperatorJoystickY());
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -30,6 +30,7 @@ public class ExampleCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.elevator.stop();
     }
 
     // Called when another command which requires one or more of the same

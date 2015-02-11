@@ -1,13 +1,17 @@
 
 package com.nutrons.recyclerush;
 
+import com.nutrons.lib.DataLogger;
+import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
+import com.nutrons.recyclerush.subsystems.elevator.Elevator;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
-import com.nutrons.recyclerush.commands.ExampleCommand;
-import com.nutrons.recyclerush.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,9 +22,21 @@ import com.nutrons.recyclerush.subsystems.ExampleSubsystem;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
-
+	
+	/**
+	 *  Subsystems
+	 */
+	public static DriveTrain dt;
+	public static Elevator elevator;
+	
+	//logging objects
+	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
+	public static DataLogger leftMotorCurrentLogger = new DataLogger("Left Motor Current", 100);
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+	public static Timer timer = new Timer();
+	
+	// commands
     Command autonomousCommand;
 
     /**
@@ -29,14 +45,26 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-        // instantiate the command used for the autonomous period
-        autonomousCommand = new ExampleCommand();
+		dt = new DriveTrain();
+		elevator = new Elevator();
+		SmartDashboard.putNumber("dt_kP", 20);
+        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
+		SmartDashboard.putNumber("Error", 0);
+		SmartDashboard.putNumber("Target", 0);
+		SmartDashboard.putNumber("Adjust", 0);
+        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     }
 	
+    /**
+     * This method is run when the robot is in disabled mode.
+     */
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	/**
+	 * This method is run when the robot enters autonomous mode.
+	 */
     public void autonomousInit() {
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -49,12 +77,12 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    /**
+     * This method is called when the robot enters teleoperated mode.
+     */
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        Robot.dt.zeroGyro();
     }
 
     /**
@@ -70,6 +98,26 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
+        Robot.dt.kP = SmartDashboard.getNumber("dt_kP");
+        Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP");
+        SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
+        SmartDashboard.putNumber("dt_kP", Robot.dt.kP);
+        SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);
+        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
+        SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
+        SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
+        SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
+        SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
+        SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
+        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
+    	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
+    	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
+    	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
+    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
+    	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
+    	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
+    	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
     }
     
     /**

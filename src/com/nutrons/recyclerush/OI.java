@@ -1,39 +1,85 @@
 package com.nutrons.recyclerush;
 
-import edu.wpi.first.wpilibj.buttons.Button;
+import com.nutrons.lib.MovingAverage;
+import com.nutrons.lib.Utils;
 
-import com.nutrons.recyclerush.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Joystick;
+
 
 /**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * 
+ * @author Camilo Gonzalez
+ *
  */
 public class OI {
-    //// CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a joystick.
-    // You create one by telling it which joystick it's on and which button
-    // number it is.
-    // Joystick stick = new Joystick(port);
-    // Button button = new JoystickButton(stick, buttonNumber);
     
-    // There are a few additional built in buttons you can use. Additionally,
-    // by subclassing Button you can create custom triggers and bind those to
-    // commands the same as any other Button.
-    
-    //// TRIGGERING COMMANDS WITH BUTTONS
-    // Once you have a button, it's trivial to bind it to a button in one of
-    // three ways:
-    
-    // Start the command when the button is pressed and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenPressed(new ExampleCommand());
-    
-    // Run the command while the button is being held down and interrupt it once
-    // the button is released.
-    // button.whileHeld(new ExampleCommand());
-    
-    // Start the command when the button is released  and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
+	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
+	private final Joystick operatorPad = new Joystick(RobotMap.OPERATOR_PAD);
+	private Button headingButton = new JoystickButton(driverPad, 1);
+	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
+	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	
+	/**
+	 * Gets dPad button
+	 * @return direction of dpad
+	 */
+	public int getPOVDirection() {
+		return driverPad.getPOV();
+	}
+
+	/**
+	 * Gets value on the x axis joystick (throttle)
+	 * @return x axis value
+	 */
+	public double getJoystickX() {
+		return Utils.deadband(-driverPad.getRawAxis(0), 0.1, 0);
+	}
+	
+	/**
+	 * Gets value on the y axis joystick (side to side)
+	 * @return y axis value
+	 */
+	public double getJoystickY() {
+		return Utils.deadband(driverPad.getRawAxis(1), 0.1, 0);
+	}
+	
+	/**
+	 * gets value of x axis joystick (rotate)
+	 * @return x axis value
+	 */
+	public double getJoystickSpin() {
+		return Utils.deadband(driverPad.getRawAxis(4), 0.05, 0);
+	}
+	
+	/**
+	 * Gets state on button for heading
+	 * @return is heading pressed
+	 */
+	public boolean isHoldHeading() {
+		return headingButton.get();
+	}
+	
+	/**
+	 * Gets state of fieldcentric button 
+	 * @return is filedCentric pressed
+	 */
+	public boolean isFieldCentric() {
+		return fieldCentricButton.get();
+	}
+	
+	/**
+	 * Gets state of button for zeroing the gyro
+	 * @return is resetGyro pressed
+	 */
+	public boolean isResetGyroButton() {
+		return resetGyroButton.get();
+	}
+	
+	public double getOperatorJoystickY() {
+		return Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
+	}
+	
 }
 

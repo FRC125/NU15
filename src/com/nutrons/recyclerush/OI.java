@@ -41,7 +41,7 @@ public class OI {
 	 * @return y axis value
 	 */
 	public double getJoystickY() {
-		return Utils.deadband(driverPad.getRawAxis(1), 0.1, 0);
+		return Utils.deadband(-driverPad.getRawAxis(1), 0.1, 0);
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class OI {
 	 * @return x axis value
 	 */
 	public double getJoystickSpin() {
-		return Utils.deadband(driverPad.getRawAxis(4), 0.05, 0);
+		return Utils.deadband(-driverPad.getRawAxis(4), 0.05, 0);
 	}
 	
 	/**

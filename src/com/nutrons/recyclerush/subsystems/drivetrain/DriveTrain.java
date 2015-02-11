@@ -35,9 +35,11 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0;
 	// Motors
-	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
+	Talon motorL1 = new Talon(RobotMap.DRIVE_LEFT_1);
+	Talon motorL2 = new Talon(RobotMap.DRIVE_LEFT_2);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
-	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
+	Talon motorR1 = new Talon(RobotMap.DRIVE_RIGHT_1);
+	Talon motorR2 = new Talon(RobotMap.DRIVE_RIGHT_2);
 	
 	//Inner Classes
 	class HoldHeadingPID implements PIDOutput
@@ -46,7 +48,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		@Override
 		public void pidWrite(double output) {
 			// TODO Auto-generated method stub
-			driveLR(motorL.get() + output, motorR.get() + output);
+			driveLR(motorL1.get() + output, motorR1.get() + output);
 		}
 		
 	}
@@ -94,9 +96,11 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @param motorSpeeds
 	 */
     public void driveLCR(double[] motorSpeeds) {
-    	motorL.set(motorSpeeds[0]);
+    	motorL1.set(motorSpeeds[0]);
+    	motorL2.set(motorSpeeds[0]);
     	motorC.set(motorSpeeds[1]);
-    	motorR.set(motorSpeeds[2]);
+    	motorR1.set(motorSpeeds[2]);
+    	motorR2.set(motorSpeeds[2]);
     }
 	
 	/**
@@ -122,8 +126,10 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @param right
 	 */
 	public void driveLR(double left, double right) {
-		motorL.set(left);
-		motorR.set(right);
+		motorL1.set(left);
+		motorL2.set(left);
+		motorR1.set(right);
+		motorR2.set(right);
 	}
 	
 	/**
@@ -175,7 +181,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			
 			double theta = Math.toRadians(Robot.dt.offset); //converts offset to radians
 			double temp = x * Math.cos(theta) + y * Math.sin(theta);// we need to use the initial x value.		
-			y = -x * Math.sin(theta) + y * Math.cos(theta); 
+			y = -(x * Math.sin(theta) - y * Math.cos(theta)); 
 			x = temp;
 		}
 		/*
@@ -190,7 +196,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		}
 		else {
 			headingHoldPID.disable();
-			offset += gyro.getAngle();
+			offset -= gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
 			gyro.reset();//sets gyro to 0
 			driveLCR(getMotorOutput(x, y, rot));
@@ -207,11 +213,11 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	}
 	
 	public double getMotorLeftSpeed() {
-		return motorL.get();
+		return motorL1.get();
 	}
 	
 	public double getMotorRightSpeed() {
-		return motorR.get();
+		return motorR1.get();
 	}
 	
 	public double getMotorCenterSpeed() {
@@ -280,8 +286,8 @@ public class DriveTrain extends Subsystem implements ILoggable{
     	HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
    		
    		hashmap.put("motorL", RobotMap.DRIVE_CENTER);
-   		hashmap.put("motorC", RobotMap.DRIVE_LEFT);
-   		hashmap.put("motorR", RobotMap.DRIVE_RIGHT);
+   		hashmap.put("motorC", RobotMap.DRIVE_LEFT_1);
+   		hashmap.put("motorR", RobotMap.DRIVE_RIGHT_1);
     			
    		return hashmap;
    	}

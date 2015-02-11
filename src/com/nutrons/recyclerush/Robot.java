@@ -27,8 +27,8 @@ public class Robot extends IterativeRobot {
 	/**
 	 *  Subsystems
 	 */
-	public static DriveTrain dt = new DriveTrain();
-	public static Elevator elevator = new Elevator();
+	public static DriveTrain dt;
+	public static Elevator elevator;
 	
 	//logging objects
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
@@ -45,6 +45,8 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		dt = new DriveTrain();
+		elevator = new Elevator();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("Error", 0);
@@ -114,6 +116,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
     	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
+    	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
+    	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
     }
     
     /**

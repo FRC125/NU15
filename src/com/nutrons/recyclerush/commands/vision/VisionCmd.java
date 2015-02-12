@@ -1,18 +1,16 @@
-package com.nutrons.recyclerush.commands;
+package com.nutrons.recyclerush.commands.vision;
 
 import com.nutrons.recyclerush.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 
- * @author Camilo Gonzalez
  *
  */
-public class DriveHPIDCmd extends Command {
-	
-    public DriveHPIDCmd() {
-    	requires(Robot.dt);
+public class VisionCmd extends Command {
+
+    public VisionCmd() {
+        requires(Robot.camera);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +19,7 @@ public class DriveHPIDCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.dt.drivePID(-Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
+    	Robot.camera.getFeed();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,12 +29,10 @@ public class DriveHPIDCmd extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.dt.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

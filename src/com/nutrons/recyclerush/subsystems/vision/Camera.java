@@ -1,14 +1,10 @@
 package com.nutrons.recyclerush.subsystems.vision;
 
-import com.ni.vision.NIVision.ParticleFilterCriteria2;
-import com.nutrons.recyclerush.commands.VisionCmd;
+import com.nutrons.recyclerush.commands.vision.VisionCmd;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
-import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 import edu.wpi.first.wpilibj.vision.AxisCamera.ExposureControl;
 import edu.wpi.first.wpilibj.vision.AxisCamera.WhiteBalance;

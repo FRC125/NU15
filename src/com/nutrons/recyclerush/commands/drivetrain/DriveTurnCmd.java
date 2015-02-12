@@ -1,4 +1,4 @@
-package com.nutrons.recyclerush.commands;
+package com.nutrons.recyclerush.commands.drivetrain;
 
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.recyclerush.Robot;

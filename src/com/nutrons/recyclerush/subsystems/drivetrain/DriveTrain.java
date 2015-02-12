@@ -7,7 +7,7 @@ import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
-import com.nutrons.recyclerush.commands.DriveHPIDCmd;
+import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;

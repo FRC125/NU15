@@ -20,6 +20,7 @@ public class RobotMap {
 	// Digital Input
 	public static final int ELEVATOR_MAX_BUTTON = 2;
 	public static final int ELEVATOR_MIN_BUTTON = 1;
+	public static final int STACKABLE_BUTTON = 3;
 	
 	// Pneumatics
 	public static final int LEFT_INTAKE_WHEEL_PISTON = 0;

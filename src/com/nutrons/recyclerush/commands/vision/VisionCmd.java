@@ -5,7 +5,7 @@ import com.nutrons.recyclerush.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * @author John Zhang
  */
 public class VisionCmd extends Command {
 

@@ -5,6 +5,7 @@ import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.elevator.ManualControlElevatorCmd;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,7 +19,7 @@ public class Elevator extends Subsystem {
 	DebouncedBoolean maxHeightPos = new DebouncedBoolean(5);
 	DebouncedBoolean minHeightPos = new DebouncedBoolean(5);
 	
-	Talon elevatorMotor1 = new Talon(RobotMap.ELEVATOR_MOTOR);
+	SpeedController elevatorMotor1 = new Talon(RobotMap.ELEVATOR_MOTOR);
 	
 	DigitalInput isMaxHeight = new DigitalInput(RobotMap.ELEVATOR_MAX_BUTTON);
 	DigitalInput isMinHeight = new DigitalInput(RobotMap.ELEVATOR_MIN_BUTTON);
@@ -55,13 +56,6 @@ public class Elevator extends Subsystem {
     			motorVal = 0;
     		}
     	}
-    	
-    	/**
-    	if(isAtMaxHeight() || isAtMinHeight()) {
-    		
-    		pow = 0;
-    	}
-    	**/
     	elevatorMotor1.set(motorVal);
     }
     

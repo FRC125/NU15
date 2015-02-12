@@ -5,14 +5,12 @@ import com.nutrons.recyclerush.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 
- * @author Camilo Gonzalez
- *
+ * @author John Zhang
  */
-public class FireWheelsCmd extends Command {
+public class StopWintakeWheelsCmd extends Command {
 
-    public FireWheelsCmd() {
-    	requires(Robot.intake);
+    public StopWintakeWheelsCmd() {
+        requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -21,13 +19,12 @@ public class FireWheelsCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.openLeftIntakeWheel();
-    	Robot.intake.openRightIntakeWheel();
+    	Robot.intake.stopWintakeMotor();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

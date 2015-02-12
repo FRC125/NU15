@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * @author John Zhang
  */
-public class IntakeCloseCmd extends Command {
+public class IntakeOpenCmd extends Command {
 
-    public IntakeCloseCmd() {
+    public IntakeOpenCmd() {
         requires(Robot.intake);
     }
 
@@ -19,8 +19,8 @@ public class IntakeCloseCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.closeLeftIntakeWheel();
-    	Robot.intake.closeRightIntakeWheel();
+    	Robot.intake.openLeftIntakeWheel();
+    	Robot.intake.openRightIntakeWheel();
     }
 
     // Make this return true when this Command no longer needs to run execute()

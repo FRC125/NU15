@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * @author John Zhang
  */
-public class IntakeCloseCmd extends Command {
+public class SpinWintakeWheelsCmd extends Command {
 
-    public IntakeCloseCmd() {
+	private double wheelSpeed = 0.5;
+	
+    public SpinWintakeWheelsCmd() {
         requires(Robot.intake);
     }
 
@@ -19,8 +21,7 @@ public class IntakeCloseCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.closeLeftIntakeWheel();
-    	Robot.intake.closeRightIntakeWheel();
+    	Robot.intake.setWintakeMotorPower(wheelSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

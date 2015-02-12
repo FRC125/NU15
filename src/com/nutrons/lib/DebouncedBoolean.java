@@ -12,7 +12,7 @@ public class DebouncedBoolean {
     private int count;
 
     public DebouncedBoolean(int length) {
-    	this.length = length;
+        this.length = length;
         count = 0;
     }
 

@@ -3,7 +3,9 @@ package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
+import com.nutrons.recyclerush.subsystems.elevator.Elevator;
 import com.nutrons.recyclerush.subsystems.intake.Intake;
+import com.nutrons.recyclerush.subsystems.vision.Camera;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -23,12 +25,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	
 	/**
 	 *  Subsystems
 	 */
-	public static DriveTrain dt = new DriveTrain();
-	public static Intake intake = new Intake();
+	public static DriveTrain dt;
+	public static Elevator elevator;
+	public static Camera camera;
+	public static Intake intake;
 	
 	//logging objects
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
@@ -45,6 +48,10 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		dt = new DriveTrain();
+		camera = new Camera();
+		elevator = new Elevator();
+		intake = new Intake();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("Error", 0);
@@ -97,7 +104,6 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        //Robot.dt.quickTurnPID.updateValues();
         Robot.dt.kP = SmartDashboard.getNumber("dt_kP");
         Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP");
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
@@ -115,6 +121,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
     	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
+    	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
+    	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
     }
     
     /**

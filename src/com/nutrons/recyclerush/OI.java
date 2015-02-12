@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
+	private final Joystick operatorPad = new Joystick(RobotMap.OPERATOR_PAD);
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
@@ -29,7 +30,7 @@ public class OI {
 	}
 
 	/**
-	 * Gets value on the x axis joystick (throtle)
+	 * Gets value on the x axis joystick (throttle)
 	 * @return x axis value
 	 */
 	public double getJoystickX() {
@@ -41,7 +42,7 @@ public class OI {
 	 * @return y axis value
 	 */
 	public double getJoystickY() {
-		return Utils.deadband(driverPad.getRawAxis(1), 0.1, 0);
+		return Utils.deadband(-driverPad.getRawAxis(1), 0.1, 0);
 	}
 	
 	/**
@@ -49,7 +50,7 @@ public class OI {
 	 * @return x axis value
 	 */
 	public double getJoystickSpin() {
-		return Utils.deadband(driverPad.getRawAxis(4), 0.05, 0);
+		return Utils.deadband(-driverPad.getRawAxis(4), 0.05, 0);
 	}
 	
 	/**
@@ -74,6 +75,10 @@ public class OI {
 	 */
 	public boolean isResetGyroButton() {
 		return resetGyroButton.get();
+	}
+	
+	public double getOperatorJoystickY() {
+		return -Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
 	}
 	
 }

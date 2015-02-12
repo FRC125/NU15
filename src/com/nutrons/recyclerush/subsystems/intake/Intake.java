@@ -1,7 +1,6 @@
 package com.nutrons.recyclerush.subsystems.intake;
 
 import com.nutrons.lib.DebouncedBoolean;
-import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,53 +14,55 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Intake extends Subsystem {
-    
-    DigitalInput stackableSensor = new DigitalInput(RobotMap.STACKABLE_SENSOR);
-    Solenoid modeSwitcher = new Solenoid(RobotMap.modeSwitcher);
-    Talon humanIntake = new Talon(RobotMap.HUMAN_INTAKE);
-    Talon floorIntake = new Talon(RobotMap.FLOOR_INTAKE);
-    
-    DebouncedBoolean stackableDebounced = new DebouncedBoolean(5);
-    
-    public enum IntakeMode {
-    	Tote, RC
-    }
-    
-    IntakeMode currentMode;
-    
-    
+	
+	DebouncedBoolean isStackable = new DebouncedBoolean(5);
+	
+	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
+	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR);
+	Solenoid leftIntakeWheelPiston = new Solenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON);
+	Solenoid rightIntakeWheelPiston = new Solenoid(RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
+	
+	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
+	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	currentMode = IntakeMode.RC;
+    }
+    
+    public void setIntakeMotorPower(double pow) {
+    	floorIntakeMotor.set(pow);
+    }
+    
+    public void setWintakeMotorPower(double pow) {
+    	wintakeMotor.set(pow);
+    }
+    
+    public void stopIntakeMotor() {
+    	floorIntakeMotor.set(0);
+    }
+    
+    public void stopWintakeMotor() {
+    	wintakeMotor.set(0);
+    }
+    
+    public void openLeftIntakeWheel() {
+    	leftIntakeWheelPiston.set(true);
+    }
+    
+    public void openRightIntakeWheel() {
+    	rightIntakeWheelPiston.set(true);
+    }
+    
+    public void closeLeftIntakeWheel() {
+    	leftIntakeWheelPiston.set(false);
+    }
+
+    public void closeRightIntakeWheel() {
+    	rightIntakeWheelPiston.set(false);
     }
     
     public boolean isStackable() {
-    	stackableDebounced.feed(stackableSensor.get());
-    	return stackableDebounced.get();
+    	isStackable.feed(isStackableButton.get());
+    	return isStackable.get();
     }
-    
-    public void setHumanIntakePower(double pow) {
-    	humanIntake.set(pow);
-    }
-    
-    public void setFloorIntakePower(double pow) {
-    	floorIntake.set(pow);
-    }
-    
-    public void changeIntakeMode(IntakeMode mode) {
-    	switch(mode) {
-    	case Tote:
-    		modeSwitcher.set(true);
-    		break;
-    	case RC:
-    		modeSwitcher.set(false);
-    		break;
-    	default:
-    		
-    	}
-    	this.currentMode = mode;
-    }
-    
 }
-

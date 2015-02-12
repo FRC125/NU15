@@ -4,6 +4,7 @@ package com.nutrons.recyclerush;
 import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 import com.nutrons.recyclerush.subsystems.elevator.Elevator;
+import com.nutrons.recyclerush.subsystems.intake.Intake;
 import com.nutrons.recyclerush.subsystems.vision.Camera;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain dt;
 	public static Elevator elevator;
 	public static Camera camera;
+	public static Intake intake;
 	
 	//logging objects
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot {
 		dt = new DriveTrain();
 		camera = new Camera();
 		elevator = new Elevator();
+		intake = new Intake();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("Error", 0);

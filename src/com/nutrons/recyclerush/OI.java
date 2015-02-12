@@ -78,7 +78,7 @@ public class OI {
 	}
 	
 	public double getOperatorJoystickY() {
-		return Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
+		return -Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
 	}
 	
 }

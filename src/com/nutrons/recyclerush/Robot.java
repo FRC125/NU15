@@ -7,6 +7,7 @@ import com.nutrons.recyclerush.subsystems.elevator.Elevator;
 import com.nutrons.recyclerush.subsystems.intake.Intake;
 import com.nutrons.recyclerush.subsystems.vision.Camera;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
 	public static Elevator elevator;
 	public static Camera camera;
 	public static Intake intake;
+	public static Compressor comp;
 	
 	//logging objects
 	public static DataLogger totalCurrentLogger = new DataLogger("Total Current", 100);
@@ -51,13 +53,13 @@ public class Robot extends IterativeRobot {
 		camera = new Camera();
 		elevator = new Elevator();
 		intake = new Intake();
+		comp = new Compressor();
     	oi = new OI();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("Error", 0);
 		SmartDashboard.putNumber("Target", 0);
 		SmartDashboard.putNumber("Adjust", 0);
-        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
     }
 	
     /**
@@ -73,6 +75,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        comp.start();
     }
 
     /**
@@ -88,6 +91,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.dt.zeroGyro();
+        comp.start();
     }
 
     /**
@@ -95,7 +99,7 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	comp.stop();
     }
 
     /**

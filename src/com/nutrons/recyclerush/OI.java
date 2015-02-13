@@ -1,17 +1,19 @@
 package com.nutrons.recyclerush;
 
-import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Utils;
+import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
-import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
-import com.nutrons.recyclerush.commands.intake.sequence.StopHumanPlayerFeedSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.Joystick;
 
 
 /**
@@ -32,14 +34,26 @@ public class OI {
 	private Button humanPlayerIntakeButton = new JoystickButton(operatorPad, 2);
 	private Button stackToteButton = new JoystickButton(operatorPad, 3);
 	private Button intakeOpenButton = new JoystickButton(operatorPad, 4);
+	private Button raiseElevatorButton = new JoystickButton(operatorPad, 8);
+	private Button lowerElevatorButton = new JoystickButton(operatorPad, 6);
+	private Button intakeToteButton = new JoystickButton(operatorPad, 7);
+	private Button spitIntakeButton = new JoystickButton(operatorPad, 5);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
-		intakeContainerButton.whenInactive(new StopIntakeContainerSeq());
-		humanPlayerIntakeButton.whenPressed(new HumanPlayerFeedSeq());
-		stackToteButton.whenPressed(new StopHumanPlayerFeedSeq());
+		intakeContainerButton.whenReleased(new StopIntakeContainerSeq());
+		
 		intakeOpenButton.whenPressed(new IntakeOpenCmd());
 		intakeOpenButton.whenReleased(new IntakeCloseCmd());
+		
+		raiseElevatorButton.whenPressed(new ElevatorRaiseCmd());
+		lowerElevatorButton.whenPressed(new ElevatorLowerCmd());
+		
+		intakeToteButton.whenActive(new IntakeToteSeq());
+		intakeToteButton.whenReleased(new StopIntakeToteSeq());
+		
+		spitIntakeButton.whenActive(new SpitIntakeSeq());
+		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 	}
 	
 	/**

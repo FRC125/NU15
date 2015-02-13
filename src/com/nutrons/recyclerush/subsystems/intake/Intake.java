@@ -4,6 +4,7 @@ import com.nutrons.lib.DebouncedBoolean;
 import com.nutrons.recyclerush.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,8 +20,7 @@ public class Intake extends Subsystem {
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
 	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR);
-	Solenoid leftIntakeWheelPiston = new Solenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON);
-	Solenoid rightIntakeWheelPiston = new Solenoid(RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
+	DoubleSolenoid IntakeWheelPiston = new DoubleSolenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON, RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
 	
 	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
 	
@@ -45,20 +45,12 @@ public class Intake extends Subsystem {
     	wintakeMotor.set(0);
     }
     
-    public void openLeftIntakeWheel() {
-    	leftIntakeWheelPiston.set(true);
-    }
-    
-    public void openRightIntakeWheel() {
-    	rightIntakeWheelPiston.set(true);
-    }
-    
-    public void closeLeftIntakeWheel() {
-    	leftIntakeWheelPiston.set(false);
+    public void openIntakeWheel() {
+    	IntakeWheelPiston.set(DoubleSolenoid.Value.kForward);;
     }
 
-    public void closeRightIntakeWheel() {
-    	rightIntakeWheelPiston.set(false);
+    public void closeIntakeWheel() {
+    	IntakeWheelPiston.set(DoubleSolenoid.Value.kReverse);
     }
     
     public boolean isStackable() {

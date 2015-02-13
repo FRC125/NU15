@@ -12,9 +12,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class HumanPlayerFeedSeq extends CommandGroup {
     
     public  HumanPlayerFeedSeq() {
-    	addParallel(new SpinIntakeWheelsCmd());
+    	addSequential(new SpinIntakeWheelsCmd());
+        addParallel(new SpinWintakeWheelsCmd());
         addParallel(new IntakeOpenCmd());
-        addSequential(new SpinWintakeWheelsCmd());
-        
     }
 }

@@ -20,5 +20,6 @@ public class StopHumanPlayerFeedSeq extends CommandGroup {
         	addSequential(new ElevatorLowerCmd());
         	addSequential(new ElevatorRaiseCmd());
         }
+        addSequential(new StopIntakeWheelsCmd());
     }
 }

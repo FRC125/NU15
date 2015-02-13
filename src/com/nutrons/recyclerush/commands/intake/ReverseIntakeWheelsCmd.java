@@ -5,13 +5,13 @@ import com.nutrons.recyclerush.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * @author John Zhang
+ *
  */
-public class SpinWintakeWheelsCmd extends Command {
+public class ReverseIntakeWheelsCmd extends Command {
 
-	private double wheelSpeed = 1.0;
+	private double wheelSpeed = -1.0;
 	
-    public SpinWintakeWheelsCmd() {
+    public ReverseIntakeWheelsCmd() {
         requires(Robot.intake);
     }
 
@@ -21,7 +21,7 @@ public class SpinWintakeWheelsCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.setWintakeMotorPower(wheelSpeed);
+    	Robot.intake.setIntakeMotorPower(wheelSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

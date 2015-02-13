@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SpinIntakeWheelsCmd extends Command {
 	
-	private double wheelSpeed = 0.5;
+	private double wheelSpeed = 1.0;
 	
     public SpinIntakeWheelsCmd() {
     	requires(Robot.intake);
@@ -26,12 +26,11 @@ public class SpinIntakeWheelsCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.intake.isStackable();
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intake.stopIntakeMotor();
     }
 
     // Called when another command which requires one or more of the same

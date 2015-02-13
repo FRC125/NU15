@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class IntakeContainerSeq extends CommandGroup {
     
     public  IntakeContainerSeq() {
-    	addSequential(new IntakeOpenCmd());
     	addSequential(new SpinIntakeWheelsCmd());
+    	addParallel(new IntakeOpenCmd());
     }
 }

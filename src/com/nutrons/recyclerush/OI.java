@@ -2,6 +2,12 @@ package com.nutrons.recyclerush;
 
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Utils;
+import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
+import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
+import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.StopHumanPlayerFeedSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -20,6 +26,21 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	
+	// command buttons
+	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
+	private Button humanPlayerIntakeButton = new JoystickButton(operatorPad, 2);
+	private Button stackToteButton = new JoystickButton(operatorPad, 3);
+	private Button intakeOpenButton = new JoystickButton(operatorPad, 4);
+	
+	public OI() {
+		intakeContainerButton.whenActive(new IntakeContainerSeq());
+		intakeContainerButton.whenInactive(new StopIntakeContainerSeq());
+		humanPlayerIntakeButton.whenPressed(new HumanPlayerFeedSeq());
+		stackToteButton.whenPressed(new StopHumanPlayerFeedSeq());
+		intakeOpenButton.whenPressed(new IntakeOpenCmd());
+		intakeOpenButton.whenReleased(new IntakeCloseCmd());
+	}
 	
 	/**
 	 * Gets dPad button

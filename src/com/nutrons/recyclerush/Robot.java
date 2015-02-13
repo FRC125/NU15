@@ -47,11 +47,11 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-		oi = new OI();
 		dt = new DriveTrain();
 		camera = new Camera();
 		elevator = new Elevator();
 		intake = new Intake();
+    	oi = new OI();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
 		SmartDashboard.putNumber("Error", 0);

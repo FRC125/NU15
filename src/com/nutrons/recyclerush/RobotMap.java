@@ -24,8 +24,8 @@ public class RobotMap {
 	public static final int ELEVATOR_REST_BUTTON = 4;
 	
 	// Pneumatics
-	public static final int LEFT_INTAKE_WHEEL_PISTON = 0;
-	public static final int RIGHT_INTAKE_WHEEL_PISTON = 7;
+	public static final int LEFT_INTAKE_WHEEL_PISTON = 7;
+	public static final int RIGHT_INTAKE_WHEEL_PISTON = 0;
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;

@@ -26,7 +26,6 @@ public class Elevator extends Subsystem {
 	DigitalInput atRestPos = new DigitalInput(RobotMap.ELEVATOR_REST_BUTTON);
 	
     public void initDefaultCommand() {
-    	setDefaultCommand(new ManualControlElevatorCmd());
     }
     
     public boolean isAtMaxHeight() {

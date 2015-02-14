@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * 
- * @author Camilo Gonzalez
+ * @author John Zhang, Camilo Gonzalez
  *
  */
 public class OI {

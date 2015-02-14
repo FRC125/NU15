@@ -57,9 +57,6 @@ public class Robot extends IterativeRobot {
     	oi = new OI();
 		SmartDashboard.putNumber("dt_kP", 20);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-		SmartDashboard.putNumber("Error", 0);
-		SmartDashboard.putNumber("Target", 0);
-		SmartDashboard.putNumber("Adjust", 0);
     }
 	
     /**
@@ -119,10 +116,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
         SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
-        SmartDashboard.putNumber("Ultrasonic Distance", Robot.dt.getUltrasonicDistance());
-    	SmartDashboard.putNumber("Target value PID: ", Robot.dt.getTargetAngle());
     	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
-    	SmartDashboard.putNumber("POV", Robot.oi.getPOVDirection());
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
     	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());

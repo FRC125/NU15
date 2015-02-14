@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.dt.zeroGyro();
-        comp.start();
+        comp.setClosedLoopControl(true);;
     }
 
     /**

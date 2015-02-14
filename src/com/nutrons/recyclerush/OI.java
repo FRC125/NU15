@@ -5,6 +5,8 @@ import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
+import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
+import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
@@ -54,6 +56,9 @@ public class OI {
 		
 		spitIntakeButton.whenActive(new SpitIntakeSeq());
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
+		
+		humanPlayerIntakeButton.whenActive(new SpinWintakeWheelsCmd());
+		humanPlayerIntakeButton.whenReleased(new StopWintakeWheelsCmd());
 	}
 	
 	/**

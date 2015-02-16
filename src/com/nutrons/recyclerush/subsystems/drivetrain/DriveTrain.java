@@ -150,6 +150,23 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public void setGyroConstant(double constant) {
 		GYRO_CONSTANT = constant;
 	}
+	public double mapJoystickToPowerOutput(double input) {
+        if (Math.abs(input) < 0.05) {
+            // Stop if joystick is near zero
+            return 0.0;
+        } else {
+            double mapping;
+            if (Math.abs(input) <= 0.75) {
+                mapping = 0.95 * ((0.5 * Math.pow(Math.abs(input), 2.0)) + 0.2);
+                mapping = (input >= 0) ? mapping : -mapping; // Change to negative if the input was negative
+                return mapping;
+            } else {
+                mapping = 2.16 * Math.abs(input) - 1.16;
+                mapping = (input >= 0) ? mapping : -mapping; // Change to negative if the input was negative
+                return mapping;
+            }
+        }
+    }
 	
 	/**
 	 *  
@@ -162,7 +179,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			gyro.reset();
 			offset = 0;
 		}
-		
+		x = mapJoystickToPowerOutput(x);
+		y = mapJoystickToPowerOutput(y);
+		rot = mapJoystickToPowerOutput(rot);
 		/*
 		 * makes x and y relative to the field instead of relative to the robot 
 		 * makes it so

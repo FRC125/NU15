@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.Timer;
  *
  */
 public class WaitForToteCmd extends Command {
-	
-	Timer timer = new Timer();
     
 	public WaitForToteCmd() {
         requires(Robot.intake);
@@ -18,7 +16,6 @@ public class WaitForToteCmd extends Command {
     
     // Called just before this Command runs the first time
     protected void initialize() {
-    	timer.start();
     	
     }
 
@@ -29,7 +26,7 @@ public class WaitForToteCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 3.0;
+        return Robot.intake.getUltrasonicDistance() < 10.0;
     }
 
     // Called once after isFinished returns true

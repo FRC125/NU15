@@ -2,6 +2,8 @@ package com.nutrons.recyclerush;
 
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Utils;
+import com.nutrons.recyclerush.commands.intake.PushStackCmd;
+import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -20,6 +22,12 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	private Button stackPusherButton = new JoystickButton(operatorPad, 10);
+	
+	public OI() {
+		stackPusherButton.whenActive(new PushStackCmd());
+		stackPusherButton.whenReleased(new RetractStackPusherCmd());
+	}
 	
 	/**
 	 * Gets dPad button

@@ -1,6 +1,7 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.Utils;
+
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
@@ -12,6 +13,10 @@ import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
+
+import com.nutrons.recyclerush.commands.intake.PushStackCmd;
+import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
+
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -30,6 +35,9 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	private Button stackPusherButton = new JoystickButton(operatorPad, 10);
+	
+
 	
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
@@ -42,6 +50,9 @@ public class OI {
 	private Button spitIntakeButton = new JoystickButton(operatorPad, 5);
 	
 	public OI() {
+		stackPusherButton.whenActive(new PushStackCmd());
+		stackPusherButton.whenReleased(new RetractStackPusherCmd());
+		
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
 		intakeContainerButton.whenReleased(new StopIntakeContainerSeq());
 		

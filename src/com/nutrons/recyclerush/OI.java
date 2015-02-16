@@ -1,21 +1,21 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.Utils;
-
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
 import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
+import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
-
 import com.nutrons.recyclerush.commands.intake.PushStackCmd;
 import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
+
 
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -68,8 +68,7 @@ public class OI {
 		spitIntakeButton.whenActive(new SpitIntakeSeq());
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 		
-		humanPlayerIntakeButton.whenActive(new SpinWintakeWheelsCmd());
-		humanPlayerIntakeButton.whenReleased(new StopWintakeWheelsCmd());
+		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
 	}
 	
 	/**
@@ -85,7 +84,7 @@ public class OI {
 	 * @return x axis value
 	 */
 	public double getJoystickX() {
-		return -Utils.deadband(-driverPad.getRawAxis(1), 0.1, 0);
+		return -Utils.deadband(-driverPad.getRawAxis(0), 0.1, 0);
 	}
 	
 	/**
@@ -93,7 +92,7 @@ public class OI {
 	 * @return y axis value
 	 */
 	public double getJoystickY() {
-		return Utils.deadband(-driverPad.getRawAxis(0), 0.1, 0);
+		return Utils.deadband(-driverPad.getRawAxis(1), 0.1, 0);
 	}
 	
 	/**

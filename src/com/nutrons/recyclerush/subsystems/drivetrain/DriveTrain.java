@@ -93,7 +93,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 */
     public void driveLCR(double[] motorSpeeds) {
     	motorL.set(motorSpeeds[0]);
-    	motorC.set(motorSpeeds[1]);
+    	motorC.set(-motorSpeeds[1]);
     	motorR.set(motorSpeeds[2]);
     }
 	

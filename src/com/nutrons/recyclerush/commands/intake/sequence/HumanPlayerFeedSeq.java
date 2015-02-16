@@ -18,21 +18,20 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
  * @author John Zhang
  */
 public class HumanPlayerFeedSeq extends CommandGroup {
-    
+	
     public  HumanPlayerFeedSeq() {
     	addSequential(new ElevatorRaiseCmd());
     	addSequential(new IntakeOpenCmd());
     	addSequential(new SpinWintakeWheelsCmd());
     	addSequential(new WaitForToteCmd());
-    	if(!Robot.oi.getCancelWintake())
-    	{
+
     		addSequential(new IntakeCloseCmd());
     		addSequential(new SpinIntakeWheelsCmd());
     		addSequential(new StopWintakeWheelsCmd());
     		addSequential(new WaitCommand(1));
     		addSequential(new StopIntakeWheelsCmd());
     		addSequential(new ElevatorLowerCmd());
-    	}
+    	
     	
     }
 }

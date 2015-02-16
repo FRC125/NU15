@@ -2,6 +2,7 @@ package com.nutrons.recyclerush.subsystems.intake;
 
 import com.nutrons.lib.DebouncedBoolean;
 import com.nutrons.lib.MovingAverage;
+import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.lib.Ultrasonic;
 
@@ -88,5 +89,9 @@ public class Intake extends Subsystem {
     
     public double getUltrasonicDistance() {
     	return ultrasonicReadings.getAverage(ultra.getDistance());
+    }
+    public boolean canceled = false;
+    public boolean getStopButton() {
+    	return canceled;
     }
 }

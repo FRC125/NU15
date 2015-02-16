@@ -35,7 +35,6 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
-	private Button stackPusherButton = new JoystickButton(operatorPad, 10);
 	
 
 	
@@ -51,9 +50,6 @@ public class OI {
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
 	
 	public OI() {
-		stackPusherButton.whenActive(new PushStackCmd());
-		stackPusherButton.whenReleased(new RetractStackPusherCmd());
-		
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
 		intakeContainerButton.whenReleased(new StopIntakeContainerSeq());
 		
@@ -70,6 +66,8 @@ public class OI {
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 		
 		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
+		
+		cancelWintake.whenActive(new StopIntakeToteSeq());
 	}
 	
 	/**
@@ -132,8 +130,7 @@ public class OI {
 		return -Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
 	}
 	
-	public boolean getCancelWintake()
-	{
+	public boolean getCancelWintake() {
 		return cancelWintake.get();
 	}
 	

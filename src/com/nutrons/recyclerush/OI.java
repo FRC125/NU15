@@ -48,6 +48,7 @@ public class OI {
 	private Button lowerElevatorButton = new JoystickButton(operatorPad, 6);
 	private Button intakeToteButton = new JoystickButton(operatorPad, 7);
 	private Button spitIntakeButton = new JoystickButton(operatorPad, 5);
+	private Button cancelWintake = new JoystickButton(operatorPad, 10);
 	
 	public OI() {
 		stackPusherButton.whenActive(new PushStackCmd());
@@ -129,6 +130,11 @@ public class OI {
 	
 	public double getOperatorJoystickY() {
 		return -Utils.deadband(operatorPad.getRawAxis(1), 0.1, 0);
+	}
+	
+	public boolean getCancelWintake()
+	{
+		return cancelWintake.get();
 	}
 	
 }

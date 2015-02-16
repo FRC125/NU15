@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
  *
  */
 public class WaitForToteCmd extends Command {
-    
+
 	public WaitForToteCmd() {
         requires(Robot.intake);
     }
@@ -26,12 +26,13 @@ public class WaitForToteCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.intake.getUltrasonicDistance() < 10.0;
+        return Robot.intake.getUltrasonicDistance() < 10.0 
+        		|| Robot.oi.getCancelWintake();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	
+    
     }
 
     // Called when another command which requires one or more of the same

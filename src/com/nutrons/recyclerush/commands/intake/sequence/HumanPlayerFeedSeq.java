@@ -1,5 +1,6 @@
 package com.nutrons.recyclerush.commands.intake.sequence;
 
+import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
@@ -23,12 +24,15 @@ public class HumanPlayerFeedSeq extends CommandGroup {
     	addSequential(new IntakeOpenCmd());
     	addSequential(new SpinWintakeWheelsCmd());
     	addSequential(new WaitForToteCmd());
-    	addSequential(new IntakeCloseCmd());
-    	addSequential(new SpinIntakeWheelsCmd());
-    	addSequential(new StopWintakeWheelsCmd());
-    	addSequential(new WaitCommand(1));
-    	addSequential(new StopIntakeWheelsCmd());
-    	addSequential(new ElevatorLowerCmd());
+    	if(!Robot.oi.getCancelWintake())
+    	{
+    		addSequential(new IntakeCloseCmd());
+    		addSequential(new SpinIntakeWheelsCmd());
+    		addSequential(new StopWintakeWheelsCmd());
+    		addSequential(new WaitCommand(1));
+    		addSequential(new StopIntakeWheelsCmd());
+    		addSequential(new ElevatorLowerCmd());
+    	}
     	
     }
 }

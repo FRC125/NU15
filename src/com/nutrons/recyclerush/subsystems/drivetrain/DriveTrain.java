@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
-import com.nutrons.lib.Ultrasonic;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
@@ -69,7 +68,6 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
-	Ultrasonic ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
 	
 	// Moving averages (currently just the value)
 	MovingAverage gyroRateAverage = new MovingAverage(1);
@@ -214,14 +212,6 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	public double getMotorCenterSpeed() {
 		return motorC.get();
-	}
-
-	public double getUltrasonicDistance() {
-		return ultrasonic.getDistance();
-	}
-	
-	public boolean inDanger(double distance) {
-		return getUltrasonicDistance() < distance;
 	}
 	
 	/**

@@ -49,10 +49,11 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	intake = new Intake();
 		dt = new DriveTrain();
 		camera = new Camera();
 		elevator = new Elevator();
-		intake = new Intake();
+		
 		comp = new Compressor();
     	oi = new OI();
 		SmartDashboard.putNumber("dt_kP", 20);
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
      */
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+	    SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
 	}
 
 	/**
@@ -107,6 +109,7 @@ public class Robot extends IterativeRobot {
         Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         Robot.dt.kP = SmartDashboard.getNumber("dt_kP");
         Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP");
+        SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
         SmartDashboard.putNumber("dt_kP", Robot.dt.kP);
         SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);

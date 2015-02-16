@@ -23,6 +23,7 @@ public class RobotMap {
 	public static final int STACKABLE_BUTTON = 3;
 	public static final int ELEVATOR_REST_BUTTON = 4;
 	
+	
 	// Pneumatics
 
 
@@ -37,8 +38,8 @@ public class RobotMap {
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;
-	public static final int ULTRASONIC_AN = 1;
-	public static final int ULTRASONIC_RX = 0;
+	public static final int ULTRASONIC_AN = 2;
+	public static final int ULTRASONIC_RX = 7;
 	
 	// User Input
 	public static final int DRIVE_PAD = 0;

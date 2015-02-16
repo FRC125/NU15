@@ -1,13 +1,13 @@
 package com.nutrons.recyclerush.subsystems.intake;
 
 import com.nutrons.lib.DebouncedBoolean;
+import com.nutrons.lib.MovingAverage;
 import com.nutrons.recyclerush.RobotMap;
+import com.nutrons.lib.Ultrasonic;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,9 +28,13 @@ public class Intake extends Subsystem {
 
 	DoubleSolenoid stackHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
 	DoubleSolenoid stackPusherPiston = new DoubleSolenoid(RobotMap.DOUBLE_PUSHER_A, RobotMap.DOUBLE_PUSHER_B);
-
+	
 	
 	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
+	
+	Ultrasonic ultra = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
+	
+	MovingAverage ultrasonicReadings = new MovingAverage(5);
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -80,5 +84,9 @@ public class Intake extends Subsystem {
     
     public void retractPusherPiston() {
     	stackPusherPiston.set(Value.kReverse);
+    }
+    
+    public double getUltrasonicDistance() {
+    	return ultrasonicReadings.getAverage(ultra.getDistance());
     }
 }

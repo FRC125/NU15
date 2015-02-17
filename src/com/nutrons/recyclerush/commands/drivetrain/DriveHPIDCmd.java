@@ -21,7 +21,8 @@ public class DriveHPIDCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.dt.drivePID(-Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
+    	double scale = Robot.oi.slowedDown() ? 0.4 : 1.0;
+    	Robot.dt.drivePID(-scale*Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
     }
 
     // Make this return true when this Command no longer needs to run execute()

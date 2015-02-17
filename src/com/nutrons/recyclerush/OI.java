@@ -35,6 +35,7 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	private Button slowDownButton = new JoystickButton(driverPad, 8);
 	
 
 	
@@ -70,6 +71,14 @@ public class OI {
 		cancelWintake.whenActive(new StopIntakeToteSeq());
 	}
 	
+	/**
+	 * Slow down button pressed?
+	 * @return
+	 */
+	public boolean slowedDown()
+	{
+		return slowDownButton.get();
+	}
 	/**
 	 * Gets dPad button
 	 * @return direction of dpad

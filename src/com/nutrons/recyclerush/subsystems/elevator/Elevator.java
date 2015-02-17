@@ -23,7 +23,6 @@ public class Elevator extends Subsystem {
 	
 	DigitalInput isMaxHeight = new DigitalInput(RobotMap.ELEVATOR_MAX_BUTTON);
 	DigitalInput isMinHeight = new DigitalInput(RobotMap.ELEVATOR_MIN_BUTTON);
-	DigitalInput atRestPos = new DigitalInput(RobotMap.ELEVATOR_REST_BUTTON);
 	
     public void initDefaultCommand() {
     }

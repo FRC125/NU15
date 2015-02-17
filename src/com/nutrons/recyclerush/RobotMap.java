@@ -21,7 +21,10 @@ public class RobotMap {
 	public static final int ELEVATOR_MAX_BUTTON = 2;
 	public static final int ELEVATOR_MIN_BUTTON = 1;
 	public static final int STACKABLE_BUTTON = 0;
-	public static final int ELEVATOR_REST_BUTTON = 4;
+	public static final int ENCODER_LEFT_DRIVETRAIN_A = 5;
+	public static final int ENCODER_LEFT_DRIVETRAIN_B = 6;
+	public static final int ENCODER_RIGHT_DRIVETRAIN_A = 4;
+	public static final int ENCODER_RIGHT_DRIVETRAIN_B = 3;
 	
 	
 	// Pneumatics

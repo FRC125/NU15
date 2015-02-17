@@ -126,6 +126,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
     	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
     	SmartDashboard.putBoolean("is Stackable (ready to stack): ", intake.readyToStack);
+    	SmartDashboard.putNumber("Left Encoder Distance", Robot.dt.getLeftDistance());
+    	SmartDashboard.putNumber("RightEncoder Distance", Robot.dt.getRightDistance());
     }
     
     /**

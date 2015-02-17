@@ -1,6 +1,8 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.Utils;
+import com.nutrons.recyclerush.commands.auto.AutoDriveUntilToteCmd;
+import com.nutrons.recyclerush.commands.auto.AutoTimeDriveCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
@@ -15,6 +17,8 @@ import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushStackCmd;
 import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
+
+
 
 
 
@@ -66,7 +70,7 @@ public class OI {
 		spitIntakeButton.whenActive(new SpitIntakeSeq());
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 		
-		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
+		humanPlayerIntakeButton.whenActive(new AutoTimeDriveCmd(2));
 		
 		cancelWintake.whenActive(new StopIntakeToteSeq());
 	}

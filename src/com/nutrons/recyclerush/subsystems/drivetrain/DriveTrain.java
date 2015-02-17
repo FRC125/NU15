@@ -9,6 +9,7 @@ import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -32,6 +33,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP_quickturn = 0;
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0;
+	public int WHEEL_DIAM = 6;
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
@@ -81,11 +83,18 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), new HoldHeadingPID());
 	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, this.gyro, new QuickTurnOutput());
 	
+	Encoder leftEncoder;
+	Encoder rightEncoder;
+	
 	public void initDefaultCommand() {
 		headingHoldPID.setContinuous();
 		headingHoldPID.setAbsoluteTolerance(1.0/360.0);
 		quickTurnPID.setContinuous();
 		quickTurnPID.disable();
+		leftEncoder = new Encoder(RobotMap.ENCODER_LEFT_DRIVETRAIN_A, RobotMap.ENCODER_LEFT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);
+		rightEncoder = new Encoder(RobotMap.ENCODER_RIGHT_DRIVETRAIN_A, RobotMap.ENCODER_RIGHT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);
+		leftEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI);
+		rightEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI);
     	setDefaultCommand(new DriveHPIDCmd());
     }
 	
@@ -255,8 +264,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
     	
     	double maxValue = 0.0;
     	// Compute the array of inputs
-    	for(int i = 0; i < wheels; i++)
-    	{
+    	for(int i = 0; i < wheels; i++) {
     		outputs[i] = -(x)*Math.sin(angles[i]) + y*Math.cos(angles[i]) - (spinScale*rot);
     		if(Math.abs(outputs[i]) > maxValue)
     		{
@@ -296,4 +304,17 @@ public class DriveTrain extends Subsystem implements ILoggable{
     			
    		return hashmap;
    	}
+    
+    public double getLeftDistance() {
+    	return leftEncoder.getDistance();
+    }
+    
+    public double getRightDistance() {
+    	return rightEncoder.getDistance();
+    }
+    
+    public void resetEncoders() {
+    	leftEncoder.reset();
+    	rightEncoder.reset();
+    }
 }

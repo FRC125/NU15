@@ -20,7 +20,7 @@ public class RobotMap {
 	// Digital Input
 	public static final int ELEVATOR_MAX_BUTTON = 2;
 	public static final int ELEVATOR_MIN_BUTTON = 1;
-	public static final int STACKABLE_BUTTON = 3;
+	public static final int STACKABLE_BUTTON = 0;
 	public static final int ELEVATOR_REST_BUTTON = 4;
 	
 	

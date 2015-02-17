@@ -1,43 +1,45 @@
-package com.nutrons.recyclerush.commands.drivetrain;
+package com.nutrons.recyclerush.commands.intake;
 
 import com.nutrons.recyclerush.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 
- * @author Camilo Gonzalez
  *
  */
-public class DriveHPIDCmd extends Command {
+public class LowerElevatorIfStackableCmd extends Command {
 	
-    public DriveHPIDCmd() {
-    	requires(Robot.dt);
+	private boolean isStackable = false;
+	
+    public LowerElevatorIfStackableCmd() {
+    	requires(Robot.elevator);
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	isStackable = Robot.intake.isStackable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double scale = Robot.oi.slowedDown() ? 0.4 : 1.0;
-    	Robot.dt.drivePID(-scale*Robot.oi.getJoystickX(), scale*Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
+    	if(isStackable) {
+    		Robot.elevator.setElevatorPower(-0.75);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.elevator.isAtMinHeight() || !isStackable;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.dt.stop();
+    	Robot.elevator.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

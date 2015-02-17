@@ -66,6 +66,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	    SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
+	    SmartDashboard.putBoolean("is Stackable: ", intake.isStackable());
 	}
 
 	/**
@@ -124,6 +125,7 @@ public class Robot extends IterativeRobot {
     	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
     	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
+    	SmartDashboard.putBoolean("is Stackable (ready to stack): ", intake.readyToStack);
     }
     
     /**

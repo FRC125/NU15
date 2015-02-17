@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 	
+	public boolean readyToStack = false;
+	
 	DebouncedBoolean isStackable = new DebouncedBoolean(5);
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
@@ -67,7 +69,7 @@ public class Intake extends Subsystem {
     }
     
     public boolean isStackable() {
-    	isStackable.feed(isStackableButton.get());
+    	isStackable.feed(!isStackableButton.get());
     	return isStackable.get();
     }
     

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
+import com.nutrons.lib.Utils;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
@@ -43,7 +44,10 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		@Override
 		public void pidWrite(double output) {
 			// TODO Auto-generated method stub
-			driveLR(motorL.get() + output, motorR.get() + output);
+			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
+			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
+			//driveLR(left, right);
+			driveLCR(new double[] {left, -motorC.get(), right});
 		}
 		
 	}

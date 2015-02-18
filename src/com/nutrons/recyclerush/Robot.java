@@ -2,6 +2,7 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
+import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 import com.nutrons.recyclerush.subsystems.elevator.Elevator;
 import com.nutrons.recyclerush.subsystems.intake.Intake;
@@ -52,6 +53,7 @@ public class Robot extends IterativeRobot {
     	intake = new Intake();
 		dt = new DriveTrain();
 		elevator = new Elevator();
+		autonomousCommand = new AutoThreeTotes();
 		
 		comp = new Compressor();
     	oi = new OI();

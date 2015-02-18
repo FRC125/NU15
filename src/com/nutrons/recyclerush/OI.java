@@ -97,24 +97,24 @@ public class OI {
 	 * Gets value on the x axis joystick (throttle)
 	 * @return x axis value
 	 */
-	public double getJoystickX() {
-		return -Utils.deadband(-driverPad.getRawAxis(0), 0.1, 0);
+	public double getJoystickX(double deadband) {
+		return -Utils.deadband(-driverPad.getRawAxis(0), deadband, 0);
 	}
 	
 	/**
 	 * Gets value on the y axis joystick (side to side)
 	 * @return y axis value
 	 */
-	public double getJoystickY() {
-		return Utils.deadband(-driverPad.getRawAxis(1), 0.1, 0);
+	public double getJoystickY(double deadband) {
+		return Utils.deadband(-driverPad.getRawAxis(1), deadband, 0);
 	}
 	
 	/**
 	 * gets value of x axis joystick (rotate)
 	 * @return x axis value
 	 */
-	public double getJoystickSpin() {
-		return Utils.deadband(-driverPad.getRawAxis(4), 0.05, 0);
+	public double getJoystickSpin(double deadband) {
+		return Utils.deadband(-driverPad.getRawAxis(4), deadband/2.0, 0);
 	}
 	
 	/**

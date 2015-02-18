@@ -32,8 +32,7 @@ public class WaitForStackableCmd extends Command {
     protected boolean isFinished() {
         readyToStack = Robot.intake.isStackable();
     	
-    	return readyToStack 
-        		|| timer.get() > 4;
+    	return readyToStack;
     }
 
     // Called once after isFinished returns true

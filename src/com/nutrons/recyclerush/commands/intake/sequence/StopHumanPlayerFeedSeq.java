@@ -15,11 +15,6 @@ public class StopHumanPlayerFeedSeq extends CommandGroup {
     
     public  StopHumanPlayerFeedSeq() {
         addSequential(new IntakeCloseCmd());
-        if(Robot.intake.isStackable()) {
-        	addSequential(new StopIntakeWheelsCmd());
-        	addSequential(new ElevatorLowerCmd());
-        	addSequential(new ElevatorRaiseCmd());
-        }
         addSequential(new StopIntakeWheelsCmd());
     }
 }

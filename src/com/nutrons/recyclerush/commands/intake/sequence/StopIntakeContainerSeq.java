@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StopIntakeContainerSeq extends CommandGroup {
     
     public  StopIntakeContainerSeq() {
-    	//addSequential(new ElevatorLowerCmd());
         addSequential(new StopIntakeWheelsCmd());
         addParallel(new IntakeCloseCmd());
-        //addSequential(new ElevatorRaiseCmd());
     }
 }

@@ -1,6 +1,7 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.Utils;
+import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveUntilToteCmd;
 import com.nutrons.recyclerush.commands.auto.AutoTimeDriveCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
@@ -13,10 +14,13 @@ import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.StopHumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushStackCmd;
 import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
+
+
 
 
 
@@ -39,9 +43,7 @@ public class OI {
 	private Button headingButton = new JoystickButton(driverPad, 1);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 7);
-	private Button slowDownButton = new JoystickButton(driverPad, 8);
-	
-
+	private Button slowDownButton = new JoystickButton(driverPad, 5);
 	
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
@@ -70,9 +72,9 @@ public class OI {
 		spitIntakeButton.whenActive(new SpitIntakeSeq());
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 		
-		humanPlayerIntakeButton.whenActive(new AutoTimeDriveCmd(2));
+		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
 		
-		cancelWintake.whenActive(new StopIntakeToteSeq());
+		cancelWintake.whenPressed(new StopHumanPlayerFeedSeq());
 	}
 	
 	/**

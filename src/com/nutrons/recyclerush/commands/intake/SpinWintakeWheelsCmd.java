@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SpinWintakeWheelsCmd extends Command {
 
-	private double wheelSpeed = 1.0;
+	private double wheelSpeed = 0.75;
 	
     public SpinWintakeWheelsCmd() {
         requires(Robot.intake);

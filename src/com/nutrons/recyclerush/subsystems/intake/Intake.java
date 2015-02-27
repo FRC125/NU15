@@ -22,16 +22,15 @@ public class Intake extends Subsystem {
 	
 	public boolean readyToStack = false;
 	
-	DebouncedBoolean isStackable = new DebouncedBoolean(5);
+	DebouncedBoolean isStackable = new DebouncedBoolean(2);
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
 	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR);
 
 	DoubleSolenoid IntakeWheelPiston = new DoubleSolenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON, RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
 
-	DoubleSolenoid stackHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
-	DoubleSolenoid stackPusherPiston = new DoubleSolenoid(RobotMap.DOUBLE_PUSHER_A, RobotMap.DOUBLE_PUSHER_B);
-	
+	DoubleSolenoid canHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
+	DoubleSolenoid canPusherPiston = new DoubleSolenoid(RobotMap.DOUBLE_PUSHER_A, RobotMap.DOUBLE_PUSHER_B);
 	
 	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
 	
@@ -40,8 +39,6 @@ public class Intake extends Subsystem {
 	MovingAverage ultrasonicReadings = new MovingAverage(5);
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
     
     public void setIntakeMotorPower(double pow) {
@@ -74,19 +71,19 @@ public class Intake extends Subsystem {
     }
     
     public void deployHolderPistons() {
-    	stackHolderPiston.set(Value.kForward);
+    	canHolderPiston.set(Value.kForward);
     }
     
     public void retractHolderPistons() {
-    	stackHolderPiston.set(Value.kReverse);
+    	canHolderPiston.set(Value.kReverse);
     }
     
     public void deployPusherPiston() {
-    	stackPusherPiston.set(Value.kForward);
+    	canPusherPiston.set(Value.kForward);
     }
     
     public void retractPusherPiston() {
-    	stackPusherPiston.set(Value.kReverse);
+    	canPusherPiston.set(Value.kReverse);
     }
     
     public double getUltrasonicDistance() {

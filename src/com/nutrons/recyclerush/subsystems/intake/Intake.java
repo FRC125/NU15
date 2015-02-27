@@ -22,7 +22,7 @@ public class Intake extends Subsystem {
 	
 	public boolean readyToStack = false;
 	
-	DebouncedBoolean isStackable = new DebouncedBoolean(5);
+	DebouncedBoolean isStackable = new DebouncedBoolean(2);
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
 	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR);

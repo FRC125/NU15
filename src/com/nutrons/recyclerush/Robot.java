@@ -88,6 +88,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Knock Tote", (Command) new AutoKnockTote());
         autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(90));
         SmartDashboard.putData("AUto Chooser", autoChooser);
+        Robot.intake.openIntakeWheel();
     }
 	
     /**
@@ -96,7 +97,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
         updateSmartDashboard();
-    	autonomousCommand = (Command) autoChooser.getSelected();
+    	autonomousCommand = new AutoKnockTote();
 	}
 
 	/**
@@ -113,6 +114,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        updateSmartDashboard();
     }
 
     /**

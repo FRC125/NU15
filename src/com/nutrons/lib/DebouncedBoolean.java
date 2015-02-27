@@ -2,7 +2,7 @@ package com.nutrons.lib;
 
 /**
  * 
- * @author Camilo Gonzalez
+ * @author John Zhang
  *
  */
 public class DebouncedBoolean {
@@ -20,7 +20,7 @@ public class DebouncedBoolean {
 		if(state) {
 			state = in;
 		}else if(in) {
-			if(count < length) {
+			if(count > length) {
 				state = true;
 			}else {
 				count++;

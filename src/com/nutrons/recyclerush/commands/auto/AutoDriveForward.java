@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 public class AutoDriveForward extends CommandGroup {
-    
     public  AutoDriveForward() {
-        addSequential(new AutoDriveDistanceCmd(10));
+        addSequential(new AutoDriveDistanceCmd(150));
     }
 }

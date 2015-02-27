@@ -6,8 +6,10 @@ import com.nutrons.recyclerush.commands.auto.AutoDriveUntilToteCmd;
 import com.nutrons.recyclerush.commands.auto.AutoTimeDriveCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.intake.HoldCanCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
+import com.nutrons.recyclerush.commands.intake.RetractCanHolderCmd;
 import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
@@ -17,8 +19,10 @@ import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopHumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
-import com.nutrons.recyclerush.commands.intake.PushStackCmd;
-import com.nutrons.recyclerush.commands.intake.RetractStackPusherCmd;
+import com.nutrons.recyclerush.commands.intake.PushCanCmd;
+import com.nutrons.recyclerush.commands.intake.RetractCanPusherCmd;
+
+
 
 
 
@@ -40,20 +44,22 @@ public class OI {
     
 	private final Joystick driverPad = new Joystick(RobotMap.DRIVE_PAD);
 	private final Joystick operatorPad = new Joystick(RobotMap.OPERATOR_PAD);
-	private Button headingButton = new JoystickButton(driverPad, 1);
+	private Button headingButton = new JoystickButton(driverPad, 3);
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
-	private Button resetGyroButton = new JoystickButton(driverPad, 7);
+	private Button resetGyroButton = new JoystickButton(driverPad, 9);
 	private Button slowDownButton = new JoystickButton(driverPad, 5);
+	private Button knockCan = new JoystickButton(driverPad, 7);
+	private Button holdCan = new JoystickButton(driverPad, 6);
+	private Button releaseCan = new JoystickButton(driverPad, 8);
 	
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
 	private Button humanPlayerIntakeButton = new JoystickButton(operatorPad, 2);
-	private Button stackToteButton = new JoystickButton(operatorPad, 3);
 	private Button intakeOpenButton = new JoystickButton(operatorPad, 4);
-	private Button raiseElevatorButton = new JoystickButton(operatorPad, 8);
-	private Button lowerElevatorButton = new JoystickButton(operatorPad, 6);
-	private Button intakeToteButton = new JoystickButton(operatorPad, 7);
-	private Button spitIntakeButton = new JoystickButton(operatorPad, 5);
+	private Button raiseElevatorButton = new JoystickButton(operatorPad, 6);
+	private Button lowerElevatorButton = new JoystickButton(operatorPad, 8);
+	private Button intakeToteButton = new JoystickButton(operatorPad, 5);
+	private Button spitIntakeButton = new JoystickButton(operatorPad, 7);
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
 	
 	public OI() {
@@ -75,6 +81,12 @@ public class OI {
 		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
 		
 		cancelWintake.whenPressed(new StopHumanPlayerFeedSeq());
+		
+		knockCan.whenPressed(new PushCanCmd());
+		knockCan.whenReleased(new RetractCanPusherCmd());
+		
+		holdCan.whenPressed(new HoldCanCmd());
+		releaseCan.whenPressed(new RetractCanHolderCmd());
 	}
 	
 	/**
@@ -114,7 +126,7 @@ public class OI {
 	 * @return x axis value
 	 */
 	public double getJoystickSpin(double deadband) {
-		return Utils.deadband(-driverPad.getRawAxis(4), deadband/2.0, 0);
+		return Utils.deadband(-driverPad.getRawAxis(2), deadband/2.0, 0);
 	}
 	
 	/**

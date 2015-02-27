@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HoldStackCmd extends Command {
+public class HoldCanCmd extends Command {
 
-    public HoldStackCmd() {
+    public HoldCanCmd() {
     	requires(Robot.intake);
     }
 

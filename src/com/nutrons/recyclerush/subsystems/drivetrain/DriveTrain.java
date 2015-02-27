@@ -102,7 +102,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// PIDs
 	public PIDController headingHoldPID = new PIDController(kP_straight, kI_straight, kD_straight, new GyroWrapper(), new HoldHeadingPID());
-	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, this.gyro, new QuickTurnOutput());
+	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, new GyroWrapper(), new QuickTurnOutput());
 	public PIDController driveDistancePID = new PIDController(kP_distance, kI_distance, kD_distance, new DistancePIDSource(), new DriveDistancePID());
 
 	public void initDefaultCommand() {
@@ -242,8 +242,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			headingHoldPID.enable();
 			headingHoldPID.setSetpoint(0);
 			driveLCR(getMotorOutput(x, y, 0.0));
-		}
-		else {
+		} else if(quickTurnPID.isEnable()) {
+			
+		} else {
 			headingHoldPID.disable();
 			offset -= gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
@@ -271,7 +272,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 */
 	public void quickTurn(double targetAngle) {
 		quickTurnPID.enable();
-		quickTurnPID.setSetpoint(targetAngle);
+		quickTurnPID.setSetpoint(targetAngle * GYRO_CONSTANT);
 	}
 	
 	public double getMotorLeftSpeed() {

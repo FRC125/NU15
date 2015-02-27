@@ -1,4 +1,4 @@
-package com.nutrons.recyclerush.commands.intake;
+package com.nutrons.recyclerush.commands.elevator;
 
 import com.nutrons.recyclerush.Robot;
 

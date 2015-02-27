@@ -12,12 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoTurnAngleCmd extends Command {
 	
-	double epsilon = 10.0;
+	double epsilon = 4.0;
 	double targetAngle = Robot.dt.getGyroAngle();
 	double angle = 0;
 	
-	MovingAverage error = new MovingAverage(10);
-	
+	MovingAverage error = new MovingAverage(5);
 	
     public AutoTurnAngleCmd(double angle) {
     	this.targetAngle = angle;

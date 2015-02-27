@@ -2,9 +2,9 @@ package com.nutrons.recyclerush.commands.auto;
 
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.LowerElevatorIfStackableCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
-import com.nutrons.recyclerush.commands.intake.LowerElevatorIfStackableCmd;
 import com.nutrons.recyclerush.commands.intake.SpinIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.WaitForStackableCmd;

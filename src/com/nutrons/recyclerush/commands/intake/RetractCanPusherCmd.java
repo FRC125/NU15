@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PushStackCmd extends Command {
+public class RetractCanPusherCmd extends Command {
 
-    public PushStackCmd() {
+    public RetractCanPusherCmd() {
     	requires(Robot.intake);
     }
 
@@ -19,7 +19,7 @@ public class PushStackCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.deployPusherPiston();
+    	Robot.intake.retractPusherPiston();
     }
 
     // Make this return true when this Command no longer needs to run execute()

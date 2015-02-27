@@ -2,7 +2,13 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
+import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
+import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
+import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
+import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
+import com.nutrons.recyclerush.commands.auto.AutoTurnAngleCmd;
+import com.nutrons.recyclerush.commands.drivetrain.DriveTurnCmd;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 import com.nutrons.recyclerush.subsystems.elevator.Elevator;
 import com.nutrons.recyclerush.subsystems.intake.Intake;
@@ -15,6 +21,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -41,6 +48,7 @@ public class Robot extends IterativeRobot {
 	public static DataLogger leftMotorCurrentLogger = new DataLogger("Left Motor Current", 100);
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static Timer timer = new Timer();
+	SendableChooser autoChooser = new SendableChooser();
 	
 	// commands
     Command autonomousCommand;
@@ -60,9 +68,26 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dt_kP_straight", 20);
 		SmartDashboard.putNumber("dt_kP_quickturn", 6);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
+
+		SmartDashboard.putNumber("dt_kI_straight", 0);
+		SmartDashboard.putNumber("dt_kI_quickturn", 0);
+		SmartDashboard.putNumber("dt_kI_distance", 0);
+
+		SmartDashboard.putNumber("dt_kD_straight", 0);
+		SmartDashboard.putNumber("dt_kD_quickturn", 0);
+		SmartDashboard.putNumber("dt_kD_distance", 0);
+		
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Encoder_Constant", Robot.dt.ENCODER_CONSTANT);
         Robot.dt.resetEncoders();
+        SmartDashboard.putData(Robot.dt);
+        
+        autoChooser.addDefault("Do Nothing", (Command) new AutoDoNothing());
+        autoChooser.addObject("Three Tote", (Command) new AutoThreeTotes());
+        autoChooser.addObject("Drive Forward", (Command) new AutoDriveForward());
+        autoChooser.addObject("Knock Tote", (Command) new AutoKnockTote());
+        autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(90));
+        SmartDashboard.putData("AUto Chooser", autoChooser);
     }
 	
     /**
@@ -70,36 +95,8 @@ public class Robot extends IterativeRobot {
      */
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-	    SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
-	    SmartDashboard.putBoolean("is Stackable: ", intake.isStackable());
-        Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
-        Robot.dt.setEncoderConstant(SmartDashboard.getNumber("Encoder_Constant"));
-        Robot.dt.kP_straight = SmartDashboard.getNumber("dt_kP_straight");
-        Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP_quickturn");
-        Robot.dt.kP_distance = SmartDashboard.getNumber("dt_kP_distance");
-        Robot.dt.setQuickturnPIDGains(SmartDashboard.getNumber("dt_kP_quickturn"), 0, 0);
-        Robot.dt.setDistancePIDGains(SmartDashboard.getNumber("dt_kP_distance"), 0, 0);
-        Robot.dt.setHoldHeadingPIDGains(SmartDashboard.getNumber("dt_kP_straight"), 0, 0);
-        SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
-        SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
-        SmartDashboard.putNumber("dt_kP_straight", Robot.dt.kP_straight);
-        SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);
-        SmartDashboard.putNumber("dt_kP_distance", Robot.dt.kP_distance);
-        SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
-        SmartDashboard.putNumber("Encoder_Constant", Robot.dt.ENCODER_CONSTANT);
-        SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
-        SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
-        SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
-        SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
-        SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
-    	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
-    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
-    	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
-    	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
-    	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
-    	SmartDashboard.putBoolean("is Stackable (ready to stack): ", intake.readyToStack);
-    	SmartDashboard.putNumber("Left Encoder Distance", Robot.dt.getLeftDistance());
-    	SmartDashboard.putNumber("RightEncoder Distance", Robot.dt.getRightDistance());
+        updateSmartDashboard();
+    	autonomousCommand = (Command) autoChooser.getSelected();
 	}
 
 	/**
@@ -140,19 +137,29 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
+        updateSmartDashboard();
+    }
+    
+    public void updateSmartDashboard() {
+    	// set
+    	Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         Robot.dt.setEncoderConstant(SmartDashboard.getNumber("Encoder_Constant"));
-        Robot.dt.kP_straight = SmartDashboard.getNumber("dt_kP_straight");
-        Robot.dt.kP_quickturn = SmartDashboard.getNumber("dt_kP_quickturn");
-        Robot.dt.kP_distance = SmartDashboard.getNumber("dt_kP_distance");
-        Robot.dt.setQuickturnPIDGains(SmartDashboard.getNumber("dt_kP_quickturn"), 0, 0);
-        Robot.dt.setDistancePIDGains(SmartDashboard.getNumber("dt_kP_distance"), 0, 0);
-        Robot.dt.setHoldHeadingPIDGains(SmartDashboard.getNumber("dt_kP_straight"), 0, 0);
+        Robot.dt.setQuickturnPIDGains(SmartDashboard.getNumber("dt_kP_quickturn"), SmartDashboard.getNumber("dt_kI_quickturn"), SmartDashboard.getNumber("dt_kD_quickturn"));
+        Robot.dt.setDistancePIDGains(SmartDashboard.getNumber("dt_kP_distance"), SmartDashboard.getNumber("dt_kI_distance"), SmartDashboard.getNumber("dt_kD_distance"));
+        Robot.dt.setHoldHeadingPIDGains(SmartDashboard.getNumber("dt_kP_straight"), SmartDashboard.getNumber("dt_kI_straight"), SmartDashboard.getNumber("dt_kD_straight"));
+        
+        // get
         SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
         SmartDashboard.putNumber("dt_kP_straight", Robot.dt.kP_straight);
         SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);
         SmartDashboard.putNumber("dt_kP_distance", Robot.dt.kP_distance);
+        SmartDashboard.putNumber("dt_kI_straight", Robot.dt.kI_straight);
+        SmartDashboard.putNumber("dt_kI_quickturn", Robot.dt.kI_quickturn);
+        SmartDashboard.putNumber("dt_kI_distance", Robot.dt.kI_distance);
+        SmartDashboard.putNumber("dt_kD_straight", Robot.dt.kD_straight);
+        SmartDashboard.putNumber("dt_kD_quickturn", Robot.dt.kD_quickturn);
+        SmartDashboard.putNumber("dt_kD_distance", Robot.dt.kD_distance);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Encoder_Constant", Robot.dt.ENCODER_CONSTANT);
         SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
@@ -161,13 +168,15 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
         SmartDashboard.putNumber("Gyro Angle", Robot.dt.getGyroAngle());
     	SmartDashboard.putNumber("Offset Value: ", Robot.dt.offset);
-    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
-    	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     	SmartDashboard.putBoolean("isAtMinElevator: ", elevator.isAtMinHeight());
     	SmartDashboard.putBoolean("isAtMaxElevator: ", elevator.isAtMaxHeight());
-    	SmartDashboard.putBoolean("is Stackable (ready to stack): ", intake.readyToStack);
+    	SmartDashboard.putBoolean("is Stackable", intake.readyToStack);
     	SmartDashboard.putNumber("Left Encoder Distance", Robot.dt.getLeftDistance());
     	SmartDashboard.putNumber("RightEncoder Distance", Robot.dt.getRightDistance());
+    	
+    	// log
+    	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());
+    	leftMotorCurrentLogger.log(pdp.getCurrent(leftMotorCurrentLogger.getAllPorts().get("motorL")), timer.getMatchTime());
     }
     
     /**

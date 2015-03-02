@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * 
@@ -34,7 +35,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP_distance = 1;
 	public double kI_distance = 0;
 	public double kD_distance = 0;
-	public double kP_quickturn = 6;
+	public double kP_quickturn = 1.1;
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0;
 	public double WHEEL_DIAM = 6;
@@ -49,6 +50,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		headingHoldPID.setAbsoluteTolerance(1.0/360.0);
 		quickTurnPID.setContinuous();
 		quickTurnPID.disable();
+		quickTurnPID.setOutputRange(-0.5, 0.5);
 		leftEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
 		rightEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
 	}
@@ -81,6 +83,8 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	class QuickTurnOutput implements PIDOutput {
 		public void pidWrite(double output) {
+			SmartDashboard.putNumber("Quick Turn Output", output);
+			SmartDashboard.putNumber("Quick Turn Error", quickTurnPID.getError());
 			driveLR(output, output);
 		}
 		
@@ -256,7 +260,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public void driveStraightForDistance(double distance) {
 		//headingHoldPID.enable();
 		driveDistancePID.enable();
-		driveDistancePID.setInputRange(0, 2*distance);
+		driveDistancePID.setInputRange(-2.0*Math.abs(distance), 2.0*Math.abs(distance));
 		driveDistancePID.setOutputRange(-1, 1);
 		//headingHoldPID.setSetpoint(0);
 		driveDistancePID.setSetpoint(distance);

@@ -21,13 +21,11 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class AutoKnockTote extends CommandGroup {
     
     public  AutoKnockTote() {
-    	addSequential(new IntakeOpenCmd());
-    	addSequential(new WaitForToteCmd());
-    	addSequential(new IntakeCloseCmd());
-    	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new ElevatorLowerCmd());
     	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new WaitCommand(1));
     	addSequential(new AutoDriveDistanceCmd(30));
     	addSequential(new WaitCommand(1));
+    	addSequential(new AutoDriveDistanceCmd(-30));
     }
 }

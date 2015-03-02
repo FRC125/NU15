@@ -11,10 +11,13 @@ public class ElevatorLowerCmd extends Command {
 
     public ElevatorLowerCmd() {
         requires(Robot.elevator);
+        requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.intake.retractHolderPistons();
+    	Robot.intake.closeIntakeWheel();
     }
 
     // Called repeatedly when this Command is scheduled to run

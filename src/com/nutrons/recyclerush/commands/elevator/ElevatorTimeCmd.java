@@ -17,6 +17,7 @@ public class ElevatorTimeCmd extends Command {
 	
     public ElevatorTimeCmd(double time, int direction) {
         requires(Robot.elevator);
+        requires(Robot.intake);
         this.time = time;
         this.power = power * direction;
     }
@@ -24,6 +25,7 @@ public class ElevatorTimeCmd extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	timer.start();
+    	Robot.intake.retractHolderPistons();
     }
 
     // Called repeatedly when this Command is scheduled to run

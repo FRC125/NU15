@@ -5,7 +5,9 @@ import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
 import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
+import com.nutrons.recyclerush.commands.auto.AutoDriveTurn;
 import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
+import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
 import com.nutrons.recyclerush.commands.auto.AutoTurnAngleCmd;
 import com.nutrons.recyclerush.commands.drivetrain.DriveTurnCmd;
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot {
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static Timer timer = new Timer();
 	SendableChooser autoChooser = new SendableChooser();
+	SendableChooser wintakeSpeedChooser = new SendableChooser();
 	
 	// commands
     Command autonomousCommand;
@@ -61,7 +64,7 @@ public class Robot extends IterativeRobot {
     	intake = new Intake();
 		dt = new DriveTrain();
 		elevator = new Elevator();
-		autonomousCommand = new AutoThreeTotes();
+		autonomousCommand = new AutoDoNothing();
 		
 		comp = new Compressor();
     	oi = new OI();
@@ -87,6 +90,12 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Drive Forward", (Command) new AutoDriveForward());
         autoChooser.addObject("Knock Tote", (Command) new AutoKnockTote());
         autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(90));
+        autoChooser.addObject("Knock Tote and Turn", (Command) new AutoKnockToteAndTurn());
+        autoChooser.addObject("Drive and Turn", (Command) new AutoDriveTurn());
+        
+        wintakeSpeedChooser.addDefault("0.6", 0.6);
+        wintakeSpeedChooser.addDefault("0.75", 0.75);
+        wintakeSpeedChooser.addDefault("0.9", 0.9);
         SmartDashboard.putData("AUto Chooser", autoChooser);
         Robot.intake.openIntakeWheel();
     }
@@ -97,7 +106,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
         updateSmartDashboard();
-    	autonomousCommand = new AutoKnockTote();
+    	autonomousCommand = (Command) autoChooser.getSelected();
 	}
 
 	/**

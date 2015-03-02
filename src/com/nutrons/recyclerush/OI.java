@@ -55,7 +55,7 @@ public class OI {
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
 	private Button humanPlayerIntakeButton = new JoystickButton(operatorPad, 2);
-	private Button intakeOpenButton = new JoystickButton(operatorPad, 4);
+	private Button intakeCloseButton = new JoystickButton(operatorPad, 4);
 	private Button raiseElevatorButton = new JoystickButton(operatorPad, 6);
 	private Button lowerElevatorButton = new JoystickButton(operatorPad, 8);
 	private Button intakeToteButton = new JoystickButton(operatorPad, 5);
@@ -66,8 +66,8 @@ public class OI {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
 		intakeContainerButton.whenReleased(new StopIntakeContainerSeq());
 		
-		intakeOpenButton.whenPressed(new IntakeOpenCmd());
-		intakeOpenButton.whenReleased(new IntakeCloseCmd());
+		intakeCloseButton.whenPressed(new IntakeCloseCmd());
+		intakeCloseButton.whenReleased(new IntakeOpenCmd());
 		
 		raiseElevatorButton.whenPressed(new ElevatorRaiseCmd());
 		lowerElevatorButton.whenPressed(new ElevatorLowerCmd());
@@ -78,7 +78,7 @@ public class OI {
 		spitIntakeButton.whenActive(new SpitIntakeSeq());
 		spitIntakeButton.whenReleased(new StopIntakeToteSeq());
 		
-		humanPlayerIntakeButton.whenActive(new HumanPlayerFeedSeq());
+		humanPlayerIntakeButton.whenPressed(new HumanPlayerFeedSeq());
 		
 		cancelWintake.whenPressed(new StopHumanPlayerFeedSeq());
 		

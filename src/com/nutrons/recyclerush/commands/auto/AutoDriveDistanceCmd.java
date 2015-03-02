@@ -14,9 +14,16 @@ public class AutoDriveDistanceCmd extends Command {
 
 	double epsilon = 1.0;
 	double distance = 0;
+	double speed = 1.0;
 	
     public AutoDriveDistanceCmd(double distance) {
     	this.distance = distance;
+    	requires(Robot.dt);
+    }
+    
+    public AutoDriveDistanceCmd(double distance, double speed) {
+    	this.distance = distance;
+    	this.speed = Math.abs(speed);
     	requires(Robot.dt);
     }
 
@@ -25,6 +32,7 @@ public class AutoDriveDistanceCmd extends Command {
     	Robot.dt.resetEncoders();
     	Robot.dt.setEncoderConstant(1.0/distance);
     	Robot.dt.driveStraightForDistance(distance);
+    	Robot.dt.driveDistancePID.setOutputRange(-speed, speed);
     }
 
     // Called repeatedly when this Command is scheduled to run

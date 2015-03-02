@@ -15,6 +15,6 @@ public class StopIntakeContainerSeq extends CommandGroup {
     
     public  StopIntakeContainerSeq() {
         addSequential(new StopIntakeWheelsCmd());
-        addParallel(new IntakeCloseCmd());
+        addParallel(new IntakeOpenCmd());
     }
 }

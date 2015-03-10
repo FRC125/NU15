@@ -38,7 +38,7 @@ public class AutoTurnAngleCmd extends Command {
     protected void execute() {
     	Robot.dt.quickTurn(targetAngle);
     	error.getAverage(Math.abs(targetAngle - Robot.dt.getGyroAngle()));
-    	Robot.intake.setIntakeMotorPower(1);
+    	//Robot.intake.setIntakeMotorPower(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

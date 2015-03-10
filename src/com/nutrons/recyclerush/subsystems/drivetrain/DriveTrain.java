@@ -50,7 +50,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		headingHoldPID.setOutputRange(-0.5, 0.5);
 		quickTurnPID.setContinuous();
 		quickTurnPID.disable();
-		quickTurnPID.setOutputRange(-0.5, 0.5);
+		quickTurnPID.setOutputRange(-0.75, 0.75);
 		leftEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
 		rightEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
 	}

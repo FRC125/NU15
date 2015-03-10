@@ -20,8 +20,6 @@ public class AutoTurnAngleCmd extends Command {
 	double angle = 0;
 	double time = 5;
 	
-	MovingAverage error = new MovingAverage(5);
-	
     public AutoTurnAngleCmd(double angle) {
     	this.targetAngle = angle;
     	requires(Robot.dt);
@@ -32,18 +30,17 @@ public class AutoTurnAngleCmd extends Command {
     protected void initialize() {
     	Robot.dt.zeroGyro();
     	timer.start();
+    	Robot.dt.quickTurnPID.setAbsoluteTolerance(epsilon);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.dt.quickTurn(targetAngle);
-    	error.getAverage(Math.abs(targetAngle - Robot.dt.getGyroAngle()));
-    	//Robot.intake.setIntakeMotorPower(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return error.getAverage(Math.abs(targetAngle - Robot.dt.getGyroAngle())) < epsilon || timer.get() > time;
+    	return Robot.dt.quickTurnPID.onTarget() || timer.get() > time;
     }
 
     // Called once after isFinished returns true

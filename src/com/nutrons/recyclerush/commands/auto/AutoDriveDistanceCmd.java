@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
- * @author Camilo Gonzalez
+ * @author John Zhang
  *
  */
 public class AutoDriveDistanceCmd extends Command {
@@ -34,6 +34,7 @@ public class AutoDriveDistanceCmd extends Command {
     	Robot.dt.zeroGyro();
     	Robot.dt.driveStraightForDistance(distance);
     	Robot.dt.driveDistancePID.setOutputRange(-speed, speed);
+    	Robot.dt.driveDistancePID.setAbsoluteTolerance(epsilon);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,7 +48,7 @@ public class AutoDriveDistanceCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Math.abs(distance - Robot.dt.getEncoderMax()) < epsilon;
+    	return Robot.dt.driveDistancePID.onTarget();
     }
 
     // Called once after isFinished returns true

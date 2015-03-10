@@ -29,7 +29,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
 	public double ENCODER_CONSTANT = 1/5000.0;
 	public double offset = 0;
-	public double kP_straight = 20;
+	public double kP_straight = 5;
 	public double kI_straight = 0;
 	public double kD_straight = 0;
 	public double kP_distance = 1;
@@ -47,7 +47,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	public DriveTrain() {
 		headingHoldPID.setContinuous();
-		headingHoldPID.setAbsoluteTolerance(1.0/360.0);
+		headingHoldPID.setOutputRange(-0.5, 0.5);
 		quickTurnPID.setContinuous();
 		quickTurnPID.disable();
 		quickTurnPID.setOutputRange(-0.5, 0.5);
@@ -68,7 +68,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		public void pidWrite(double output) {
 			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
 			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
-			driveLCR(new double[] {left, -motorC.get(), right});
+			driveLCR(new double[] {left, 0, right});
 		}
 	}
 	
@@ -124,15 +124,24 @@ public class DriveTrain extends Subsystem implements ILoggable{
     }
 	
     public void setDistancePIDGains(double p, double i, double d) {
+    	kP_distance = p;
+    	kI_distance = i;
+    	kD_distance = d;
     	driveDistancePID.setPID(p, i, d);
     }
 
     public void setHoldHeadingPIDGains(double p, double i, double d) {
-    	driveDistancePID.setPID(p, i, d);
+    	kP_straight = p;
+    	kI_straight = i;
+    	kD_straight = d;
+    	headingHoldPID.setPID(p, i, d);
     }
     
     public void setQuickturnPIDGains(double p, double i, double d) {
-    	driveDistancePID.setPID(p, i, d);
+    	kP_quickturn = p;
+    	kI_quickturn = i;
+    	kD_quickturn = d;
+    	quickTurnPID.setPID(p, i, d);
     }
     
 	/**

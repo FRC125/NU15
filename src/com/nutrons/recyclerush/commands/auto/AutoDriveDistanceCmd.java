@@ -31,6 +31,7 @@ public class AutoDriveDistanceCmd extends Command {
     protected void initialize() {
     	Robot.dt.resetEncoders();
     	Robot.dt.setEncoderConstant(1.0/distance);
+    	Robot.dt.zeroGyro();
     	Robot.dt.driveStraightForDistance(distance);
     	Robot.dt.driveDistancePID.setOutputRange(-speed, speed);
     }
@@ -39,6 +40,9 @@ public class AutoDriveDistanceCmd extends Command {
     protected void execute() {
     	SmartDashboard.putNumber("Distance Error", Robot.dt.driveDistancePID.getError());
     	SmartDashboard.putNumber("Distance PID Output", Robot.dt.driveDistancePID.get());
+
+		SmartDashboard.putNumber("Error", Robot.dt.headingHoldPID.getError());
+		SmartDashboard.putNumber("Correction", Robot.dt.headingHoldPID.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -49,6 +53,7 @@ public class AutoDriveDistanceCmd extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.dt.driveDistancePID.disable();
+    	Robot.dt.headingHoldPID.disable();
     	Robot.dt.stop();
     }
 

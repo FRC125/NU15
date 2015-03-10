@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot {
 		comp = new Compressor();
     	oi = new OI();
 		SmartDashboard.putNumber("dt_kP_straight", 20);
-		SmartDashboard.putNumber("dt_kP_quickturn", 6);
+		SmartDashboard.putNumber("dt_kP_quickturn", 1.1);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
 		SmartDashboard.putNumber("dt_kI_straight", 0);
@@ -89,14 +89,14 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Three Tote", (Command) new AutoThreeTotes());
         autoChooser.addObject("Drive Forward", (Command) new AutoDriveForward());
         autoChooser.addObject("Knock Tote", (Command) new AutoKnockTote());
-        autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(90));
+        autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(45));
         autoChooser.addObject("Knock Tote and Turn", (Command) new AutoKnockToteAndTurn());
         autoChooser.addObject("Drive and Turn", (Command) new AutoDriveTurn());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);
         wintakeSpeedChooser.addDefault("0.9", 0.9);
-        SmartDashboard.putData("AUto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
         Robot.intake.openIntakeWheel();
     }
 	

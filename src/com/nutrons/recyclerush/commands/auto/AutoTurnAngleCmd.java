@@ -1,14 +1,15 @@
 package com.nutrons.recyclerush.commands.auto;
 
-import com.nutrons.lib.MovingAverage;
+import com.nutrons.lib.DebouncedBoolean;
 import com.nutrons.recyclerush.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
- * @author Camilo Gonzalez
+ * @author John Zhang
  *
  */
 public class AutoTurnAngleCmd extends Command {
@@ -19,6 +20,7 @@ public class AutoTurnAngleCmd extends Command {
 	double targetAngle = Robot.dt.getGyroAngle();
 	double angle = 0;
 	double time = 5;
+	DebouncedBoolean onTarget = new DebouncedBoolean(50);
 	
     public AutoTurnAngleCmd(double angle) {
     	this.targetAngle = angle;
@@ -30,17 +32,21 @@ public class AutoTurnAngleCmd extends Command {
     protected void initialize() {
     	Robot.dt.zeroGyro();
     	timer.start();
-    	Robot.dt.quickTurnPID.setAbsoluteTolerance(epsilon);
+    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.01);
+    	Robot.dt.quickTurn(targetAngle);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.dt.quickTurn(targetAngle);
+    	SmartDashboard.putBoolean("On Target", onTarget.get());
+    	onTarget.feed(Robot.dt.quickTurnPID.onTarget());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.dt.quickTurnPID.onTarget() || timer.get() > time;
+    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.01);
+    	return onTarget.get();
+    	//return Math.abs(Robot.dt.getGyroAngle() - targetAngle) < epsilon || timer.get() > time;
     }
 
     // Called once after isFinished returns true

@@ -19,7 +19,7 @@ public class ElevatorLowerCmd extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.intake.retractHolderPistons();
-    	Robot.intake.closeIntakeWheel();
+    	Robot.intake.openIntakeWheel();
     	Robot.elevator.elevatorController.setGoal(Robot.elevator.follower.getCurrentSetpoint(), goal);
     }
 

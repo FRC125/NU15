@@ -35,7 +35,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP_distance = 1;
 	public double kI_distance = 0;
 	public double kD_distance = 0;
-	public double kP_quickturn = 1.1;
+	public double kP_quickturn = 3.5;
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0;
 	public double WHEEL_DIAM = 6;
@@ -68,7 +68,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		public void pidWrite(double output) {
 			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
 			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
-			driveLCR(new double[] {left, 0, right});
+			driveLCR(new double[] {left, motorC.get(), right});
 		}
 	}
 	
@@ -119,7 +119,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 */
     public void driveLCR(double[] motorSpeeds) {
     	motorL.set(motorSpeeds[0]);
-    	motorC.set(-motorSpeeds[1]);
+    	motorC.set(motorSpeeds[1]);
     	motorR.set(motorSpeeds[2]);
     }
 	

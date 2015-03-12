@@ -6,6 +6,7 @@ import com.nutrons.recyclerush.commands.auto.AutoDriveUntilToteCmd;
 import com.nutrons.recyclerush.commands.auto.AutoTimeDriveCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.intake.CoopStackCmd;
 import com.nutrons.recyclerush.commands.intake.HoldCanCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
@@ -21,6 +22,7 @@ import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanPusherCmd;
+
 
 
 
@@ -61,6 +63,7 @@ public class OI {
 	private Button intakeToteButton = new JoystickButton(operatorPad, 5);
 	private Button spitIntakeButton = new JoystickButton(operatorPad, 7);
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
+	private Button coopButton = new JoystickButton(operatorPad, 9);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
@@ -87,6 +90,8 @@ public class OI {
 		
 		holdCan.whenPressed(new HoldCanCmd());
 		releaseCan.whenPressed(new RetractCanHolderCmd());
+		
+		coopButton.whenPressed(new CoopStackCmd());
 	}
 	
 	/**

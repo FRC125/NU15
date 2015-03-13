@@ -26,6 +26,5 @@ public class AutoKnockTote extends CommandGroup {
     	addSequential(new WaitCommand(1));
     	addSequential(new AutoDriveDistanceCmd(30));
     	addSequential(new WaitCommand(1));
-    	addSequential(new AutoDriveDistanceCmd(-30));
     }
 }

@@ -14,7 +14,5 @@ public class AutoKnockToteAndTurn extends CommandGroup {
         addSequential(new AutoKnockTote());
         addSequential(new AutoTurnAngleCmd(90));
         addSequential(new AutoDriveDistanceCmd(150,0.5));
-        addSequential(new ElevatorLowerCmd());
-        addSequential(new SpitIntakeSeq());
     }
 }

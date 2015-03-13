@@ -30,6 +30,7 @@ public class AutoTurnAngleCmd extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.dt.quickTurnPID.disable();
     	Robot.dt.zeroGyro();
     	timer.start();
     	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.01);

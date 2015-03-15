@@ -41,21 +41,24 @@ public class AutoTurnAngleCmd extends Command {
     protected void execute() {
     	SmartDashboard.putBoolean("On Target", onTarget.get());
     	onTarget.feed(Robot.dt.quickTurnPID.onTarget());
+    	Robot.intake.setIntakeMotorPower(1);
+    	Robot.intake.closeIntakeWheel();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.01);
-    	return onTarget.get();
+    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.05);
+    	return onTarget.get() || timer.get() > 3.5;
     	//return Math.abs(Robot.dt.getGyroAngle() - targetAngle) < epsilon || timer.get() > time;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.dt.quickTurnPID.disable();
     	Robot.dt.stop();
     	targetAngle = Robot.dt.getGyroAngle();
-    	Robot.dt.quickTurnPID.disable();
     	Robot.intake.stopIntakeMotor();
+    	Robot.intake.openIntakeWheel();
     }
 
     // Called when another command which requires one or more of the same

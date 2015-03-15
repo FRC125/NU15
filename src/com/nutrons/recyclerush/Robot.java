@@ -6,6 +6,8 @@ import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
 import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
 import com.nutrons.recyclerush.commands.auto.AutoDriveTurn;
+import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitCmd;
+import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitLeftSideCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
 import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
@@ -68,8 +70,8 @@ public class Robot extends IterativeRobot {
 		
 		comp = new Compressor();
     	oi = new OI();
-		SmartDashboard.putNumber("dt_kP_straight", 1);
-		SmartDashboard.putNumber("dt_kP_quickturn", 1.1);
+		SmartDashboard.putNumber("dt_kP_straight", 30.0);
+		SmartDashboard.putNumber("dt_kP_quickturn", 3);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
 		SmartDashboard.putNumber("dt_kI_straight", 0);
@@ -77,7 +79,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dt_kI_distance", 0);
 
 		SmartDashboard.putNumber("dt_kD_straight", 0);
-		SmartDashboard.putNumber("dt_kD_quickturn", 0);
+		SmartDashboard.putNumber("dt_kD_quickturn", 0.5);
 		SmartDashboard.putNumber("dt_kD_distance", 0);
 		
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
@@ -92,6 +94,8 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Turn Right", (Command) new AutoTurnAngleCmd(45));
         autoChooser.addObject("Knock Tote and Turn", (Command) new AutoKnockToteAndTurn());
         autoChooser.addObject("Drive and Turn", (Command) new AutoDriveTurn());
+        autoChooser.addObject("Knock and Spit - RIGHT Side", (Command) new AutoKnockAndSpitCmd());
+        autoChooser.addObject("Knock and Spit - LEFT Side", (Command) new AutoKnockAndSpitLeftSideCmd());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);
@@ -152,6 +156,8 @@ public class Robot extends IterativeRobot {
     }
     
     public void updateSmartDashboard() {
+    	SmartDashboard.putData("Auto Chooser", autoChooser);
+    	
     	// set
     	Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         Robot.dt.setEncoderConstant(SmartDashboard.getNumber("Encoder_Constant"));

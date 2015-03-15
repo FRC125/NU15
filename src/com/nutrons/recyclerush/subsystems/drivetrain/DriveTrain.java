@@ -35,9 +35,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP_distance = 1;
 	public double kI_distance = 0;
 	public double kD_distance = 0;
-	public double kP_quickturn = 3.5;
+	public double kP_quickturn = 3;
 	public double kI_quickturn = 0;
-	public double kD_quickturn = 0;
+	public double kD_quickturn = 0.5;
 	public double WHEEL_DIAM = 6;
 	
 	// Motors

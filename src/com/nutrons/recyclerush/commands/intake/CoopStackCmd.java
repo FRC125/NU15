@@ -31,6 +31,7 @@ public class CoopStackCmd extends Command {
 	protected void end() {
 		Robot.intake.stopIntakeMotor();
 		Robot.intake.openIntakeWheel();
+		Robot.elevator.stop();
 	}
 
 	protected void interrupted() {

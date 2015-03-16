@@ -1,4 +1,4 @@
-package com.nutrons.recyclerush.commands;
+package com.nutrons.recyclerush.commands.intake;
 
 import com.nutrons.recyclerush.Robot;
 
@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class VisionCmd extends Command {
+public class RetractCanHolderCmd extends Command {
 
-    public VisionCmd() {
-        requires(Robot.camera);
+    public RetractCanHolderCmd() {
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -19,12 +19,12 @@ public class VisionCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.camera.getFeed();
+    	Robot.intake.retractHolderPistons();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

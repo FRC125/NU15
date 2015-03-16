@@ -1,37 +1,38 @@
-package com.nutrons.recyclerush.commands;
+package com.nutrons.recyclerush.commands.elevator;
 
 import com.nutrons.recyclerush.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 
- * @author Camilo Gonzalez
- *
+ * @author John Zhang
  */
-public class DriveHPIDCmd extends Command {
-	
-    public DriveHPIDCmd() {
-    	requires(Robot.dt);
+public class ElevatorRaiseCmd extends Command {
+
+    public ElevatorRaiseCmd() {
+        requires(Robot.elevator);
+        requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.intake.retractHolderPistons();
+    	Robot.intake.openIntakeWheel();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.dt.drivePID(-Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickSpin());
+    	Robot.elevator.setElevatorPower(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.elevator.isAtMaxHeight();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.dt.stop();
+    	Robot.elevator.stop();
     }
 
     // Called when another command which requires one or more of the same

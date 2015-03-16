@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
-import com.nutrons.lib.Ultrasonic;
+import com.nutrons.lib.Utils;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
-import com.nutrons.recyclerush.commands.DriveHPIDCmd;
-import com.nutrons.recyclerush.commands.DriveTurnCmd;
+import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -27,67 +27,89 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// Constants
 	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
+	public double ENCODER_CONSTANT = 1/5000.0;
 	public double offset = 0;
-	public double kP = 20;
-	public double kI = 0;
-	public double kD = 0;
-	public double kP_quickturn = 0;
+	public double kP_straight = 5;
+	public double kI_straight = 0;
+	public double kD_straight = 0;
+	public double kP_distance = 1;
+	public double kI_distance = 0;
+	public double kD_distance = 0;
+	public double kP_quickturn = 3;
 	public double kI_quickturn = 0;
-	public double kD_quickturn = 0;
+	public double kD_quickturn = 0.5;
+	public double WHEEL_DIAM = 6;
+	
 	// Motors
-	Talon motorL1 = new Talon(RobotMap.DRIVE_LEFT_1);
-	Talon motorL2 = new Talon(RobotMap.DRIVE_LEFT_2);
+	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
-	Talon motorR1 = new Talon(RobotMap.DRIVE_RIGHT_1);
-	Talon motorR2 = new Talon(RobotMap.DRIVE_RIGHT_2);
+	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
+	
+	public DriveTrain() {
+		headingHoldPID.setContinuous();
+		headingHoldPID.setOutputRange(-0.5, 0.5);
+		quickTurnPID.setContinuous();
+		quickTurnPID.disable();
+		quickTurnPID.setOutputRange(-0.75, 0.75);
+		leftEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
+		rightEncoder.setDistancePerPulse(WHEEL_DIAM*Math.PI/128.0);
+	}
 	
 	//Inner Classes
+	class DistancePIDSource implements PIDSource
+	{
+		public double pidGet() {
+			return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
+		}
+	}
+	
 	class HoldHeadingPID implements PIDOutput
 	{
-
-		@Override
 		public void pidWrite(double output) {
-			// TODO Auto-generated method stub
-			driveLR(motorL1.get() + output, motorR1.get() + output);
+			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
+			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
+			driveLCR(new double[] {left, motorC.get(), right});
 		}
-		
+	}
+	
+	class DriveDistancePID implements PIDOutput
+	{
+		public void pidWrite(double output) {
+			double left = Utils.deadband(output, 0.1, 0);
+			double right = -Utils.deadband(output, 0.1, 0);
+			driveLCR(new double[]{left, 0, right});
+		}
 	}
 	
 	class QuickTurnOutput implements PIDOutput {
-
-		@Override
 		public void pidWrite(double output) {
-			// TODO Auto-generated method stub
+			SmartDashboard.putNumber("Quick Turn Output", output);
+			SmartDashboard.putNumber("Quick Turn Error", quickTurnPID.getError());
 			driveLR(output, output);
 		}
 		
 	}
 	class GyroWrapper implements PIDSource {
-
-		@Override
 		public double pidGet() {
-			// TODO Auto-generated method stub
 			return gyro.getAngle() * GYRO_CONSTANT;
 		}
 	}
 	
 	// Sensors
 	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
-	Ultrasonic ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
+	Encoder leftEncoder = new Encoder(RobotMap.ENCODER_LEFT_DRIVETRAIN_A, RobotMap.ENCODER_LEFT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
+	Encoder rightEncoder = new Encoder(RobotMap.ENCODER_RIGHT_DRIVETRAIN_A, RobotMap.ENCODER_RIGHT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
 	
 	// Moving averages (currently just the value)
 	MovingAverage gyroRateAverage = new MovingAverage(1);
 	MovingAverage gyroAngleAverage = new MovingAverage(1);
 	
 	// PIDs
-	public PIDController headingHoldPID = new PIDController(kP, kI, kD, new GyroWrapper(), new HoldHeadingPID());
-	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, this.gyro, new QuickTurnOutput());
-	
+	public PIDController headingHoldPID = new PIDController(kP_straight, kI_straight, kD_straight, new GyroWrapper(), new HoldHeadingPID());
+	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, new GyroWrapper(), new QuickTurnOutput());
+	public PIDController driveDistancePID = new PIDController(kP_distance, kI_distance, kD_distance, new DistancePIDSource(), new DriveDistancePID());
+
 	public void initDefaultCommand() {
-		headingHoldPID.setContinuous();
-		headingHoldPID.setAbsoluteTolerance(1.0/360.0);
-		quickTurnPID.setContinuous();
-		quickTurnPID.disable();
     	setDefaultCommand(new DriveHPIDCmd());
     }
 	
@@ -96,13 +118,32 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @param motorSpeeds
 	 */
     public void driveLCR(double[] motorSpeeds) {
-    	motorL1.set(motorSpeeds[0]);
-    	motorL2.set(motorSpeeds[0]);
+    	motorL.set(motorSpeeds[0]);
     	motorC.set(motorSpeeds[1]);
-    	motorR1.set(motorSpeeds[2]);
-    	motorR2.set(motorSpeeds[2]);
+    	motorR.set(motorSpeeds[2]);
     }
 	
+    public void setDistancePIDGains(double p, double i, double d) {
+    	kP_distance = p;
+    	kI_distance = i;
+    	kD_distance = d;
+    	driveDistancePID.setPID(p, i, d);
+    }
+
+    public void setHoldHeadingPIDGains(double p, double i, double d) {
+    	kP_straight = p;
+    	kI_straight = i;
+    	kD_straight = d;
+    	headingHoldPID.setPID(p, i, d);
+    }
+    
+    public void setQuickturnPIDGains(double p, double i, double d) {
+    	kP_quickturn = p;
+    	kI_quickturn = i;
+    	kD_quickturn = d;
+    	quickTurnPID.setPID(p, i, d);
+    }
+    
 	/**
 	 * Stops all the motors on the drive train.
 	 */
@@ -126,10 +167,8 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @param right
 	 */
 	public void driveLR(double left, double right) {
-		motorL1.set(left);
-		motorL2.set(left);
-		motorR1.set(right);
-		motorR2.set(right);
+		motorL.set(left);
+		motorR.set(right);
 	}
 	
 	/**
@@ -161,8 +200,29 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		GYRO_CONSTANT = constant;
 	}
 	
+	public void setEncoderConstant(double constant) {
+		ENCODER_CONSTANT = constant;
+	}
+	
+	public double mapJoystickToPowerOutput(double input) {
+        if (Math.abs(input) < 0.05) {
+            // Stop if joystick is near zero
+            return 0.0;
+        } else {
+            double mapping;
+            if (Math.abs(input) <= 0.75) {
+                mapping = 0.95 * ((0.5 * Math.pow(Math.abs(input), 2.0)) + 0.2);
+                mapping = (input >= 0) ? mapping : -mapping; // Change to negative if the input was negative
+                return mapping;
+            } else {
+                mapping = 2.16 * Math.abs(input) - 1.16;
+                mapping = (input >= 0) ? mapping : -mapping; // Change to negative if the input was negative
+                return mapping;
+            }
+        }
+    }
+	
 	/**
-	 *  
 	 * @param x
 	 * @param y
 	 * @param rot
@@ -172,7 +232,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			gyro.reset();
 			offset = 0;
 		}
-		
+		x = mapJoystickToPowerOutput(x);
+		y = mapJoystickToPowerOutput(y);
+		rot = mapJoystickToPowerOutput(rot);
 		/*
 		 * makes x and y relative to the field instead of relative to the robot 
 		 * makes it so
@@ -193,8 +255,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			headingHoldPID.enable();
 			headingHoldPID.setSetpoint(0);
 			driveLCR(getMotorOutput(x, y, 0.0));
-		}
-		else {
+		} else if(quickTurnPID.isEnable()) {
+			
+		} else {
 			headingHoldPID.disable();
 			offset -= gyro.getAngle();
 			offset = offset % 360.0; // sets offset to value between 0-360
@@ -203,33 +266,38 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		}
 	}
 	
+	public void driveStraightForDistance(double distance) {
+		//headingHoldPID.enable();
+		driveDistancePID.enable();
+		driveDistancePID.setInputRange(-2.0*Math.abs(distance), 2.0*Math.abs(distance));
+		driveDistancePID.setOutputRange(-1, 1);
+		//headingHoldPID.setSetpoint(0);
+		driveDistancePID.setSetpoint(distance);
+	}
+	
+	public double getEncoderMax() {
+		return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
+	}
+	
 	/**
 	 * turn robot to specific angle relative to position at start of game
 	 * @param targetAngle
 	 */
 	public void quickTurn(double targetAngle) {
 		quickTurnPID.enable();
-		quickTurnPID.setSetpoint(targetAngle);
+		quickTurnPID.setSetpoint(targetAngle * GYRO_CONSTANT);
 	}
 	
 	public double getMotorLeftSpeed() {
-		return motorL1.get();
+		return motorL.get();
 	}
 	
 	public double getMotorRightSpeed() {
-		return motorR1.get();
+		return motorR.get();
 	}
 	
 	public double getMotorCenterSpeed() {
 		return motorC.get();
-	}
-
-	public double getUltrasonicDistance() {
-		return ultrasonic.getDistance();
-	}
-	
-	public boolean inDanger(double distance) {
-		return getUltrasonicDistance() < distance;
 	}
 	
 	/**
@@ -250,8 +318,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
     	
     	double maxValue = 0.0;
     	// Compute the array of inputs
-    	for(int i = 0; i < wheels; i++)
-    	{
+    	for(int i = 0; i < wheels; i++) {
     		outputs[i] = -(x)*Math.sin(angles[i]) + y*Math.cos(angles[i]) - (spinScale*rot);
     		if(Math.abs(outputs[i]) > maxValue)
     		{
@@ -286,9 +353,22 @@ public class DriveTrain extends Subsystem implements ILoggable{
     	HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
    		
    		hashmap.put("motorL", RobotMap.DRIVE_CENTER);
-   		hashmap.put("motorC", RobotMap.DRIVE_LEFT_1);
-   		hashmap.put("motorR", RobotMap.DRIVE_RIGHT_1);
+   		hashmap.put("motorC", RobotMap.DRIVE_LEFT);
+   		hashmap.put("motorR", RobotMap.DRIVE_RIGHT);
     			
    		return hashmap;
    	}
+    
+    public double getLeftDistance() {
+    	return leftEncoder.getDistance();
+    }
+    
+    public double getRightDistance() {
+    	return rightEncoder.getDistance();
+    }
+    
+    public void resetEncoders() {
+    	leftEncoder.reset();
+    	rightEncoder.reset();
+    }
 }

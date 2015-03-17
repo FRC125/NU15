@@ -179,7 +179,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("dt_kD_distance", Robot.dt.kD_distance);
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Encoder_Constant", Robot.dt.ENCODER_CONSTANT);
-        SmartDashboard.putNumber("Gyro Rate", Robot.dt.getGyroRate());
         SmartDashboard.putNumber("Left Motor", Robot.dt.getMotorLeftSpeed());
         SmartDashboard.putNumber("Right Motor", Robot.dt.getMotorRightSpeed());
         SmartDashboard.putNumber("Center Motor", Robot.dt.getMotorCenterSpeed());
@@ -190,6 +189,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("is Stackable", intake.readyToStack);
     	SmartDashboard.putNumber("Left Encoder Distance", Robot.dt.getLeftDistance());
     	SmartDashboard.putNumber("RightEncoder Distance", Robot.dt.getRightDistance());
+    	SmartDashboard.putNumber("Navx yaw", Robot.dt.imu.getYaw());
+    	SmartDashboard.putNumber("Navx pitch", Robot.dt.imu.getPitch());
+    	SmartDashboard.putNumber("Navx roll", Robot.dt.imu.getRoll());
     	
     	// log
     	totalCurrentLogger.log(pdp.getTotalCurrent(), timer.getMatchTime());

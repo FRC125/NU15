@@ -2,6 +2,7 @@ package com.nutrons.recyclerush.subsystems.drivetrain;
 
 import java.util.HashMap;
 
+import com.kauailabs.navx_mxp.AHRS;
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
 import com.nutrons.lib.Utils;
@@ -14,13 +15,14 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * 
- * @author John Zhang, Michael
+ * @author John Zhang, Michael, Camilo Gonzalez
  *
  */
 public class DriveTrain extends Subsystem implements ILoggable{
@@ -39,6 +41,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0.5;
 	public double WHEEL_DIAM = 6;
+	public Byte update_rate_hz = 50;
 	
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
@@ -46,6 +49,13 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
 	
 	public DriveTrain() {
+		try{
+			serialPort = new SerialPort(57600, SerialPort.Port.kUSB);
+			imu = new AHRS(serialPort, update_rate_hz);
+		}catch(Exception e) {	
+			System.out.println("Woops - navx failed");
+		}
+		
 		headingHoldPID.setContinuous();
 		headingHoldPID.setOutputRange(-0.5, 0.5);
 		quickTurnPID.setContinuous();
@@ -56,15 +66,13 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	}
 	
 	//Inner Classes
-	class DistancePIDSource implements PIDSource
-	{
+	class DistancePIDSource implements PIDSource {
 		public double pidGet() {
 			return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
 		}
 	}
 	
-	class HoldHeadingPID implements PIDOutput
-	{
+	class HoldHeadingPID implements PIDOutput {
 		public void pidWrite(double output) {
 			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
 			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
@@ -72,8 +80,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		}
 	}
 	
-	class DriveDistancePID implements PIDOutput
-	{
+	class DriveDistancePID implements PIDOutput {
 		public void pidWrite(double output) {
 			double left = Utils.deadband(output, 0.1, 0);
 			double right = -Utils.deadband(output, 0.1, 0);
@@ -91,12 +98,13 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	}
 	class GyroWrapper implements PIDSource {
 		public double pidGet() {
-			return gyro.getAngle() * GYRO_CONSTANT;
+			return imu.getYaw() * GYRO_CONSTANT;
 		}
 	}
 	
 	// Sensors
-	Gyro gyro = new Gyro(RobotMap.GYROSCOPE);
+	SerialPort serialPort;
+	public AHRS imu;
 	Encoder leftEncoder = new Encoder(RobotMap.ENCODER_LEFT_DRIVETRAIN_A, RobotMap.ENCODER_LEFT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
 	Encoder rightEncoder = new Encoder(RobotMap.ENCODER_RIGHT_DRIVETRAIN_A, RobotMap.ENCODER_RIGHT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
 	
@@ -175,21 +183,14 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * Resets the gyro to angle zero.
 	 */
 	public void zeroGyro() {
-		gyro.reset();
-	}
-	
-	/**
-	 * @return moving average value of gyro rate in degrees per second.
-	 */
-	public double getGyroRate() {
-		return gyroRateAverage.getAverage(gyro.getRate());
+		imu.zeroYaw();
 	}
 	
 	/**
 	 * @return moving average value of gyro angle in degrees.
 	 */
 	public double getGyroAngle() {
-		return gyroAngleAverage.getAverage(gyro.getAngle());
+		return gyroAngleAverage.getAverage(imu.getYaw());
 	}
 	
 	/**
@@ -229,7 +230,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 */
 	public void drivePID(double x, double y, double rot) {
 		if(Robot.oi.isResetGyroButton()) {
-			gyro.reset();
+			imu.zeroYaw();
 			offset = 0;
 		}
 		x = mapJoystickToPowerOutput(x);
@@ -259,9 +260,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 			
 		} else {
 			headingHoldPID.disable();
-			offset -= gyro.getAngle();
+			offset -= imu.getYaw();
 			offset = offset % 360.0; // sets offset to value between 0-360
-			gyro.reset();//sets gyro to 0
+			imu.zeroYaw();;//sets gyro to 0
 			driveLCR(getMotorOutput(x, y, rot));
 		}
 	}

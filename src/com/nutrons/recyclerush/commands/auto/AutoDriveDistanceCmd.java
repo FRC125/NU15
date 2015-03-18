@@ -35,6 +35,8 @@ public class AutoDriveDistanceCmd extends Command {
     	Robot.dt.driveStraightForDistance(distance);
     	Robot.dt.driveDistancePID.setOutputRange(-speed, speed);
     	Robot.dt.driveDistancePID.setAbsoluteTolerance(epsilon);
+    	Robot.dt.headingHoldPID.enable();
+    	Robot.dt.headingHoldPID.setSetpoint(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -53,6 +55,7 @@ public class AutoDriveDistanceCmd extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.dt.driveDistancePID.reset();
     	Robot.dt.driveDistancePID.disable();
     	Robot.dt.headingHoldPID.disable();
     	Robot.dt.stop();

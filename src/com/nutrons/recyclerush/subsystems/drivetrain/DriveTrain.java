@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// Constants
-	public double GYRO_CONSTANT = 1.0/360.0; // a value that adjusts our 
+	public double GYRO_CONSTANT = 1.0; // a value that adjusts our 
 	public double ENCODER_CONSTANT = 1/5000.0;
 	public double offset = 0;
 	public double kP_straight = 5;
@@ -42,22 +43,26 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kD_quickturn = 0.5;
 	public double WHEEL_DIAM = 6;
 	public Byte update_rate_hz = 50;
-	
+	SerialPort serialPort;// = new SerialPort(57600, SerialPort.Port.kUSB);
+	public AHRS imu;// = new AHRS(serialPort, update_rate_hz);
 	// Motors
 	Talon motorL = new Talon(RobotMap.DRIVE_LEFT);
 	Talon motorC = new Talon(RobotMap.DRIVE_CENTER);
 	Talon motorR = new Talon(RobotMap.DRIVE_RIGHT);
 	
 	public DriveTrain() {
-		try{
-			serialPort = new SerialPort(57600, SerialPort.Port.kUSB);
+//		try{
+			Port p = SerialPort.Port.kUSB;
+			serialPort = new SerialPort(57600, p);
 			imu = new AHRS(serialPort, update_rate_hz);
-		}catch(Exception e) {	
-			System.out.println("Woops - navx failed");
-		}
+//		}catch(Exception e) {	
+//			System.out.println("Woops - navx failed");
+//		}
 		
 		headingHoldPID.setContinuous();
-		headingHoldPID.setOutputRange(-0.5, 0.5);
+		headingHoldPID.setOutputRange(-0.75, 0.75);
+		headingHoldPID.setAbsoluteTolerance(3);
+		quickTurnPID.setInputRange(-180, 180);
 		quickTurnPID.setContinuous();
 		quickTurnPID.disable();
 		quickTurnPID.setOutputRange(-0.75, 0.75);
@@ -98,13 +103,12 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	}
 	class GyroWrapper implements PIDSource {
 		public double pidGet() {
-			return imu.getYaw() * GYRO_CONSTANT;
+			return imu.getYaw(); 
 		}
 	}
 	
 	// Sensors
-	SerialPort serialPort;
-	public AHRS imu;
+	
 	Encoder leftEncoder = new Encoder(RobotMap.ENCODER_LEFT_DRIVETRAIN_A, RobotMap.ENCODER_LEFT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
 	Encoder rightEncoder = new Encoder(RobotMap.ENCODER_RIGHT_DRIVETRAIN_A, RobotMap.ENCODER_RIGHT_DRIVETRAIN_B, false, Encoder.EncodingType.k4X);;
 	
@@ -190,7 +194,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 * @return moving average value of gyro angle in degrees.
 	 */
 	public double getGyroAngle() {
-		return gyroAngleAverage.getAverage(imu.getYaw());
+		return imu.getYaw();
 	}
 	
 	/**
@@ -286,7 +290,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	 */
 	public void quickTurn(double targetAngle) {
 		quickTurnPID.enable();
-		quickTurnPID.setSetpoint(targetAngle * GYRO_CONSTANT);
+		quickTurnPID.setSetpoint(targetAngle);
 	}
 	
 	public double getMotorLeftSpeed() {

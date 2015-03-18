@@ -70,16 +70,16 @@ public class Robot extends IterativeRobot {
 		
 		comp = new Compressor();
     	oi = new OI();
-		SmartDashboard.putNumber("dt_kP_straight", 30.0);
-		SmartDashboard.putNumber("dt_kP_quickturn", 3);
+		SmartDashboard.putNumber("dt_kP_straight", 0.021);
+		SmartDashboard.putNumber("dt_kP_quickturn", 0.021);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
 		SmartDashboard.putNumber("dt_kI_straight", 0);
 		SmartDashboard.putNumber("dt_kI_quickturn", 0);
 		SmartDashboard.putNumber("dt_kI_distance", 0);
 
-		SmartDashboard.putNumber("dt_kD_straight", 0);
-		SmartDashboard.putNumber("dt_kD_quickturn", 0.5);
+		SmartDashboard.putNumber("dt_kD_straight", 0.07);
+		SmartDashboard.putNumber("dt_kD_quickturn", 0.07);
 		SmartDashboard.putNumber("dt_kD_distance", 0);
 		
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
@@ -104,6 +104,8 @@ public class Robot extends IterativeRobot {
         Robot.intake.openIntakeWheel();
     }
 	
+    boolean first_iteration = true;
+    
     /**
      * This method is run when the robot is in disabled mode.
      */
@@ -111,6 +113,13 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
         updateSmartDashboard();
     	autonomousCommand = (Command) autoChooser.getSelected();
+    	
+    	boolean is_calibrating = Robot.dt.imu.isCalibrating();
+        if ( first_iteration && !is_calibrating ) {
+            Timer.delay( 0.3 );
+            Robot.dt.imu.zeroYaw();
+            first_iteration = false;
+        }
 	}
 
 	/**

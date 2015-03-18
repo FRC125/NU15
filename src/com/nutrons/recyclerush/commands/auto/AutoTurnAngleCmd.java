@@ -20,7 +20,7 @@ public class AutoTurnAngleCmd extends Command {
 	double targetAngle = Robot.dt.getGyroAngle();
 	double angle = 0;
 	double time = 5;
-	DebouncedBoolean onTarget = new DebouncedBoolean(50);
+	DebouncedBoolean onTarget = new DebouncedBoolean(1);
 	
     public AutoTurnAngleCmd(double angle) {
     	this.targetAngle = angle;
@@ -33,7 +33,7 @@ public class AutoTurnAngleCmd extends Command {
     	Robot.dt.quickTurnPID.disable();
     	Robot.dt.zeroGyro();
     	timer.start();
-    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.01);
+    	Robot.dt.quickTurnPID.setAbsoluteTolerance(epsilon);
     	Robot.dt.quickTurn(targetAngle);
     }
 
@@ -48,12 +48,13 @@ public class AutoTurnAngleCmd extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.05);
-    	return onTarget.get() || timer.get() > 3.5;
+    	return onTarget.get() || timer.get() > 1;
     	//return Math.abs(Robot.dt.getGyroAngle() - targetAngle) < epsilon || timer.get() > time;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.dt.quickTurnPID.reset();
     	Robot.dt.quickTurnPID.disable();
     	Robot.dt.stop();
     	targetAngle = Robot.dt.getGyroAngle();

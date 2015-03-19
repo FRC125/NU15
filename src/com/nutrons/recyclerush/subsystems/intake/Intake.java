@@ -32,6 +32,9 @@ public class Intake extends Subsystem {
 	DoubleSolenoid canHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
 	DoubleSolenoid canPusherPiston = new DoubleSolenoid(RobotMap.DOUBLE_PUSHER_A, RobotMap.DOUBLE_PUSHER_B);
 	
+	Solenoid canStopper = new Solenoid(RobotMap.CAN_STOPPER_PISTON);
+	Solenoid wintakeStopper = new Solenoid(RobotMap.WINTAKE_STOPPER_PISTON);
+	
 	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
 	
 	Ultrasonic ultra = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
@@ -84,6 +87,22 @@ public class Intake extends Subsystem {
     
     public void retractPusherPiston() {
     	canPusherPiston.set(Value.kReverse);
+    }
+    
+    public void deployCanStopperPiston() {
+    	canStopper.set(true);
+    }
+    
+    public void retractCanStopperPiston() {
+    	canStopper.set(false);
+    }
+    
+    public void deployWintakeStopperPiston() {
+    	wintakeStopper.set(true);
+    }
+    
+    public void retractWintakeStopperPiston() {
+    	wintakeStopper.set(false);
     }
     
     public double getUltrasonicDistance() {

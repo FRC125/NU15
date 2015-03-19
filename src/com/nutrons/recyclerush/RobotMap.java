@@ -26,7 +26,6 @@ public class RobotMap {
 	public static final int ENCODER_RIGHT_DRIVETRAIN_A = 4;
 	public static final int ENCODER_RIGHT_DRIVETRAIN_B = 3;
 	
-	
 	// Pneumatics
 	public static final int LEFT_INTAKE_WHEEL_PISTON = 7;
 	public static final int RIGHT_INTAKE_WHEEL_PISTON = 0;
@@ -34,7 +33,8 @@ public class RobotMap {
 	public static final int DOUBLE_PUSHER_B = 5;
 	public static final int DOUBLE_STACK_HOLDER_A = 2;
 	public static final int DOUBLE_STACK_HOLDER_B = 6;
-
+	public static final int CAN_STOPPER_PISTON = 1;
+	public static final int WINTAKE_STOPPER_PISTON = 3;
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;

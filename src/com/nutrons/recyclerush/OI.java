@@ -11,8 +11,12 @@ import com.nutrons.recyclerush.commands.intake.HoldCanCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanHolderCmd;
+import com.nutrons.recyclerush.commands.intake.RetractStopCanCmd;
+import com.nutrons.recyclerush.commands.intake.RetractWintakeStopperCmd;
 import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
+import com.nutrons.recyclerush.commands.intake.StopCanCmd;
 import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
+import com.nutrons.recyclerush.commands.intake.WintakeStopperCmd;
 import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
@@ -22,6 +26,10 @@ import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanPusherCmd;
+
+
+
+
 
 
 
@@ -64,6 +72,9 @@ public class OI {
 	private Button spitIntakeButton = new JoystickButton(operatorPad, 7);
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
 	private Button coopButton = new JoystickButton(operatorPad, 9);
+	private Button stopCanButton = new JoystickButton(operatorPad, 16);
+	private Button deployWintakeStopper = new JoystickButton(operatorPad, 15);
+	private Button retractWintakeStopper = new JoystickButton(operatorPad, 13);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
@@ -92,6 +103,12 @@ public class OI {
 		releaseCan.whenPressed(new RetractCanHolderCmd());
 		
 		coopButton.whenPressed(new CoopStackCmd());
+		
+		stopCanButton.whenActive(new StopCanCmd());
+		stopCanButton.whenReleased(new RetractStopCanCmd());
+		
+		deployWintakeStopper.whenPressed(new WintakeStopperCmd());
+		retractWintakeStopper.whenReleased(new RetractWintakeStopperCmd());
 	}
 	
 	/**

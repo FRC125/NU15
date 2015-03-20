@@ -42,6 +42,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0.5;
 	public double WHEEL_DIAM = 6;
+	public double KC_heading = 0.75;
 	public Byte update_rate_hz = 50;
 	SerialPort serialPort;// = new SerialPort(57600, SerialPort.Port.kUSB);
 	public AHRS imu;// = new AHRS(serialPort, update_rate_hz);
@@ -79,6 +80,7 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	
 	class HoldHeadingPID implements PIDOutput {
 		public void pidWrite(double output) {
+			output += KC_heading * motorC.get();
 			double left = Utils.deadband(motorL.get() + output, 0.1, 0);
 			double right = Utils.deadband(motorR.get() + output, 0.1, 0);
 			driveLCR(new double[] {left, motorC.get(), right});

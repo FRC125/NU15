@@ -25,7 +25,7 @@ public class Intake extends Subsystem {
 	DebouncedBoolean isStackable = new DebouncedBoolean(2);
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
-	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR);
+	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR); 
 
 	DoubleSolenoid IntakeWheelPiston = new DoubleSolenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON, RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
 

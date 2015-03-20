@@ -73,8 +73,8 @@ public class OI {
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
 	private Button coopButton = new JoystickButton(operatorPad, 9);
 	private Button stopCanButton = new JoystickButton(operatorPad, 16);
-	private Button deployWintakeStopper = new JoystickButton(operatorPad, 15);
-	private Button retractWintakeStopper = new JoystickButton(operatorPad, 13);
+	private Button deployWintakeStopper = new JoystickButton(operatorPad, 13);
+	private Button retractWintakeStopper = new JoystickButton(operatorPad, 15);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());

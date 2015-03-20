@@ -6,12 +6,14 @@ import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.elevator.LowerElevatorIfStackableCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
+import com.nutrons.recyclerush.commands.intake.RetractWintakeStopperCmd;
 import com.nutrons.recyclerush.commands.intake.SpinIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.WaitForStackableCmd;
 import com.nutrons.recyclerush.commands.intake.WaitForToteCmd;
+import com.nutrons.recyclerush.commands.intake.WintakeStopperCmd;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -25,8 +27,10 @@ public class HumanPlayerFeedSeq extends CommandGroup {
     public  HumanPlayerFeedSeq() {
     	addSequential(new IntakeOpenCmd());
     	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new RetractWintakeStopperCmd());
     	addSequential(new SpinWintakeWheelsCmd());
     	addSequential(new WaitForToteCmd());
+    	addSequential(new WintakeStopperCmd());
     	addSequential(new IntakeCloseCmd());
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new StopWintakeWheelsCmd());

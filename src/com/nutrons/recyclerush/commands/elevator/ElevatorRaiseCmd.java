@@ -2,6 +2,7 @@ package com.nutrons.recyclerush.commands.elevator;
 
 import com.nutrons.recyclerush.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorRaiseCmd extends Command {
 
+	Timer timer = new Timer();
+	
     public ElevatorRaiseCmd() {
         requires(Robot.elevator);
         requires(Robot.intake);
@@ -17,7 +20,9 @@ public class ElevatorRaiseCmd extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.intake.retractHolderPistons();
+    	Robot.intake.retractCanStopperPiston();
     	Robot.intake.openIntakeWheel();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +32,7 @@ public class ElevatorRaiseCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.elevator.isAtMaxHeight();
+        return Robot.elevator.isAtMaxHeight() || timer.get() > 4;
     }
 
     // Called once after isFinished returns true

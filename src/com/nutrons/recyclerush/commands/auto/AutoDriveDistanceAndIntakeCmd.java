@@ -21,7 +21,7 @@ public class AutoDriveDistanceAndIntakeCmd extends Command {
 	double maxSpeed = 11;
 	double intakeStart;
 	double intakeEnd;
-	
+
     public AutoDriveDistanceAndIntakeCmd(double distance, double intakeDistanceStart, double intakeDistanceEnd) {
     	this.distance = distance;
     	requires(Robot.dt);
@@ -29,6 +29,16 @@ public class AutoDriveDistanceAndIntakeCmd extends Command {
     	timer.start();
     	intakeStart = intakeDistanceStart;
     	intakeEnd = intakeDistanceEnd;
+    }
+	
+    public AutoDriveDistanceAndIntakeCmd(double distance, double intakeDistanceStart, double intakeDistanceEnd, double speed) {
+    	this.distance = distance;
+    	requires(Robot.dt);
+    	time = distance / (maxSpeed * speed * 12) + 1;
+    	timer.start();
+    	intakeStart = intakeDistanceStart;
+    	intakeEnd = intakeDistanceEnd;
+    	this.speed = Math.abs(speed);
     }
     
     public AutoDriveDistanceAndIntakeCmd(double distance, double speed) {

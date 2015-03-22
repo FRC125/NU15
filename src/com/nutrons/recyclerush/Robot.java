@@ -8,6 +8,7 @@ import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
 import com.nutrons.recyclerush.commands.auto.AutoDriveTurn;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitLeftSideCmd;
+import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
 import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
@@ -96,6 +97,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Drive and Turn", (Command) new AutoDriveTurn());
         autoChooser.addObject("Knock and Spit - RIGHT Side", (Command) new AutoKnockAndSpitCmd());
         autoChooser.addObject("Knock and Spit - LEFT Side", (Command) new AutoKnockAndSpitLeftSideCmd());
+        autoChooser.addObject("Knock Can And Turn", (Command) new AutoKnockCanAndTurn());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author John Zhang
  *
  */
-public class AutoDriveDistanceLowerElevatorCmd extends Command {
+public class AutoDriveDistanceElevatorMoveCmd extends Command {
 
 	Timer timer = new Timer();
 	double epsilon = 1.0;
@@ -20,7 +20,7 @@ public class AutoDriveDistanceLowerElevatorCmd extends Command {
 	double time;
 	double maxSpeed = 11;
 	
-    public AutoDriveDistanceLowerElevatorCmd(double distance) {
+    public AutoDriveDistanceElevatorMoveCmd(double distance) {
     	this.distance = distance;
     	requires(Robot.dt);
     	requires(Robot.elevator);
@@ -28,7 +28,7 @@ public class AutoDriveDistanceLowerElevatorCmd extends Command {
     	timer.start();
     }
     
-    public AutoDriveDistanceLowerElevatorCmd(double distance, double speed) {
+    public AutoDriveDistanceElevatorMoveCmd(double distance, double speed) {
     	this.distance = distance;
     	this.speed = Math.abs(speed);
     	requires(Robot.dt);
@@ -46,7 +46,7 @@ public class AutoDriveDistanceLowerElevatorCmd extends Command {
     	Robot.dt.driveDistancePID.setAbsoluteTolerance(epsilon);
     	Robot.dt.headingHoldPID.enable();
     	Robot.dt.headingHoldPID.setSetpoint(0);
-    	
+    	Robot.elevator.setElevatorPower(-1.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -57,13 +57,16 @@ public class AutoDriveDistanceLowerElevatorCmd extends Command {
 		SmartDashboard.putNumber("Error", Robot.dt.headingHoldPID.getError());
 		SmartDashboard.putNumber("Correction", Robot.dt.headingHoldPID.get());
 		if(Robot.elevator.isAtMinHeight()) {
-			Robot.elevator.stop();
-		}
+    		Robot.elevator.setElevatorPower(1.0);
+    	}else if(Robot.elevator.isAtMaxHeight() && timer.get() > 0.5) {
+    		Robot.elevator.stop();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	return Robot.dt.driveDistancePID.onTarget();
+    			//|| timer.get() > time;
     }
 
     // Called once after isFinished returns true

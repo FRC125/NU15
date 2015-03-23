@@ -78,6 +78,7 @@ public class OI {
 	private Button deployWintakeStopper = new JoystickButton(operatorPad, 13);
 	private Button retractWintakeStopper = new JoystickButton(operatorPad, 15);
 	private Button raiseRCButton = new JoystickButton(operatorPad, 9);
+	private Button wintakeWheelsButton = new JoystickButton(operatorPad, 12);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
@@ -114,6 +115,9 @@ public class OI {
 		retractWintakeStopper.whenReleased(new RetractWintakeStopperCmd());
 		
 		raiseRCButton.whenPressed(new ElevatorRaiseRCCmd());
+		
+		wintakeWheelsButton.whenActive(new SpinWintakeWheelsCmd());
+		wintakeWheelsButton.whenReleased(new StopWintakeWheelsCmd());
 	}
 	
 	/**

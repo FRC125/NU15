@@ -27,7 +27,7 @@ public class AutoThreeTotes extends CommandGroup {
     	addSequential(new AutoTurnAngleCmd(-45));
     	addSequential(new AutoDriveUntilToteCmd());
     	addSequential(new IntakeToteSeq());
-    	addSequential(new IntakeTapToteSeq());
+    	addSequential(new WaitCommand(0.5));
     	
     	addSequential(new ElevatorLowerCmd());
     	addSequential(new ElevatorRaiseCmd());
@@ -39,7 +39,7 @@ public class AutoThreeTotes extends CommandGroup {
     	addSequential(new AutoTurnAngleCmd(-45));
     	addSequential(new AutoDriveUntilToteCmd());
     	addSequential(new IntakeToteSeq());
-    	addSequential(new IntakeTapToteSeq());
+    	addSequential(new WaitCommand(0.5));
     	
     	addSequential(new AutoTurnAngleCmd(90));
     	addSequential(new StopIntakeWheelsCmd());

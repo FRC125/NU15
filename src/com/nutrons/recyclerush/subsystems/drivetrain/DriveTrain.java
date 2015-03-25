@@ -5,6 +5,8 @@ import java.util.HashMap;
 import com.kauailabs.navx_mxp.AHRS;
 import com.nutrons.lib.ILoggable;
 import com.nutrons.lib.MovingAverage;
+import com.nutrons.lib.TrajectoryFollower;
+import com.nutrons.lib.TrajectoryFollowingPositionController;
 import com.nutrons.lib.Utils;
 import com.nutrons.recyclerush.Robot;
 import com.nutrons.recyclerush.RobotMap;
@@ -41,6 +43,12 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public double kP_quickturn = 3;
 	public double kI_quickturn = 0;
 	public double kD_quickturn = 0.5;
+	public double kP_trajectory = 0.5;
+	public double kI_trajectory = 0;
+	public double kD_trajectory = 0;
+	public double kV_trajectory = 0;
+	public double kA_trajectory = 0;
+	public double kE_trajectory = 2;
 	public double WHEEL_DIAM = 6;
 	public Byte update_rate_hz = 50;
 	SerialPort serialPort;// = new SerialPort(57600, SerialPort.Port.kUSB);
@@ -121,6 +129,9 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	public PIDController quickTurnPID = new PIDController(kP_quickturn, kI_quickturn, kD_quickturn, new GyroWrapper(), new QuickTurnOutput());
 	public PIDController driveDistancePID = new PIDController(kP_distance, kI_distance, kD_distance, new DistancePIDSource(), new DriveDistancePID());
 
+	public TrajectoryFollower follower = new TrajectoryFollower();
+	public TrajectoryFollowingPositionController controller = new TrajectoryFollowingPositionController(kP_trajectory, kI_trajectory, kD_trajectory, kV_trajectory, kA_trajectory, kE_trajectory, follower.getConfig());
+	
 	public void initDefaultCommand() {
     	setDefaultCommand(new DriveHPIDCmd());
     }

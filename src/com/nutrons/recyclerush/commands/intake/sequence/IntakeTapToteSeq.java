@@ -13,9 +13,9 @@ public class IntakeTapToteSeq extends CommandGroup {
     
     public  IntakeTapToteSeq() {
         addSequential(new IntakeCloseCmd());
-        addSequential(new WaitCommand(0.1));
+        addSequential(new WaitCommand(0.3));
         addSequential(new IntakeOpenCmd());
-        addSequential(new WaitCommand(0.1));
+        addSequential(new WaitCommand(0.2));
         addSequential(new IntakeCloseCmd());
     }
 }

@@ -12,12 +12,20 @@ public class AutoDriveUntilToteCmd extends Command {
 	
 	double power = 0.5;
 	int toteCount = 0;
+	double delay = 0;
+	double time = -1;
 	
 	Timer timer = new Timer();
 	
     public AutoDriveUntilToteCmd() {
     	requires(Robot.dt);
     	requires(Robot.intake);
+    }
+    
+    public AutoDriveUntilToteCmd(double delay) {
+    	requires(Robot.dt);
+    	requires(Robot.intake);
+    	this.delay = delay;
     }
 
     // Called just before this Command runs the first time

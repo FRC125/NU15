@@ -47,8 +47,7 @@ public class AutoTurnAngleCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	Robot.dt.quickTurnPID.setAbsoluteTolerance(0.05);
-    	return onTarget.get() || timer.get() > 1;
+    	return onTarget.get();
     	//return Math.abs(Robot.dt.getGyroAngle() - targetAngle) < epsilon || timer.get() > time;
     }
 

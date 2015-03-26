@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
 		
 		comp = new Compressor();
     	oi = new OI();
-		SmartDashboard.putNumber("dt_kP_straight", 0.021);
+		SmartDashboard.putNumber("dt_kP_straight", 0.5);
 		SmartDashboard.putNumber("dt_kP_quickturn", 0.021);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dt_kI_quickturn", 0);
 		SmartDashboard.putNumber("dt_kI_distance", 0);
 
-		SmartDashboard.putNumber("dt_kD_straight", 0.07);
+		SmartDashboard.putNumber("dt_kD_straight", 0.01);
 		SmartDashboard.putNumber("dt_kD_quickturn", 0.07);
 		SmartDashboard.putNumber("dt_kD_distance", 0);
 		

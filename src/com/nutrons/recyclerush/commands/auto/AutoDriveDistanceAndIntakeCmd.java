@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author John Zhang
  *
  */
-public class AutoDriveDistanceCmd extends Command {
+public class AutoDriveDistanceAndIntakeCmd extends Command {
 
 	Timer timer = new Timer();
 	double epsilon = 1.0;
@@ -19,15 +19,29 @@ public class AutoDriveDistanceCmd extends Command {
 	double speed = 1.0;
 	double time;
 	double maxSpeed = 11;
-	
-    public AutoDriveDistanceCmd(double distance) {
+	double intakeStart;
+	double intakeEnd;
+
+    public AutoDriveDistanceAndIntakeCmd(double distance, double intakeDistanceStart, double intakeDistanceEnd) {
     	this.distance = distance;
     	requires(Robot.dt);
     	time = distance / (maxSpeed * speed * 12) + 1;
     	timer.start();
+    	intakeStart = intakeDistanceStart;
+    	intakeEnd = intakeDistanceEnd;
+    }
+	
+    public AutoDriveDistanceAndIntakeCmd(double distance, double intakeDistanceStart, double intakeDistanceEnd, double speed) {
+    	this.distance = distance;
+    	requires(Robot.dt);
+    	time = distance / (maxSpeed * speed * 12) + 1;
+    	timer.start();
+    	intakeStart = intakeDistanceStart;
+    	intakeEnd = intakeDistanceEnd;
+    	this.speed = Math.abs(speed);
     }
     
-    public AutoDriveDistanceCmd(double distance, double speed) {
+    public AutoDriveDistanceAndIntakeCmd(double distance, double speed) {
     	this.distance = distance;
     	this.speed = Math.abs(speed);
     	requires(Robot.dt);
@@ -54,6 +68,11 @@ public class AutoDriveDistanceCmd extends Command {
 
 		SmartDashboard.putNumber("Error", Robot.dt.headingHoldPID.getError());
 		SmartDashboard.putNumber("Correction", Robot.dt.headingHoldPID.get());
+		if(Robot.dt.getLeftDistance() > intakeStart && Robot.dt.getLeftDistance() < intakeEnd) {
+			Robot.intake.setIntakeMotorPower(1);
+		} else {
+			Robot.intake.stopIntakeMotor();
+		}
     }
 
     // Make this return true when this Command no longer needs to run execute()

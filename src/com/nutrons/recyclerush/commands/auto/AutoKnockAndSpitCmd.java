@@ -12,6 +12,7 @@ public class AutoKnockAndSpitCmd extends CommandGroup {
 	{
 		//TODO: Knock RC, drive backwards, turn 45, lower elevator, spit tote, turn -45
 		addSequential(new AutoKnockTote());
+		addSequential(new WaitCommand(1));
     	addSequential(new AutoDriveDistanceCmd(-30));
     	addSequential(new AutoTurnAngleCmd(45));
     	addSequential(new ElevatorLowerCmd());

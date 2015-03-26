@@ -15,6 +15,7 @@ public class AutoKnockAndSpitLeftSideCmd extends CommandGroup {
     public  AutoKnockAndSpitLeftSideCmd() {
     	addSequential(new AutoKnockTote());
     	addSequential(new AutoDriveDistanceCmd(-30));
+    	addSequential(new WaitCommand(1));
     	addSequential(new AutoTurnAngleCmd(120));
     	addSequential(new ElevatorLowerCmd());
     	addSequential(new WaitCommand(1));

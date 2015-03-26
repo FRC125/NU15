@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author John Zhang
  *
  */
-public class AutoDriveDistanceCmd extends Command {
+public class AutoSpitAndDriveBackCmd extends Command {
 
 	Timer timer = new Timer();
 	double epsilon = 1.0;
@@ -20,14 +20,14 @@ public class AutoDriveDistanceCmd extends Command {
 	double time;
 	double maxSpeed = 11;
 	
-    public AutoDriveDistanceCmd(double distance) {
+    public AutoSpitAndDriveBackCmd(double distance) {
     	this.distance = distance;
     	requires(Robot.dt);
     	time = distance / (maxSpeed * speed * 12) + 1;
     	timer.start();
     }
     
-    public AutoDriveDistanceCmd(double distance, double speed) {
+    public AutoSpitAndDriveBackCmd(double distance, double speed) {
     	this.distance = distance;
     	this.speed = Math.abs(speed);
     	requires(Robot.dt);
@@ -45,6 +45,8 @@ public class AutoDriveDistanceCmd extends Command {
     	Robot.dt.driveDistancePID.setAbsoluteTolerance(epsilon);
     	Robot.dt.headingHoldPID.enable();
     	Robot.dt.headingHoldPID.setSetpoint(0);
+    	Robot.intake.setIntakeMotorPower(-1.0);
+    	Robot.intake.closeIntakeWheel();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -54,12 +56,12 @@ public class AutoDriveDistanceCmd extends Command {
 
 		SmartDashboard.putNumber("Error", Robot.dt.headingHoldPID.getError());
 		SmartDashboard.putNumber("Correction", Robot.dt.headingHoldPID.get());
+		
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	return Robot.dt.driveDistancePID.onTarget();
-    			//|| timer.get() > time;
     }
 
     // Called once after isFinished returns true
@@ -68,6 +70,8 @@ public class AutoDriveDistanceCmd extends Command {
     	Robot.dt.driveDistancePID.disable();
     	Robot.dt.headingHoldPID.disable();
     	Robot.dt.stop();
+    	Robot.intake.stopIntakeMotor();
+    	Robot.intake.openIntakeWheel();
     }
 
     // Called when another command which requires one or more of the same

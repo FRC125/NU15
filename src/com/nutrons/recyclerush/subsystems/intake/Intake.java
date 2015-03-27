@@ -31,6 +31,7 @@ public class Intake extends Subsystem {
 
 	DoubleSolenoid canHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
 	DoubleSolenoid canPusherPiston = new DoubleSolenoid(RobotMap.DOUBLE_PUSHER_A, RobotMap.DOUBLE_PUSHER_B);
+	DoubleSolenoid canGrabberPiston = new DoubleSolenoid(RobotMap.CAN_GRABBER_A, RobotMap.CAN_GRABBER_B);
 	
 	Solenoid canStopper = new Solenoid(RobotMap.CAN_STOPPER_PISTON);
 	Solenoid wintakeStopper = new Solenoid(RobotMap.WINTAKE_STOPPER_PISTON);
@@ -103,6 +104,14 @@ public class Intake extends Subsystem {
     
     public void retractWintakeStopperPiston() {
     	wintakeStopper.set(false);
+    }
+    
+    public void deployCanGrabberPiston() {
+    	canGrabberPiston.set(Value.kForward);
+    }
+    
+    public void retractCanGrabberPiston() {
+    	canGrabberPiston.set(Value.kReverse);
     }
     
     public double getUltrasonicDistance() {

@@ -35,6 +35,8 @@ public class RobotMap {
 	public static final int DOUBLE_STACK_HOLDER_B = 6;
 	public static final int CAN_STOPPER_PISTON = 1;
 	public static final int WINTAKE_STOPPER_PISTON = 3;
+	public static final int CAN_GRABBER_A = 0;
+	public static final int CAN_GRABBER_B = 0;
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;

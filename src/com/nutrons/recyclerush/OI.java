@@ -9,10 +9,12 @@ import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseRCCmd;
 import com.nutrons.recyclerush.commands.intake.CoopStackCmd;
 import com.nutrons.recyclerush.commands.intake.DeployCanGrabberCmd;
+import com.nutrons.recyclerush.commands.intake.DeployCanGrabberHandleCmd;
 import com.nutrons.recyclerush.commands.intake.HoldCanCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanGrabberCmd;
+import com.nutrons.recyclerush.commands.intake.RetractCanGrabberHandleCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanHolderCmd;
 import com.nutrons.recyclerush.commands.intake.RetractStopCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractWintakeStopperCmd;
@@ -29,6 +31,8 @@ import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanPusherCmd;
+
+
 
 
 
@@ -83,6 +87,7 @@ public class OI {
 	private Button retractWintakeStopper = new JoystickButton(operatorPad, 15);
 	private Button raiseRCButton = new JoystickButton(operatorPad, 9);
 	private Button wintakeWheelsButton = new JoystickButton(operatorPad, 12);
+	private Button canGrabberHandleButton = new JoystickButton(operatorPad, 3);
 	
 	public OI() {
 		intakeContainerButton.whenActive(new IntakeContainerSeq());
@@ -112,6 +117,9 @@ public class OI {
 		
 		canGrabberButton.whenActive(new DeployCanGrabberCmd());
 		canGrabberButton.whenReleased(new RetractCanGrabberCmd());
+		
+		canGrabberHandleButton.whenActive(new DeployCanGrabberHandleCmd());
+		canGrabberHandleButton.whenReleased(new RetractCanGrabberHandleCmd());
 		
 		stopCanButton.whenActive(new StopCanCmd());
 		stopCanButton.whenReleased(new RetractStopCanCmd());

@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class AutoCanGrabAndDrive extends CommandGroup {
     
     public  AutoCanGrabAndDrive() {
+    	addSequential(new AutoDriveDistanceCmd(-6, 0.5));
+    	addSequential(new WaitCommand(0.5));
     	addSequential(new DeployCanGrabberCmd());
     	addSequential(new WaitCommand(0.5));
-    	addSequential(new AutoDriveDistanceCmd(120, 1.0));
+    	addSequential(new AutoDriveDistanceCmd(140, 1.0));
     	addSequential(new RetractCanGrabberCmd());
     }
 }

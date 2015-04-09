@@ -68,9 +68,9 @@ public class OI {
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 9);
 	private Button slowDownButton = new JoystickButton(driverPad, 5);
-	private Button knockCan = new JoystickButton(driverPad, 7);
-	private Button holdCan = new JoystickButton(driverPad, 6);
-	private Button releaseCan = new JoystickButton(driverPad, 8);
+	//private Button knockCan = new JoystickButton(driverPad, 7);
+	private Button holdCan = new JoystickButton(driverPad, 7);
+	private Button releaseCan = new JoystickButton(driverPad, 5);
 	
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);
@@ -108,9 +108,6 @@ public class OI {
 		humanPlayerIntakeButton.whenPressed(new HumanPlayerFeedSeq());
 		
 		cancelWintake.whenPressed(new StopHumanPlayerFeedSeq());
-		
-		knockCan.whenPressed(new PushCanCmd());
-		knockCan.whenReleased(new RetractCanPusherCmd());
 		
 		holdCan.whenPressed(new HoldCanCmd());
 		releaseCan.whenPressed(new RetractCanHolderCmd());

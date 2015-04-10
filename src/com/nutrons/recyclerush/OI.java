@@ -69,8 +69,8 @@ public class OI {
 	private Button resetGyroButton = new JoystickButton(driverPad, 9);
 	private Button slowDownButton = new JoystickButton(driverPad, 5);
 	//private Button knockCan = new JoystickButton(driverPad, 7);
-	private Button holdCan = new JoystickButton(driverPad, 7);
-	private Button releaseCan = new JoystickButton(driverPad, 5);
+	private Button holdCan = new JoystickButton(driverPad, 6);
+	private Button releaseCan = new JoystickButton(driverPad, 8);
 	
 	// command buttons
 	private Button intakeContainerButton = new JoystickButton(operatorPad, 1);

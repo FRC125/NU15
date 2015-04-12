@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 	
+	public double autoGrabTime = 1.25;
+	
 	public boolean readyToStack = false;
 	
 	DebouncedBoolean isStackable = new DebouncedBoolean(2);

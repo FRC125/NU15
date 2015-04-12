@@ -19,7 +19,7 @@ public class ElevatorRaiseCmd extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.intake.retractHolderPistons();
+    	//Robot.intake.retractHolderPistons();
     	Robot.intake.retractCanStopperPiston();
     	Robot.intake.openIntakeWheel();
     	timer.start();

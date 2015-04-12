@@ -21,7 +21,7 @@ public class ElevatorLowerCmd extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.intake.retractHolderPistons();
+    	//Robot.intake.retractHolderPistons();
     	Robot.intake.retractCanStopperPiston();
     	Robot.intake.closeIntakeWheel();
     	Robot.elevator.elevatorController.setGoal(Robot.elevator.follower.getCurrentSetpoint(), goal);
@@ -46,6 +46,7 @@ public class ElevatorLowerCmd extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.elevator.stop();
     	end();
     }
 }

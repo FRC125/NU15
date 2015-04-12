@@ -18,7 +18,7 @@ public class LowerElevatorIfStackableCmd extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.intake.retractHolderPistons();
+    	//Robot.intake.retractHolderPistons();
     	Robot.intake.closeIntakeWheel();
     	isStackable = Robot.intake.isStackable();
     }
@@ -43,5 +43,6 @@ public class LowerElevatorIfStackableCmd extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.elevator.stop();
     }
 }

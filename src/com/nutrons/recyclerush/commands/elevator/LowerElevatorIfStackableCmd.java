@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LowerElevatorIfStackableCmd extends Command {
 	
 	private boolean isStackable = false;
-	
-    public LowerElevatorIfStackableCmd() {
+	private double speed = -1;
+    public LowerElevatorIfStackableCmd(double speed) {
     	requires(Robot.elevator);
     	requires(Robot.intake);
+    	this.speed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -26,7 +27,7 @@ public class LowerElevatorIfStackableCmd extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(isStackable) {
-    		Robot.elevator.setElevatorPower(-1.0);
+    		Robot.elevator.setElevatorPower(this.speed);
     	}
     }
 

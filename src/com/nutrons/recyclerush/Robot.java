@@ -4,6 +4,7 @@ package com.nutrons.recyclerush;
 import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.commands.auto.AutoCanGrab;
 import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDrive;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDriveFromBump;
 import com.nutrons.recyclerush.commands.auto.AutoCanGrabDriveCustomTime;
 import com.nutrons.recyclerush.commands.auto.AutoDriveBackCanGrabAndDrive;
 import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
@@ -114,6 +115,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Knock tote and stop", (Command) new AutoKnockCanAndStop());
         autoChooser.addObject("Drive Baack Grab Can And Drive", (Command) new AutoDriveBackCanGrabAndDrive());
         autoChooser.addObject("Grab Can And Drive", (Command) new AutoCanGrabAndDrive());
+        autoChooser.addObject("Grab can wait longer and drive", (Command) new AutoCanGrabAndDriveFromBump());
         autoChooser.addObject("Grab Can and Do Nothing", (Command) new AutoCanGrab());
         autoChooser.addObject("Knock tote and turn - LEFT Side", (Command) new AutoKnockCanAndTurnLeftSide());
         autoChooser.addObject("Knock tote and turn - RIGHT Side", (Command) new AutoKnockCanAndTurnRightSide());
@@ -201,6 +203,7 @@ public class Robot extends IterativeRobot {
         
         // get
         SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
+        SmartDashboard.putBoolean("is Tote There: ", Robot.intake.isToteThere());
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
         SmartDashboard.putNumber("dt_kP_straight", Robot.dt.kP_straight);
         SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);

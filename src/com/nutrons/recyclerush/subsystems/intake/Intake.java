@@ -28,7 +28,8 @@ public class Intake extends Subsystem {
 	
 	Talon floorIntakeMotor = new Talon(RobotMap.INTAKE_MOTOR);
 	Talon wintakeMotor = new Talon(RobotMap.WINTAKE_MOTOR); 
-
+	Talon winchMotor = new Talon(RobotMap.WINCH_MOTOR);
+	
 	DoubleSolenoid IntakeWheelPiston = new DoubleSolenoid(RobotMap.LEFT_INTAKE_WHEEL_PISTON, RobotMap.RIGHT_INTAKE_WHEEL_PISTON);
 
 	DoubleSolenoid canHolderPiston = new DoubleSolenoid(RobotMap.DOUBLE_STACK_HOLDER_A, RobotMap.DOUBLE_STACK_HOLDER_B);
@@ -40,6 +41,7 @@ public class Intake extends Subsystem {
 	Solenoid wintakeStopper = new Solenoid(RobotMap.WINTAKE_STOPPER_PISTON);
 	
 	DigitalInput isStackableButton = new DigitalInput(RobotMap.STACKABLE_BUTTON);
+	DigitalInput isToteThere = new DigitalInput(RobotMap.TOTE_BANNER);
 	
 	Ultrasonic ultra = new Ultrasonic(RobotMap.ULTRASONIC_AN, RobotMap.ULTRASONIC_RX);
 	
@@ -130,5 +132,17 @@ public class Intake extends Subsystem {
     public boolean canceled = false;
     public boolean getStopButton() {
     	return canceled;
+    }
+    
+    public boolean isToteThere() {
+    	return isToteThere.get();
+    }
+    
+    public void setWinchMotorPower(double pow) {
+    	winchMotor.set(pow);
+    }
+    
+    public void stopWinchMotor() {
+    	winchMotor.set(0);
     }
 }

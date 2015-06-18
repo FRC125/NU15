@@ -1,6 +1,8 @@
 
 package com.nutrons.recyclerush;
 
+import java.util.Random;
+
 import com.nutrons.lib.DataLogger;
 import com.nutrons.recyclerush.commands.auto.AutoCanGrab;
 import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDrive;
@@ -24,6 +26,7 @@ import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotesOneCan;
 import com.nutrons.recyclerush.commands.auto.AutoTurnAngleCmd;
 import com.nutrons.recyclerush.commands.auto.AutoTrollAndGrabCan;
+import com.nutrons.recyclerush.commands.auto.AutoRussianRoulette;
 import com.nutrons.recyclerush.commands.drivetrain.DriveTurnCmd;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 import com.nutrons.recyclerush.subsystems.elevator.Elevator;
@@ -124,6 +127,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Grab Can and Drive. Custom time", (Command) new AutoCanGrabDriveCustomTime(Robot.autoTime));
         autoChooser.addObject("Troll and Grab Can", (Command) new AutoTrollAndGrabCan());
         autoChooser.addObject("Grab Can and Troll", (Command) new AutoGrabCanAndTroll());
+        autoChooser.addObject("Play Russian Roulette", (Command) new AutoRussianRoulette());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);

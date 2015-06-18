@@ -11,6 +11,7 @@ import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
 import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
 import com.nutrons.recyclerush.commands.auto.AutoDriveTurn;
+import com.nutrons.recyclerush.commands.auto.AutoGrabCanAndTroll;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitLeftSideCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndStop;
@@ -22,6 +23,7 @@ import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotesOneCan;
 import com.nutrons.recyclerush.commands.auto.AutoTurnAngleCmd;
+import com.nutrons.recyclerush.commands.auto.AutoTrollAndGrabCan;
 import com.nutrons.recyclerush.commands.drivetrain.DriveTurnCmd;
 import com.nutrons.recyclerush.subsystems.drivetrain.DriveTrain;
 import com.nutrons.recyclerush.subsystems.elevator.Elevator;
@@ -120,6 +122,8 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Knock tote and turn - LEFT Side", (Command) new AutoKnockCanAndTurnLeftSide());
         autoChooser.addObject("Knock tote and turn - RIGHT Side", (Command) new AutoKnockCanAndTurnRightSide());
         autoChooser.addObject("Grab Can and Drive. Custom time", (Command) new AutoCanGrabDriveCustomTime(Robot.autoTime));
+        autoChooser.addObject("Troll and Grab Can", (Command) new AutoTrollAndGrabCan());
+        autoChooser.addObject("Grab Can and Troll", (Command) new AutoGrabCanAndTroll());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);
@@ -154,6 +158,7 @@ public class Robot extends IterativeRobot {
     	this.intake.retractCanGrabberPiston(); // makes sure we dont screw up in auto again
         if (autonomousCommand != null) autonomousCommand.start();
         comp.start();
+        updateSmartDashboard();
     }
 
     /**

@@ -14,7 +14,7 @@ public class AutoCanGrabAndDriveFromBump extends CommandGroup {
     public  AutoCanGrabAndDriveFromBump() {
     	addSequential(new DeployCanGrabberCmd());
     	addSequential(new WaitCommand(0.5));
-    	addSequential(new AutoDriveDistanceCmd(170, 0.8));
+    	addSequential(new AutoDriveDistanceCmd(180, 0.8));
     	addSequential(new RetractCanGrabberCmd());
     }
 }

@@ -13,10 +13,10 @@ import com.nutrons.recyclerush.RobotMap;
 import com.nutrons.recyclerush.commands.drivetrain.DriveHPIDCmd;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.Talon;
@@ -83,6 +83,18 @@ public class DriveTrain extends Subsystem implements ILoggable{
 		public double pidGet() {
 			return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
 		}
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	class HoldHeadingPID implements PIDOutput {
@@ -112,6 +124,18 @@ public class DriveTrain extends Subsystem implements ILoggable{
 	class GyroWrapper implements PIDSource {
 		public double pidGet() {
 			return imu.getYaw(); 
+		}
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	

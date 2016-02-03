@@ -1,7 +1,7 @@
 package com.nutrons.recyclerush.commands.auto;
 
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
-import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseSlowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorTimeCmd;
 import com.nutrons.recyclerush.commands.elevator.LowerElevatorIfStackableCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
@@ -22,7 +22,7 @@ public class AutoKnockTote extends CommandGroup {
     
     public  AutoKnockTote() {
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new WaitCommand(1));
     	addSequential(new AutoDriveDistanceCmd(30));
     	addSequential(new WaitCommand(1));

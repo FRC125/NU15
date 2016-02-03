@@ -26,7 +26,7 @@ public class WaitForToteCmd extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.intake.getUltrasonicDistance() < 10.0 
+        return Robot.intake.getUltrasonicDistance() <= 10
         		|| Robot.oi.getCancelWintake();
     }
 

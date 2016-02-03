@@ -16,6 +16,7 @@ public class RobotMap {
 	public static final int ELEVATOR_MOTOR = 5;
 	public static final int INTAKE_MOTOR = 0;
 	public static final int WINTAKE_MOTOR = 1;
+	public static final int WINCH_MOTOR = 6;
 	
 	// Digital Input
 	public static final int ELEVATOR_MAX_BUTTON = 2;
@@ -25,6 +26,7 @@ public class RobotMap {
 	public static final int ENCODER_LEFT_DRIVETRAIN_B = 6;
 	public static final int ENCODER_RIGHT_DRIVETRAIN_A = 4;
 	public static final int ENCODER_RIGHT_DRIVETRAIN_B = 3;
+	public static final int TOTE_BANNER = 8; // TODO: CHANGE THIS TO SOMETHING REALISTIC
 	
 	// Pneumatics
 	public static final int LEFT_INTAKE_WHEEL_PISTON = 7;
@@ -35,6 +37,10 @@ public class RobotMap {
 	public static final int DOUBLE_STACK_HOLDER_B = 6;
 	public static final int CAN_STOPPER_PISTON = 1;
 	public static final int WINTAKE_STOPPER_PISTON = 3;
+	public static final int CAN_GRABBER_A = 5;
+	public static final int CAN_GRABBER_B = 4;
+	public static final int CAN_GRABBER_HANDLE_A = 0;
+	public static final int CAN_GRABBER_HANDLE_B = 0;
 	
 	// Analog Input
 	public static final int GYROSCOPE = 0;
@@ -44,4 +50,5 @@ public class RobotMap {
 	// User Input
 	public static final int DRIVE_PAD = 0;
 	public static final int OPERATOR_PAD = 1;
+	
 }

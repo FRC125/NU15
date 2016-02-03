@@ -1,7 +1,7 @@
 package com.nutrons.recyclerush.commands.auto;
 
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
-import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseSlowerCmd;
 import com.nutrons.recyclerush.commands.intake.SpinIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopIntakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeTapToteSeq;
@@ -18,7 +18,7 @@ public class AutoThreeTotes extends CommandGroup {
     
     public  AutoThreeTotes() {
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new AutoDriveDistanceAndIntakeCmd(35, 10, 35));
     	addSequential(new WaitCommand(0.2));
     	addSequential(new AutoTurnAngleCmd(45));
@@ -30,7 +30,7 @@ public class AutoThreeTotes extends CommandGroup {
     	addSequential(new WaitCommand(0.5));
     	
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new AutoDriveDistanceAndIntakeCmd(35, 10, 35));
     	addSequential(new WaitCommand(0.2));
     	addSequential(new AutoTurnAngleCmd(45));

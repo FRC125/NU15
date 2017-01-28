@@ -1,7 +1,7 @@
 package com.nutrons.recyclerush.commands.auto;
 
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
-import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseSlowerCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
 import com.nutrons.recyclerush.commands.intake.SpinIntakeWheelsCmd;
@@ -22,20 +22,20 @@ public class AutoGrabTote extends CommandGroup {
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new WaitForStackableCmd());
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new IntakeOpenCmd());
     	addSequential(new WaitForToteCmd());
     	addSequential(new IntakeCloseCmd());
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new WaitForStackableCmd());
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new IntakeOpenCmd());
     	addSequential(new WaitForToteCmd());
     	addSequential(new IntakeCloseCmd());
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new WaitForStackableCmd());
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     }
 }

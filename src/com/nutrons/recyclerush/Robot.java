@@ -2,6 +2,11 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrab;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDrive;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDriveFromBump;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrabDriveCustomTime;
+import com.nutrons.recyclerush.commands.auto.AutoDriveBackCanGrabAndDrive;
 import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
 import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
@@ -10,6 +15,8 @@ import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitLeftSideCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndStop;
 import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurn;
+import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurnLeftSide;
+import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurnRightSide;
 import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
 import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
@@ -40,6 +47,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	public static double autoTime = 1.25;
 	public static OI oi;
 	/**
 	 *  Subsystems
@@ -73,7 +81,8 @@ public class Robot extends IterativeRobot {
 		
 		comp = new Compressor();
     	oi = new OI();
-		SmartDashboard.putNumber("dt_kP_straight", 0.021);
+    	
+		SmartDashboard.putNumber("dt_kP_straight", 0.5);
 		SmartDashboard.putNumber("dt_kP_quickturn", 0.021);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
@@ -81,12 +90,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dt_kI_quickturn", 0);
 		SmartDashboard.putNumber("dt_kI_distance", 0);
 
-		SmartDashboard.putNumber("dt_kD_straight", 0.07);
+		SmartDashboard.putNumber("dt_kD_straight", 0.01);
 		SmartDashboard.putNumber("dt_kD_quickturn", 0.07);
 		SmartDashboard.putNumber("dt_kD_distance", 0);
 		
         SmartDashboard.putNumber("Gyro_Constant", Robot.dt.GYRO_CONSTANT);
         SmartDashboard.putNumber("Encoder_Constant", Robot.dt.ENCODER_CONSTANT);
+        
+        //SmartDashboard.putNumber("Grab_Can_Time", 1.25);
         Robot.dt.resetEncoders();
         SmartDashboard.putData(Robot.dt);
         
@@ -102,6 +113,13 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Knock Can And Turn", (Command) new AutoKnockCanAndTurn());
         autoChooser.addObject("Three Totes One Can", (Command) new AutoThreeTotesOneCan());
         autoChooser.addObject("Knock tote and stop", (Command) new AutoKnockCanAndStop());
+        autoChooser.addObject("Drive Baack Grab Can And Drive", (Command) new AutoDriveBackCanGrabAndDrive());
+        autoChooser.addObject("Grab Can And Drive", (Command) new AutoCanGrabAndDrive());
+        autoChooser.addObject("Grab can wait longer and drive", (Command) new AutoCanGrabAndDriveFromBump());
+        autoChooser.addObject("Grab Can and Do Nothing", (Command) new AutoCanGrab());
+        autoChooser.addObject("Knock tote and turn - LEFT Side", (Command) new AutoKnockCanAndTurnLeftSide());
+        autoChooser.addObject("Knock tote and turn - RIGHT Side", (Command) new AutoKnockCanAndTurnRightSide());
+        autoChooser.addObject("Grab Can and Drive. Custom time", (Command) new AutoCanGrabDriveCustomTime(Robot.autoTime));
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);
@@ -133,6 +151,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
         // schedule the autonomous command (example)
+    	this.intake.retractCanGrabberPiston(); // makes sure we dont screw up in auto again
         if (autonomousCommand != null) autonomousCommand.start();
         comp.start();
     }
@@ -141,8 +160,9 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-        updateSmartDashboard();
+    	updateSmartDashboard();
+    	Scheduler.getInstance().run();
+        
     }
 
     /**
@@ -172,16 +192,18 @@ public class Robot extends IterativeRobot {
     
     public void updateSmartDashboard() {
     	SmartDashboard.putData("Auto Chooser", autoChooser);
-    	
+    	SmartDashboard.putNumber("Auto_Can_Grab_Time", Robot.autoTime);
     	// set
     	Robot.dt.setGyroConstant(SmartDashboard.getNumber("Gyro_Constant"));
         Robot.dt.setEncoderConstant(SmartDashboard.getNumber("Encoder_Constant"));
         Robot.dt.setQuickturnPIDGains(SmartDashboard.getNumber("dt_kP_quickturn"), SmartDashboard.getNumber("dt_kI_quickturn"), SmartDashboard.getNumber("dt_kD_quickturn"));
         Robot.dt.setDistancePIDGains(SmartDashboard.getNumber("dt_kP_distance"), SmartDashboard.getNumber("dt_kI_distance"), SmartDashboard.getNumber("dt_kD_distance"));
         Robot.dt.setHoldHeadingPIDGains(SmartDashboard.getNumber("dt_kP_straight"), SmartDashboard.getNumber("dt_kI_straight"), SmartDashboard.getNumber("dt_kD_straight"));
+        Robot.autoTime = SmartDashboard.getNumber("Auto_Can_Grab_Time");
         
         // get
         SmartDashboard.putNumber("Intake_ultrasonic", intake.getUltrasonicDistance());
+        SmartDashboard.putBoolean("is Tote There: ", Robot.intake.isToteThere());
         SmartDashboard.putBoolean("fieldCentric", oi.isFieldCentric());
         SmartDashboard.putNumber("dt_kP_straight", Robot.dt.kP_straight);
         SmartDashboard.putNumber("dt_kP_quickturn", Robot.dt.kP_quickturn);

@@ -5,20 +5,29 @@ import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveUntilToteCmd;
 import com.nutrons.recyclerush.commands.auto.AutoTimeDriveCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
-import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorLowerSlowCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseSlowerCmd;
 import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseRCCmd;
 import com.nutrons.recyclerush.commands.intake.CoopStackCmd;
+import com.nutrons.recyclerush.commands.intake.DeployCanGrabberCmd;
+import com.nutrons.recyclerush.commands.intake.DeployCanGrabberHandleCmd;
 import com.nutrons.recyclerush.commands.intake.HoldCanCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeCloseCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
+import com.nutrons.recyclerush.commands.intake.RetractCanGrabberCmd;
+import com.nutrons.recyclerush.commands.intake.RetractCanGrabberHandleCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanHolderCmd;
 import com.nutrons.recyclerush.commands.intake.RetractStopCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractWintakeStopperCmd;
 import com.nutrons.recyclerush.commands.intake.SpinWintakeWheelsCmd;
 import com.nutrons.recyclerush.commands.intake.StopCanCmd;
 import com.nutrons.recyclerush.commands.intake.StopWintakeWheelsCmd;
+import com.nutrons.recyclerush.commands.intake.WinchBackCmd;
+import com.nutrons.recyclerush.commands.intake.WinchForwardCmd;
+import com.nutrons.recyclerush.commands.intake.WinchStopCmd;
 import com.nutrons.recyclerush.commands.intake.WintakeStopperCmd;
 import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSeq;
+import com.nutrons.recyclerush.commands.intake.sequence.HumanPlayerFeedSlowDownSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.IntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.SpitIntakeSeq;
@@ -27,6 +36,15 @@ import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeContainerSeq;
 import com.nutrons.recyclerush.commands.intake.sequence.StopIntakeToteSeq;
 import com.nutrons.recyclerush.commands.intake.PushCanCmd;
 import com.nutrons.recyclerush.commands.intake.RetractCanPusherCmd;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,7 +78,7 @@ public class OI {
 	private Button fieldCentricButton = new JoystickButton(driverPad, 2);
 	private Button resetGyroButton = new JoystickButton(driverPad, 9);
 	private Button slowDownButton = new JoystickButton(driverPad, 5);
-	private Button knockCan = new JoystickButton(driverPad, 7);
+	//private Button knockCan = new JoystickButton(driverPad, 7);
 	private Button holdCan = new JoystickButton(driverPad, 6);
 	private Button releaseCan = new JoystickButton(driverPad, 8);
 	
@@ -73,21 +91,22 @@ public class OI {
 	private Button intakeToteButton = new JoystickButton(operatorPad, 5);
 	private Button spitIntakeButton = new JoystickButton(operatorPad, 7);
 	private Button cancelWintake = new JoystickButton(operatorPad, 10);
-	private Button coopButton = new JoystickButton(operatorPad, 11);
+	private Button canGrabberButton = new JoystickButton(operatorPad, 11);
 	private Button stopCanButton = new JoystickButton(operatorPad, 16);
 	private Button deployWintakeStopper = new JoystickButton(operatorPad, 13);
 	private Button retractWintakeStopper = new JoystickButton(operatorPad, 15);
 	private Button raiseRCButton = new JoystickButton(operatorPad, 9);
 	private Button wintakeWheelsButton = new JoystickButton(operatorPad, 12);
+	private Button humanPlaterIntakeSlowButton = new JoystickButton(operatorPad, 3);
+	private Button winchRetractButton = new JoystickButton(operatorPad, 14);
 	
 	public OI() {
-		intakeContainerButton.whenActive(new IntakeContainerSeq());
-		intakeContainerButton.whenReleased(new StopIntakeContainerSeq());
+		intakeContainerButton.whenActive(new WinchForwardCmd());
+		intakeContainerButton.whenReleased(new WinchStopCmd());
 		
-		intakeCloseButton.whenPressed(new IntakeCloseCmd());
-		intakeCloseButton.whenReleased(new IntakeOpenCmd());
+		intakeCloseButton.whenPressed(new ElevatorLowerSlowCmd());
 		
-		raiseElevatorButton.whenPressed(new ElevatorRaiseCmd());
+		raiseElevatorButton.whenPressed(new ElevatorRaiseSlowerCmd());
 		lowerElevatorButton.whenPressed(new ElevatorLowerCmd());
 		
 		intakeToteButton.whenActive(new IntakeToteSeq());
@@ -100,13 +119,11 @@ public class OI {
 		
 		cancelWintake.whenPressed(new StopHumanPlayerFeedSeq());
 		
-		knockCan.whenPressed(new PushCanCmd());
-		knockCan.whenReleased(new RetractCanPusherCmd());
-		
 		holdCan.whenPressed(new HoldCanCmd());
 		releaseCan.whenPressed(new RetractCanHolderCmd());
 		
-		coopButton.whenPressed(new CoopStackCmd());
+		canGrabberButton.whenActive(new DeployCanGrabberCmd());
+		canGrabberButton.whenReleased(new RetractCanGrabberCmd());
 		
 		stopCanButton.whenActive(new StopCanCmd());
 		stopCanButton.whenReleased(new RetractStopCanCmd());
@@ -118,6 +135,11 @@ public class OI {
 		
 		wintakeWheelsButton.whenActive(new SpinWintakeWheelsCmd());
 		wintakeWheelsButton.whenReleased(new StopWintakeWheelsCmd());
+		
+		humanPlaterIntakeSlowButton.whenPressed(new HumanPlayerFeedSlowDownSeq());
+		
+		winchRetractButton.whenActive(new WinchBackCmd());
+		winchRetractButton.whenReleased(new WinchStopCmd());
 	}
 	
 	/**

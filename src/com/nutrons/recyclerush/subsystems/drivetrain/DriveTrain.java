@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends Subsystem implements ILoggable{
 	
 	// Constants
+	public double customAutoTime = 1.25;
 	public double GYRO_CONSTANT = 1.0; // a value that adjusts our 
 	public double ENCODER_CONSTANT = 1/5000.0;
 	public double offset = 0;

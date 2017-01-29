@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * @author John Zhang
  */
-public class ElevatorRaiseCmd extends Command {
+public class ElevatorRaiseSlowerCmd extends Command {
 
 	Timer timer = new Timer();
 	
-    public ElevatorRaiseCmd() {
+    public ElevatorRaiseSlowerCmd() {
         requires(Robot.elevator);
         requires(Robot.intake);
     }
@@ -27,7 +27,7 @@ public class ElevatorRaiseCmd extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setElevatorPower(1.0);
+    	Robot.elevator.setElevatorPower(0.75);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -46,4 +46,3 @@ public class ElevatorRaiseCmd extends Command {
     	end();
     }
 }
-

@@ -1,7 +1,7 @@
 package com.nutrons.recyclerush.commands.auto;
 
 import com.nutrons.recyclerush.commands.elevator.ElevatorLowerCmd;
-import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseCmd;
+import com.nutrons.recyclerush.commands.elevator.ElevatorRaiseSlowerCmd;
 import com.nutrons.recyclerush.commands.elevator.LowerElevatorIfStackableCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeOpenCmd;
 import com.nutrons.recyclerush.commands.intake.IntakeUntilStackableCmd;
@@ -21,7 +21,7 @@ public class AutoThreeTotesOneCan extends CommandGroup {
     
     public  AutoThreeTotesOneCan() {
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	addSequential(new IntakeOpenCmd());
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new AutoDriveUntilToteCmd());
@@ -35,7 +35,7 @@ public class AutoThreeTotesOneCan extends CommandGroup {
     	addSequential(new AutoDriveUntilToteCmd());
     	addSequential(new IntakeToteSeq());
     	addSequential(new ElevatorLowerCmd());
-    	addSequential(new ElevatorRaiseCmd());
+    	addSequential(new ElevatorRaiseSlowerCmd());
     	
     	addSequential(new SpinIntakeWheelsCmd());
     	addSequential(new AutoDriveUntilToteCmd());

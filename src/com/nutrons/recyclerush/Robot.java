@@ -2,6 +2,7 @@
 package com.nutrons.recyclerush;
 
 import com.nutrons.lib.DataLogger;
+import com.nutrons.recyclerush.commands.auto.AutoCanGrabAndDrive;
 import com.nutrons.recyclerush.commands.auto.AutoDoNothing;
 import com.nutrons.recyclerush.commands.auto.AutoDriveDistanceCmd;
 import com.nutrons.recyclerush.commands.auto.AutoDriveForward;
@@ -10,6 +11,8 @@ import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockAndSpitLeftSideCmd;
 import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndStop;
 import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurn;
+import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurnLeftSide;
+import com.nutrons.recyclerush.commands.auto.AutoKnockCanAndTurnRightSide;
 import com.nutrons.recyclerush.commands.auto.AutoKnockTote;
 import com.nutrons.recyclerush.commands.auto.AutoKnockToteAndTurn;
 import com.nutrons.recyclerush.commands.auto.AutoThreeTotes;
@@ -73,7 +76,7 @@ public class Robot extends IterativeRobot {
 		
 		comp = new Compressor();
     	oi = new OI();
-		SmartDashboard.putNumber("dt_kP_straight", 0.021);
+		SmartDashboard.putNumber("dt_kP_straight", 0.5);
 		SmartDashboard.putNumber("dt_kP_quickturn", 0.021);
 		SmartDashboard.putNumber("dt_kP_distance", 1);
 
@@ -81,7 +84,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dt_kI_quickturn", 0);
 		SmartDashboard.putNumber("dt_kI_distance", 0);
 
-		SmartDashboard.putNumber("dt_kD_straight", 0.07);
+		SmartDashboard.putNumber("dt_kD_straight", 0.01);
 		SmartDashboard.putNumber("dt_kD_quickturn", 0.07);
 		SmartDashboard.putNumber("dt_kD_distance", 0);
 		
@@ -102,6 +105,9 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Knock Can And Turn", (Command) new AutoKnockCanAndTurn());
         autoChooser.addObject("Three Totes One Can", (Command) new AutoThreeTotesOneCan());
         autoChooser.addObject("Knock tote and stop", (Command) new AutoKnockCanAndStop());
+        autoChooser.addObject("Grab Can And Drive", (Command) new AutoCanGrabAndDrive());
+        autoChooser.addObject("Knock tote and turn - LEFT Side", (Command) new AutoKnockCanAndTurnLeftSide());
+        autoChooser.addObject("Knock tote and turn - RIGHT Side", (Command) new AutoKnockCanAndTurnRightSide());
         
         wintakeSpeedChooser.addDefault("0.6", 0.6);
         wintakeSpeedChooser.addDefault("0.75", 0.75);
